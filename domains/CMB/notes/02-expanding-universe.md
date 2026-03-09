@@ -1,5 +1,11 @@
 # 02 - 膨胀宇宙
 
+> **主维度**：D1 物理原理
+> **关键关系**：
+> - Friedmann 方程 (理论) --推广--> 牛顿能量守恒 (理论)：Friedmann 方程把牛顿能量守恒推广到膨胀宇宙
+> - Friedmann 方程 (理论) --用于--> 尺度因子 a(t) (概念)：Friedmann 方程用于求解尺度因子 a(t)
+> - 尺度因子 a(t) (概念) --用于--> 热历史 (概念)：尺度因子用于描述宇宙热历史的演化
+>
 > 学习路径：Step 1（最基础的框架，后面所有概念都依赖它）
 > 前置知识：牛顿力学（能量守恒）
 > 参考：[Wikipedia - Friedmann equations](https://en.wikipedia.org/wiki/Friedmann_equations) · [Dodelson《Modern Cosmology》Ch.1](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480) · [Wikipedia - FLRW metric](https://en.wikipedia.org/wiki/Friedmann%E2%80%93Lema%C3%AEtre%E2%80%93Robertson%E2%80%93Walker_metric)

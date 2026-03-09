@@ -1,7 +1,10 @@
 # 04 - RNN 与 LSTM：处理序列数据
 
 > **主维度**：D1 基础架构
-> **关键关系**：LSTM `generalizes` RNN（加门控解决梯度消失） · Transformer `contrasts-with` RNN（并行注意力 vs 循环） · RNN 的 inductive bias = 序列中相邻元素相关
+> **关键关系**：
+> - RNN (架构) --依赖--> MLP (架构)：RNN 依赖 MLP 作为学习基础
+> - LSTM (架构) --推广--> RNN (架构)：LSTM 通过门控机制推广了 RNN
+> - Transformer (架构) --对比--> RNN (架构)：Transformer 用并行注意力替代 RNN 的循环处理
 >
 > **学习路径**：MLP 基础 → CNN 基础 → **本章（RNN / LSTM）** → Transformer → 训练的数学
 >

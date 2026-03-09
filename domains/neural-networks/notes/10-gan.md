@@ -1,7 +1,10 @@
 # 10 - GAN：对抗生成网络
 
 > **主维度**：D2 训练范式
-> **关键关系**：GAN `contrasts-with` VAE（对抗 vs 变分） · Diffusion `contrasts-with` GAN（2022 后取代） · DCGAN = CNN（D1）+ GAN（D2）
+> **关键关系**：
+> - GAN (方法) --对比--> VAE (方法)：GAN 用对抗训练，VAE 用变分推断
+> - Diffusion (方法) --对比--> GAN (方法)：Diffusion 用去噪替代对抗训练
+> - DCGAN (方法) --实例--> GAN (方法)：DCGAN 是用 CNN 架构实现的 GAN 实例
 >
 > **学习路径**：01-overview → 深入 MLP（02） → CNN（03） → AutoEncoder/VAE（09） → **本章** → GNN（11）
 >

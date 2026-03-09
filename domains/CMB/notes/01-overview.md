@@ -1,5 +1,13 @@
 # 01 - CMB 是什么，为什么要学，要学什么
 
+> **主维度**：全局（跨所有维度）
+> **关键关系**：
+> - 角功率谱 (方法) --用于--> 参数提取 (方法)：角功率谱用于从 CMB 数据中提取宇宙学参数
+> - Planck (实验) --用于--> 角功率谱 (方法)：Planck 卫星用于测量 CMB 角功率谱
+> - 声波振荡 (概念) --用于--> 角功率谱 (方法)：声波振荡用于解释角功率谱峰的结构
+>
+> **参考**：[Wikipedia - CMB](https://en.wikipedia.org/wiki/Cosmic_microwave_background) · [Wayne Hu 入门教程](https://background.uchicago.edu/~whu/beginners/introduction.html) · [Dodelson《Modern Cosmology》](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480)
+
 ## CMB 到底是什么
 
 宇宙大爆炸之后，早期宇宙非常热、非常密。所有物质都是高温等离子体——电子、质子、光子混在一起，光子不断被自由电子弹来弹去（散射），根本走不远。整个宇宙就像一团浓雾，不透明。
@@ -34,17 +42,30 @@ CMB 是我们能看到的"最古老的光"。它重要在于：
 
 最上面一幅（TT）：横轴可以理解为"角度大小"（越往右 = 越小的角度），纵轴是对应角度上温度涨落的强度。那些峰就是关键——它们的位置和高度直接告诉我们宇宙的成分和几何。现在不需要看懂这张图，后面学了声波振荡之后会回来解读。
 
+## 知识维度
+
+在深入之前，先把这个领域的知识坐标轴理清楚：
+
+| 维度 | 含义 | 核心问题 |
+|------|------|---------|
+| **D1 物理原理** | 膨胀宇宙、热历史、复合退耦、微扰论、声波振荡 | 宇宙怎么演化？CMB 怎么产生？涨落从哪来？ |
+| **D2 观测量与分析** | 角功率谱 $C_\ell$、偏振、参数提取 | 我们测什么？怎么从观测反推物理？ |
+| **D3 实验技术** | Planck/ACT/SPT/BICEP、前景分离 | 哪些望远镜在做什么？系统误差怎么控制？ |
+| **D4 前沿与开放问题** | B-mode、频谱畸变、CMB 异常等 | 还有什么没搞定？ |
+
+> D1 和 D2 的区别：D1 回答"物理上发生了什么"（如声波振荡的机制），D2 回答"怎么从数据里看出来"（如功率谱峰的位置编码了什么参数）。D3 独立出来是因为 CMB 是高度实验驱动的领域。
+
 ## 学 CMB 需要学哪些东西
 
 从你的本科物理出发，到理解 CMB 的核心物理，需要补充以下知识（按顺序）：
 
-| 步骤 | 要学的概念 | 一句话说为什么需要 |
-|------|-----------|-------------------|
-| 1 | 膨胀宇宙 + Friedmann 方程 | 没有膨胀的框架，"红移""尺度因子"都没法谈 | [Wikipedia](https://en.wikipedia.org/wiki/Friedmann_equations) · [Dodelson Ch.1](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480) |
-| 2 | 宇宙热历史 | 理解宇宙从热到冷经历了什么，各种粒子什么时候退耦 | [Wikipedia](https://en.wikipedia.org/wiki/Chronology_of_the_universe) · [Kolb & Turner Ch.3](https://www.amazon.com/Early-Universe-Frontiers-Physics/dp/0201626748) |
-| 3 | 复合与退耦 | 直接回答"CMB 为什么存在"——为什么 38 万年这个时间点 | [Wikipedia](https://en.wikipedia.org/wiki/Recombination_(cosmology)) · [Wayne Hu 教程](https://background.uchicago.edu/~whu/intermediate/intermediate.html) |
-| 4 | 扰动与声波振荡 | CMB 物理的**核心**——温度涨落的模式从哪来 | [Wayne Hu - acoustic oscillations](https://background.uchicago.edu/~whu/intermediate/driving2.html) · [Dodelson Ch.8](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480) |
-| 5 | 角功率谱 $C_\ell$ | 把物理过程翻译成可观测量，理解功率谱那张图 | [Wayne Hu - power spectrum](https://background.uchicago.edu/~whu/intermediate/map5.html) · [Planck 2018 results I](https://arxiv.org/abs/1807.06205) |
+| 步骤 | 要学的概念 | 维度 | 一句话说为什么需要 | 参考 |
+|------|-----------|------|-------------------|------|
+| 1 | 膨胀宇宙 + Friedmann 方程 | D1 | 没有膨胀框架，"红移""尺度因子"都没法谈 | [Wikipedia](https://en.wikipedia.org/wiki/Friedmann_equations) · [Dodelson Ch.1](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480) |
+| 2 | 宇宙热历史 | D1 | 理解宇宙从热到冷经历了什么，各种粒子什么时候退耦 | [Wikipedia](https://en.wikipedia.org/wiki/Chronology_of_the_universe) · [Kolb & Turner Ch.3](https://www.amazon.com/Early-Universe-Frontiers-Physics/dp/0201626748) |
+| 3 | 复合与退耦 | D1 | 直接回答"CMB 为什么存在"——为什么 38 万年这个时间点 | [Wikipedia](https://en.wikipedia.org/wiki/Recombination_(cosmology)) · [Wayne Hu 教程](https://background.uchicago.edu/~whu/intermediate/intermediate.html) |
+| 4 | 扰动与声波振荡 | D1 | CMB 物理的**核心**——温度涨落的模式从哪来 | [Wayne Hu - acoustic oscillations](https://background.uchicago.edu/~whu/intermediate/driving2.html) · [Dodelson Ch.8](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480) |
+| 5 | 角功率谱 $C_\ell$ | D1+D2 | 把物理过程翻译成可观测量，理解功率谱图 | [Wayne Hu - power spectrum](https://background.uchicago.edu/~whu/intermediate/map5.html) · [Planck 2018 results I](https://arxiv.org/abs/1807.06205) |
 
 前置知识你基本够用（力学里的能量守恒、热统里的黑体辐射和平衡态、电磁里的波）。广义相对论不需要完整学过，只需要接受几个结论。
 

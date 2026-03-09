@@ -1,0 +1,109 @@
+site_name: LLM Learner — 研究者知识库
+site_description: 帮你快速建立新领域的可靠知识结构
+docs_dir: docs
+site_dir: _site
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换暗色模式
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换亮色模式
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+  font:
+    text: Noto Sans SC
+    code: JetBrains Mono
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css: []
+
+plugins:
+  - search:
+      lang: zh
+
+exclude_docs: |
+  _template/
+  _site/
+  .cursor/
+  node_modules/
+  *.sh
+  *.bib
+  .gitignore
+
+nav:
+  - 首页: index.md
+  - 神经网络:
+    - 概览: domains/neural-networks/README.md
+    - 术语表: domains/neural-networks/glossary.md
+    - 笔记:
+      - 01 全景概览: domains/neural-networks/notes/01-overview.md
+      - 02 深入 MLP: domains/neural-networks/notes/02-deep-mlp.md
+      - 03 CNN: domains/neural-networks/notes/03-cnn.md
+      - 04 RNN 与 LSTM: domains/neural-networks/notes/04-rnn-lstm.md
+      - 05 训练的数学: domains/neural-networks/notes/05-training-math.md
+      - 06 正则化与泛化: domains/neural-networks/notes/06-generalization.md
+      - 07 PyTorch 实战: domains/neural-networks/notes/07-pytorch-practice.md
+      - 08 前沿理论: domains/neural-networks/notes/08-frontiers.md
+      - 09 AutoEncoder 与 VAE: domains/neural-networks/notes/09-autoencoder-vae.md
+      - 10 GAN: domains/neural-networks/notes/10-gan.md
+      - 11 GNN: domains/neural-networks/notes/11-gnn.md
+  - LLM:
+    - 概览: domains/LLM/README.md
+    - 笔记:
+      - 01 全景概览: domains/LLM/notes/01-overview.md
+      - 02 神经网络基础: domains/LLM/notes/02-neural-network-basics.md
+      - 03 词嵌入: domains/LLM/notes/03-word-embedding.md
+      - 04 注意力机制: domains/LLM/notes/04-attention-mechanism.md
+      - 05 Transformer: domains/LLM/notes/05-transformer-architecture.md
+      - 06 预训练: domains/LLM/notes/06-pretraining.md
+      - 07 微调与对齐: domains/LLM/notes/07-finetuning-alignment.md
+  - CMB:
+    - 概览: domains/CMB/README.md
+    - 笔记:
+      - 01 全景概览: domains/CMB/notes/01-overview.md
+      - 02 膨胀宇宙: domains/CMB/notes/02-expanding-universe.md
+      - 03 热历史: domains/CMB/notes/03-thermal-history.md
+  - 点集拓扑:
+    - 概览: domains/point-set-topology/README.md
+    - 笔记:
+      - 01 全景概览: domains/point-set-topology/notes/01-overview.md

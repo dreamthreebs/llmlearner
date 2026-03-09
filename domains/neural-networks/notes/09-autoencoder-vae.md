@@ -1,7 +1,10 @@
 # 09 - AutoEncoder 与 VAE：学习数据的压缩表示
 
 > **主维度**：D2 训练范式
-> **关键关系**：VAE `generalizes` AutoEncoder（点估计 → 概率分布） · VAE `contrasts-with` GAN（稳定但模糊 vs 清晰但不稳定） · AutoEncoder 可搭配任意 D1 架构
+> **关键关系**：
+> - VAE (方法) --推广--> AutoEncoder (方法)：VAE 把 AutoEncoder 推广为概率变分模型
+> - GAN (方法) --对比--> VAE (方法)：GAN 用对抗训练，VAE 用变分推断
+> - AutoEncoder (方法) --用于--> 无监督特征学习 (任务)：AutoEncoder 用于在无标签数据中学习压缩表示
 >
 > **学习路径**：01-overview → 深入 MLP（02） → CNN（03） → **本章** → GAN（10）
 >

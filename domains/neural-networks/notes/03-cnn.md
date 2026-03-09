@@ -1,7 +1,10 @@
 # 03 - CNN：利用图像的空间结构
 
 > **主维度**：D1 基础架构
-> **关键关系**：CNN `depends-on` MLP 基础 · GCN `generalizes` CNN to graphs · CNN 的 inductive bias = 空间局部性 + 平移不变性
+> **关键关系**：
+> - CNN (架构) --依赖--> MLP (架构)：CNN 依赖 MLP 作为学习基础
+> - GCN (架构) --推广--> CNN (架构)：GCN 把 CNN 的卷积从网格推广到图结构
+> - GCN (架构) --实例--> GNN (架构)：GCN 是 GNN 的实例
 >
 > **学习路径**：LLM/02 基础 → 深入 MLP（02） → **本章** → RNN/LSTM → 训练数学
 >

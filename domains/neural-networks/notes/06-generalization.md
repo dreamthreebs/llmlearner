@@ -1,7 +1,10 @@
 # 06 - 正则化与泛化：为什么过参数化反而好
 
 > **主维度**：D3 训练数学
-> **关键关系**：Double Descent `contrasts-with` 经典偏差-方差 U 形曲线 · 隐式正则化 `used-for` 解释过参数化泛化
+> **关键关系**：
+> - Double Descent (概念) --组成--> 泛化理论 (理论)：Double Descent 是泛化理论的重要组成部分
+> - NTK (理论) --用于--> 泛化理论 (理论)：NTK 用于分析泛化
+> - Scaling Laws (理论) --用于--> 泛化理论 (理论)：Scaling Laws 用于理解泛化随规模的变化
 >
 > **学习路径**：Step 5 / 7  
 > **前置知识**：MLP 基础（01-overview）、CNN/RNN 架构、损失函数与梯度下降、基本优化理论  

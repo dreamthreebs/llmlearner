@@ -1,0 +1,125 @@
+digraph CMB {
+  // 全局样式
+  rankdir=TB;
+  fontname="Helvetica,Arial,sans-serif";
+  node [fontname="Helvetica,Arial,sans-serif", fontsize=11, style=filled, shape=box, margin="0.15,0.08"];
+  edge [fontname="Helvetica,Arial,sans-serif", fontsize=9, color="#666666"];
+
+  // 箭头方向约定（字面阅读）：
+  // A → B [关系] 读作 "A 关系 B"
+  // 例：A → B [依赖] = "A 依赖 B"
+  //     A → B [推广] = "A 推广了 B"
+  //     A → B [组成] = "A 是 B 的组成部分"
+
+  // ─── 前置 ───
+  Newton [label="牛顿能量守恒\n(理论)", fillcolor="#E0E0E0", style="filled,dashed"];
+
+  // ─── D1 物理原理 ───
+  subgraph cluster_D1 {
+    label="D1 物理原理";
+    style=rounded;
+    color="#4A90D9";
+    fontcolor="#4A90D9";
+    fontsize=13;
+    bgcolor="#EBF2FA";
+
+    Friedmann    [label="Friedmann 方程\n(理论)", fillcolor="#B3D4FC"];
+    ScaleFactor  [label="尺度因子 a(t)\n(概念)", fillcolor="#D6E8FC", shape=ellipse];
+    ThermalHist  [label="热历史\n(概念)", fillcolor="#B3D4FC"];
+    Recomb       [label="复合与退耦\n(概念)", fillcolor="#B3D4FC"];
+    Perturbation [label="微扰论\n(理论)", fillcolor="#B3D4FC"];
+    Acoustic     [label="声波振荡\n(概念)", fillcolor="#B3D4FC"];
+    SilkDamping  [label="Silk 阻尼\n(概念)", fillcolor="#B3D4FC"];
+    SachsWolfe   [label="Sachs-Wolfe\n效应\n(概念)", fillcolor="#B3D4FC"];
+  }
+
+  // ─── D2 观测量与分析 ───
+  subgraph cluster_D2 {
+    label="D2 观测量与分析";
+    style=rounded;
+    color="#27AE60";
+    fontcolor="#27AE60";
+    fontsize=13;
+    bgcolor="#E8F8F0";
+
+    Cl           [label="角功率谱 C_ℓ\n(方法)", fillcolor="#A9DFBF"];
+    Polarization [label="偏振 E/B-mode\n(概念)", fillcolor="#A9DFBF"];
+    ParamExtract [label="参数提取\nMCMC\n(方法)", fillcolor="#A9DFBF"];
+  }
+
+  // ─── D3 实验技术 ───
+  subgraph cluster_D3 {
+    label="D3 实验技术";
+    style=rounded;
+    color="#E67E22";
+    fontcolor="#E67E22";
+    fontsize=13;
+    bgcolor="#FDF2E9";
+
+    Planck [label="Planck\n(实验)", fillcolor="#F5CBA7"];
+    ACT    [label="ACT / SPT\n(实验)", fillcolor="#F5CBA7"];
+    BICEP  [label="BICEP / Keck\n(实验)", fillcolor="#F5CBA7"];
+    Future [label="CMB-S4\nLiteBIRD\n(实验)", fillcolor="#F5CBA7", style="filled,dashed"];
+  }
+
+  // ─── D4 前沿与开放问题 ───
+  subgraph cluster_D4 {
+    label="D4 前沿与开放问题";
+    style=rounded;
+    color="#8E44AD";
+    fontcolor="#8E44AD";
+    fontsize=13;
+    bgcolor="#F4ECF7";
+
+    Bmode     [label="B-mode 探测\n原初引力波\n(任务)", fillcolor="#D2B4DE"];
+    Lensing   [label="CMB 引力透镜\n(方法)", fillcolor="#D2B4DE"];
+    SZ        [label="SZ 效应\n(概念)", fillcolor="#D2B4DE"];
+    SpectDist [label="频谱畸变\nμ/y 畸变\n(概念)", fillcolor="#D2B4DE"];
+    Anomalies [label="CMB 异常\n(概念)", fillcolor="#D2B4DE"];
+  }
+
+  // ─── D1 内部 ───
+  // Friedmann 推广了牛顿能量守恒
+  Friedmann -> Newton [label="推广", color="#4A90D9", style=bold, constraint=false];
+
+  // 机制链：Friedmann → a(t) → 热历史
+  Friedmann -> ScaleFactor [label="用于", color="#4A90D9"];
+  ScaleFactor -> ThermalHist [label="用于", color="#4A90D9"];
+
+  // 复合与退耦是热历史的组成部分
+  Recomb -> ThermalHist [label="组成", color="#4A90D9", style=bold, constraint=false];
+
+  // 声波振荡依赖微扰论、SW 效应依赖微扰论
+  Acoustic -> Perturbation [label="依赖", color="#4A90D9", constraint=false];
+  SachsWolfe -> Perturbation [label="依赖", color="#4A90D9", constraint=false];
+
+  // Silk 阻尼依赖声波振荡（阻尼的就是声波振荡）
+  SilkDamping -> Acoustic [label="依赖", color="#4A90D9", constraint=false];
+
+  // ─── D1 → D2：核心物理 → 功率谱 ───
+  Acoustic -> Cl [label="用于", color="#27AE60"];
+  Cl -> ParamExtract [label="用于", color="#27AE60"];
+
+  // ─── D3 → D2/D4 ───
+  Planck -> Cl [label="用于", color="#E67E22"];
+  ACT -> Lensing [label="用于", color="#E67E22"];
+  BICEP -> Bmode [label="用于", color="#E67E22"];
+  Future -> Bmode [label="用于", color="#E67E22"];
+
+  // ─── 图例 ───
+  subgraph cluster_legend {
+    label="图例：A → B [关系] 读作 \"A 关系 B\"";
+    style=rounded;
+    color="#CCCCCC";
+    fontsize=11;
+    bgcolor="#FAFAFA";
+    node [shape=plaintext, fillcolor="#FAFAFA"];
+
+    leg1 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+      <TR><TD><FONT COLOR="#4A90D9">━━━</FONT></TD><TD ALIGN="LEFT">依赖 / 用于</TD></TR>
+      <TR><TD><FONT COLOR="#4A90D9"><B>━━━</B></FONT></TD><TD ALIGN="LEFT">推广 / 组成</TD></TR>
+      <TR><TD><FONT COLOR="#C0392B">- - -</FONT></TD><TD ALIGN="LEFT">对比</TD></TR>
+      <TR><TD>○</TD><TD ALIGN="LEFT">机制节点</TD></TR>
+    </TABLE>>];
+  }
+}

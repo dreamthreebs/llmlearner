@@ -1,5 +1,11 @@
 # 03 - 宇宙热历史
 
+> **主维度**：D1 物理原理
+> **关键关系**：
+> - 尺度因子 a(t) (概念) --用于--> 热历史 (概念)：尺度因子用于描述热历史的温度演化 T ∝ 1/a
+> - 热历史 (概念) --组成--> 复合与退耦 (概念)：复合与退耦是热历史的组成部分
+> - 热历史 (概念) --依赖--> 膨胀宇宙 (理论)：热历史依赖膨胀框架才能理解
+>
 > 学习路径：Step 2（理解宇宙从极热到冷却的演化过程）
 > 前置知识：02 膨胀宇宙（尺度因子、Friedmann 方程、辐射/物质密度的演化）
 > 参考：[Wikipedia - Chronology of the universe](https://en.wikipedia.org/wiki/Chronology_of_the_universe) · [Kolb & Turner《The Early Universe》Ch.3](https://www.amazon.com/Early-Universe-Frontiers-Physics/dp/0201626748) · [Dodelson《Modern Cosmology》Ch.2-3](https://www.amazon.com/Modern-Cosmology-Scott-Dodelson/dp/0128159480)

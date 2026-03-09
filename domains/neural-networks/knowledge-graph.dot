@@ -1,0 +1,118 @@
+digraph NeuralNetworks {
+  // 全局样式
+  rankdir=TB;
+  fontname="Helvetica,Arial,sans-serif";
+  node [fontname="Helvetica,Arial,sans-serif", fontsize=11, style=filled, shape=box, margin="0.15,0.08"];
+  edge [fontname="Helvetica,Arial,sans-serif", fontsize=9, color="#666666"];
+
+  // 箭头方向约定（字面阅读）：
+  // A → B [关系] 读作 "A 关系 B"
+  // 例：A → B [推广] = "A 推广了 B"
+  //     A → B [实例] = "A 是 B 的实例"
+  //     A → B [组成] = "A 是 B 的组成部分"
+
+  // ─── D1 基础架构 ───
+  subgraph cluster_D1 {
+    label="D1 基础架构";
+    style=rounded;
+    color="#4A90D9";
+    fontcolor="#4A90D9";
+    fontsize=13;
+    bgcolor="#EBF2FA";
+
+    MLP         [label="MLP\n(架构)", fillcolor="#B3D4FC"];
+    CNN         [label="CNN\n(架构)", fillcolor="#B3D4FC"];
+    RNN         [label="RNN\n(架构)", fillcolor="#B3D4FC"];
+    LSTM        [label="LSTM\n(架构)", fillcolor="#B3D4FC"];
+    Transformer [label="Transformer\n(架构)", fillcolor="#B3D4FC", style="filled,dashed"];
+    Attention   [label="Attention 机制\n(概念)", fillcolor="#D6E8FC", shape=ellipse];
+    GNN         [label="GNN\n(架构)", fillcolor="#B3D4FC"];
+    GCN         [label="GCN\n(架构)", fillcolor="#B3D4FC"];
+    GAT         [label="GAT\n(架构)", fillcolor="#B3D4FC"];
+  }
+
+  // ─── D2 训练范式 ───
+  subgraph cluster_D2 {
+    label="D2 训练范式";
+    style=rounded;
+    color="#27AE60";
+    fontcolor="#27AE60";
+    fontsize=13;
+    bgcolor="#E8F8F0";
+
+    AE        [label="AutoEncoder\n(方法)", fillcolor="#A9DFBF"];
+    VAE       [label="VAE\n(方法)", fillcolor="#A9DFBF"];
+    GAN       [label="GAN\n(方法)", fillcolor="#A9DFBF"];
+    Diffusion [label="Diffusion Model\n(方法)", fillcolor="#A9DFBF"];
+  }
+
+  // ─── D3 训练数学 ───
+  subgraph cluster_D3 {
+    label="D3 训练数学";
+    style=rounded;
+    color="#E67E22";
+    fontcolor="#E67E22";
+    fontsize=13;
+    bgcolor="#FDF2E9";
+
+    SGD           [label="SGD\n(方法)", fillcolor="#F5CBA7"];
+    Adam          [label="Adam\n(方法)", fillcolor="#F5CBA7"];
+    BN            [label="BatchNorm\n初始化\n(方法)", fillcolor="#F5CBA7"];
+    GenTheory     [label="泛化理论\n(理论)", fillcolor="#F5CBA7"];
+    DoubleDescent [label="Double Descent\n(概念)", fillcolor="#F5CBA7"];
+  }
+
+  // ─── D5 前沿理论 ───
+  subgraph cluster_D5 {
+    label="D5 前沿理论";
+    style=rounded;
+    color="#8E44AD";
+    fontcolor="#8E44AD";
+    fontsize=13;
+    bgcolor="#F4ECF7";
+
+    NTK        [label="NTK\n(理论)", fillcolor="#D2B4DE"];
+    Scaling    [label="Scaling Laws\n(理论)", fillcolor="#D2B4DE"];
+    MechInterp [label="Mechanistic\nInterpretability\n(方法)", fillcolor="#D2B4DE"];
+  }
+
+  // ─── D1 内部 ───
+  // MLP 是基线架构，与其他架构无直接结构关系
+  LSTM -> RNN [label="推广", color="#4A90D9", style=bold, constraint=false];
+  GCN -> CNN [label="推广", color="#4A90D9", style=bold, constraint=false];
+  GCN -> GNN [label="实例", color="#4A90D9", constraint=false];
+  GAT -> GNN [label="实例", color="#4A90D9", constraint=false];
+  Attention -> Transformer [label="组成", color="#4A90D9", style=bold, constraint=false];
+  Transformer -> RNN [label="对比", color="#C0392B", style=dashed, constraint=false];
+
+  // ─── D2 内部 ───
+  VAE -> AE [label="推广", color="#27AE60", style=bold, constraint=false];
+  VAE -> GAN [label="对比", color="#C0392B", style=dashed];
+  GAN -> Diffusion [label="对比", color="#C0392B", style=dashed];
+
+  // ─── D3 内部 ───
+  Adam -> SGD [label="推广", color="#E67E22", style=bold, constraint=false];
+  DoubleDescent -> GenTheory [label="组成", color="#E67E22", style=bold, constraint=false];
+
+  // ─── 跨维度 ───
+  NTK -> GenTheory [label="用于", color="#8E44AD"];
+  Scaling -> GenTheory [label="用于", color="#8E44AD"];
+
+  // ─── 图例 ───
+  subgraph cluster_legend {
+    label="图例：A → B [关系] 读作 \"A 关系 B\"";
+    style=rounded;
+    color="#CCCCCC";
+    fontsize=11;
+    bgcolor="#FAFAFA";
+    node [shape=plaintext, fillcolor="#FAFAFA"];
+    edge [style=invis];
+
+    leg1 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
+      <TR><TD><FONT COLOR="#4A90D9">━━━</FONT></TD><TD ALIGN="LEFT">依赖 / 用于</TD></TR>
+      <TR><TD><FONT COLOR="#4A90D9"><B>━━━</B></FONT></TD><TD ALIGN="LEFT">推广 / 组成</TD></TR>
+      <TR><TD><FONT COLOR="#C0392B">- - -</FONT></TD><TD ALIGN="LEFT">对比</TD></TR>
+      <TR><TD>○</TD><TD ALIGN="LEFT">组成部分 / 机制节点</TD></TR>
+    </TABLE>>];
+  }
+}
