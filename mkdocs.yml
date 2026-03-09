@@ -77,6 +77,8 @@ nav:
     - 术语表: domains/neural-networks/glossary.md
     - 笔记:
       - 01 全景概览: domains/neural-networks/notes/01-overview.md
+      - 01a MLP 基础: domains/neural-networks/notes/01a-mlp-basics.md
+      - 01b 激活函数: domains/neural-networks/notes/01b-activation-functions.md
       - 02 深入 MLP: domains/neural-networks/notes/02-deep-mlp.md
       - 03 CNN: domains/neural-networks/notes/03-cnn.md
       - 04 RNN 与 LSTM: domains/neural-networks/notes/04-rnn-lstm.md

@@ -306,7 +306,7 @@ domains/<领域名>/
 # 浏览器打开 http://127.0.0.1:8800
 ```
 
-需要 conda `test` 环境（已安装 `mkdocs-material` 和 `pymdown-extensions`）。
+需要安装 `requirements.txt` 中的依赖（`pip install -r requirements.txt`）。
 
 ### 新增领域后更新导航
 

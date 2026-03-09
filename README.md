@@ -4,21 +4,55 @@
 
 ## 在线阅读
 
-**GitHub Pages**：<https://dreamthreebs.github.io/llmlearner/>
+<https://dreamthreebs.github.io/llmlearner/>
 
-每次 push 到 `main` 分支后自动部署。
+push 到 `main` 后 GitHub Actions 自动部署。
 
-## 本地预览
+---
+
+## 环境配置
+
+### 依赖
+
+- Python >= 3.10
+- [Graphviz](https://graphviz.org/)（用于生成知识图 SVG）
+
+### 快速开始
 
 ```bash
-./serve.sh
+# 1. 克隆仓库
+git clone https://github.com/dreamthreebs/llmlearner.git
+cd llmlearner
+
+# 2. 创建虚拟环境（conda 或 venv 均可）
+conda create -n llmlearner python=3.12 -y
+conda activate llmlearner
+# 或者用 venv:
+# python -m venv .venv && source .venv/bin/activate
+
+# 3. 安装 Python 依赖
+pip install -r requirements.txt
+
+# 4. 安装 Graphviz（如果没装过）
+# macOS
+brew install graphviz
+# Ubuntu/Debian
+# sudo apt install graphviz
+
+# 5. 生成知识图 SVG
+bash build-graphs.sh
+
+# 6. 启动本地预览
+mkdocs serve -a 127.0.0.1:8800
 ```
 
-浏览器打开 <http://127.0.0.1:8800>（需要 conda `test` 环境 + `mkdocs-material`）。
+浏览器打开 <http://127.0.0.1:8800> 即可。
+
+---
 
 ## 使用
 
-直接告诉 Agent："我想学习 [领域名称]"
+直接告诉 Cursor Agent："我想学习 [领域名称]"
 
 Agent 会：先问你知道什么 → 给出个性化的知识地图和路径 → 讲解核心机制 → 边讲边测
 
