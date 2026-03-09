@@ -1,5 +1,8 @@
 # 05 - 训练的数学：损失面、优化、收敛
 
+> **主维度**：D3 训练数学
+> **关键关系**：Adam `generalizes` SGD+Momentum · 优化理论 `used-for` 理解所有 D1 架构的训练过程
+>
 > **学习路径**：MLP 基础 → CNN 基础 → RNN / LSTM → **本章（训练的数学）** → 正则化与泛化 → 实战
 >
 > **前置知识**：梯度下降的基本概念（损失函数、参数更新 $\theta \leftarrow \theta - \eta \nabla \mathcal{L}$）、矩阵特征值、基本概率论（期望、方差）

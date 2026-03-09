@@ -1,5 +1,8 @@
 # 03 - CNN：利用图像的空间结构
 
+> **主维度**：D1 基础架构
+> **关键关系**：CNN `depends-on` MLP 基础 · GCN `generalizes` CNN to graphs · CNN 的 inductive bias = 空间局部性 + 平移不变性
+>
 > **学习路径**：LLM/02 基础 → 深入 MLP（02） → **本章** → RNN/LSTM → 训练数学
 >
 > **前置知识**：MLP 结构、反向传播、权重初始化、残差连接（02 已覆盖）；线性代数（矩阵运算）

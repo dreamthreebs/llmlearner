@@ -1,5 +1,8 @@
 # 10 - GAN：对抗生成网络
 
+> **主维度**：D2 训练范式
+> **关键关系**：GAN `contrasts-with` VAE（对抗 vs 变分） · Diffusion `contrasts-with` GAN（2022 后取代） · DCGAN = CNN（D1）+ GAN（D2）
+>
 > **学习路径**：01-overview → 深入 MLP（02） → CNN（03） → AutoEncoder/VAE（09） → **本章** → GNN（11）
 >
 > **前置知识**：MLP 与反向传播、CNN（卷积/转置卷积）、概率论基础（概率分布、期望）、VAE 的基本思想（09 已覆盖）

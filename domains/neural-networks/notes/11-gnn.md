@@ -1,5 +1,8 @@
 # 11 - GNN：图神经网络
 
+> **主维度**：D1 基础架构
+> **关键关系**：GCN `generalizes` CNN to graphs（网格卷积 → 图卷积） · GAT `depends-on` Attention 机制（参见 LLM/04） · GNN 的 inductive bias = 数据有图结构（节点+边）
+>
 > **学习路径**：01-overview → 深入 MLP（02） → CNN（03） → Transformer（参见 domains/LLM/notes/04-05） → **本章**
 >
 > **前置知识**：MLP 与反向传播、CNN 的卷积思想（03 已覆盖）、注意力机制（Transformer 中的 self-attention，参见 LLM/04-05）、线性代数（矩阵乘法、特征值直觉即可）

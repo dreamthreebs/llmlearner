@@ -1,5 +1,8 @@
 # 08 - 前沿理论：Neural Tangent Kernel、Scaling Laws、可解释性
 
+> **主维度**：D5 前沿理论
+> **关键关系**：NTK `used-for` 分析无穷宽网络训练动力学 · Scaling Laws 横跨 D1-D3 · Mechanistic Interpretability `used-for` 理解 Transformer 内部电路
+>
 > **学习路径**：01-overview → 训练数学 → 泛化理论 → **本章**
 >
 > **前置知识**：梯度下降与反向传播、损失函数、过参数化与泛化的基本概念、MLP/CNN/Transformer 架构

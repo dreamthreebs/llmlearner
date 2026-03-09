@@ -1,5 +1,8 @@
 # 09 - AutoEncoder 与 VAE：学习数据的压缩表示
 
+> **主维度**：D2 训练范式
+> **关键关系**：VAE `generalizes` AutoEncoder（点估计 → 概率分布） · VAE `contrasts-with` GAN（稳定但模糊 vs 清晰但不稳定） · AutoEncoder 可搭配任意 D1 架构
+>
 > **学习路径**：01-overview → 深入 MLP（02） → CNN（03） → **本章** → GAN（10）
 >
 > **前置知识**：MLP 结构与反向传播、CNN 基本操作（卷积/池化）、损失函数与梯度下降、概率论基础（高斯分布、贝叶斯公式、KL 散度的直觉）

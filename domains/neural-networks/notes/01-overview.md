@@ -1,61 +1,95 @@
 # 01 - 神经网络：全景概览
 
+> **主维度**：全局（跨所有维度）
+> **参考**：[Wikipedia - Deep learning](https://en.wikipedia.org/wiki/Deep_learning) · [Goodfellow 等《Deep Learning》](https://www.deeplearningbook.org/) · [d2l.ai](https://d2l.ai/)
+
 ## 这个领域是什么
 
-你在 LLM/02 中已经学了神经网络的基本骨架：神经元（加权求和 + 激活函数）→ 多层网络 → 损失函数 → 反向传播 → 梯度下降。那是一个最小化的入门，让你能理解 LLM 的基础。
+你在 LLM/02 中已经学了神经网络的基本骨架：神经元（加权求和 + 激活函数）→ 多层网络 → 损失函数 → 反向传播 → 梯度下降。那是一个最小化的入门。现在我们把视野打开。
 
-现在我们把视野打开。神经网络这个领域实际上有三个大方向：
+## 知识维度
 
-1. **架构设计**：针对不同类型的数据（图像、序列、图），人们设计了不同的网络结构。每种结构都利用了数据的某种特性（空间局部性、时序依赖、图连接），理解"为什么这样设计"是核心。
+为了不把这个领域的知识搅成一锅粥，我们先识别它的组织坐标轴。
 
-2. **训练的数学**：为什么梯度下降能找到好的解？为什么参数比数据多几个数量级的网络不过拟合？损失函数的"地形"长什么样？这些是深度学习理论要回答的问题。
+**Step A — 候选抽取**：
+1. 研究什么对象？→ 不同的网络结构（MLP、CNN、RNN、Transformer、GNN）
+2. 用什么方法研究？→ 不同的训练组织方式（监督、自监督、对抗、变分推断）
+3. 依赖什么理论？→ 优化理论、泛化理论、概率论
+4. 面向什么应用？→ 分类、生成、序列预测、图推理……
+5. 怎么实现？→ PyTorch、调参技巧、工程实践
 
-3. **实现与工程**：怎么用 PyTorch 把想法变成代码？怎么调参？怎么调试一个不收敛的模型？
+**Step B — 合并同类项**：3 和 4 的边界清晰，无需合并。
 
-> 参考：[Wikipedia - Deep learning](https://en.wikipedia.org/wiki/Deep_learning) · [Goodfellow 等《Deep Learning》（免费在线）](https://www.deeplearningbook.org/) · [Dive into Deep Learning（免费在线）](https://d2l.ai/)
+**Step C — 混层检查**：确认所有候选都是"坐标轴"而非具体对象。CNN 是 D1 里的一个元素，不是维度本身。✓
 
-## 学什么、怎么学
+**Step D — 最终维度集**：
 
-### 一、架构
+| 维度 | 含义 | 核心问题 |
+|------|------|---------|
+| **D1 基础架构** | 网络的计算结构（building blocks） | 怎么处理不同类型的数据？ |
+| **D2 训练范式** | 怎么组织训练过程 | 没有标签 / 想生成数据时怎么训练？ |
+| **D3 训练数学** | 优化与泛化的理论 | 为什么能训练？为什么不过拟合？ |
+| **D4 工程实现** | 框架与实战技巧 | 怎么把想法变成代码？ |
+| **D5 前沿理论** | 尚未完全解决的开放问题 | Scaling Laws、NTK、可解释性 |
 
-| 步骤 | 架构 | 核心思想 | 适用数据 | 参考 |
-|------|------|---------|---------|------|
-| 1 | 深入 MLP | 初始化、BatchNorm、残差连接——让深层网络能训练起来 | 表格数据、通用 | [Deep Learning Book Ch.6-8](https://www.deeplearningbook.org/) |
-| 2 | CNN（卷积神经网络） | 利用图像的局部性和平移不变性：卷积核只看一小块区域 | 图像、信号 | [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network) · [d2l.ai Ch.7](https://d2l.ai/chapter_convolutional-neural-networks/index.html) |
-| 3 | RNN / LSTM | 用循环结构处理变长序列，用门控机制解决梯度消失 | 文本、时间序列 | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network) · [Colah's blog - Understanding LSTM](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) |
-| 4 | Transformer | 用 Attention 替代循环，可以并行处理序列（已在 LLM/04-05 覆盖） | 文本、图像、多模态 | [Wikipedia](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)) |
-| 5 | AutoEncoder / VAE | 把数据压缩到低维再重建——学到数据的"本质结构" | 生成、降维 | [Wikipedia](https://en.wikipedia.org/wiki/Variational_autoencoder) · [Tutorial by Kingma](https://arxiv.org/abs/1906.02691) |
-| 6 | GAN | 两个网络对抗：一个生成假数据，一个判断真假 | 图像生成 | [Wikipedia](https://en.wikipedia.org/wiki/Generative_adversarial_network) · [原始论文](https://arxiv.org/abs/1406.2661) |
-| 7 | GNN（图神经网络） | 在图结构（节点+边）上做消息传递 | 分子、社交网络、推荐系统 | [Wikipedia](https://en.wikipedia.org/wiki/Graph_neural_network) · [Distill - A Gentle Intro to GNNs](https://distill.pub/2021/gnn-intro/) |
+> **D1 vs D2 是初学者最容易混淆的一对。** CNN 是架构（D1），GAN 是范式（D2）。它们可以任意组合：DCGAN = CNN（D1） + GAN（D2）。架构定义"怎么计算"，范式定义"怎么训练"。
 
-**架构设计的统一视角**：每种架构都是在回答同一个问题——**如何把数据的结构先验（inductive bias）编码到网络中？**
-- MLP：没有任何先验，全连接，最灵活但最低效
-- CNN：假设空间局部性和平移不变性
-- RNN：假设序列中相邻元素相关
-- Transformer：不假设局部性，让模型自己学关注哪里
-- GNN：假设数据有图结构
+## 知识地图
 
-> 参考：[Wikipedia - Inductive bias](https://en.wikipedia.org/wiki/Inductive_bias)
+### D1 基础架构 — 怎么处理数据
 
-### 二、训练的数学
+每种架构 = 一种 inductive bias（数据结构先验）：
 
-| 步骤 | 主题 | 核心问题 | 参考 |
-|------|------|---------|------|
-| 1 | 优化理论 | 损失面长什么样？SGD 为什么能找到好解？鞍点 vs 局部最小值 | [Deep Learning Book Ch.8](https://www.deeplearningbook.org/contents/optimization.html) · [Wikipedia - SGD](https://en.wikipedia.org/wiki/Stochastic_gradient_descent) |
-| 2 | 初始化与归一化 | 为什么随机初始化的方式很重要？BatchNorm / LayerNorm 为什么有效？ | [Xavier 初始化论文](http://proceedings.mlr.press/v9/glorot10a.html) · [BatchNorm 论文](https://arxiv.org/abs/1502.03167) |
-| 3 | 正则化 | L2、Dropout、数据增强为什么能防止过拟合？ | [Deep Learning Book Ch.7](https://www.deeplearningbook.org/contents/regularization.html) |
-| 4 | 泛化理论 | VC 维、PAC 学习、Rademacher 复杂度——经典框架为什么解释不了深度学习？ | [Wikipedia - VC dimension](https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension) · [Understanding Deep Learning Requires Rethinking Generalization](https://arxiv.org/abs/1611.03530) |
-| 5 | 过参数化的谜题 | 为什么参数 >> 数据时模型反而不过拟合？Double descent 现象 | [Deep Double Descent 论文](https://arxiv.org/abs/1912.02292) · [Wikipedia](https://en.wikipedia.org/wiki/Double_descent) |
+| 架构 | Inductive Bias | 适用数据 | 参考 |
+|------|---------------|---------|------|
+| MLP | 无先验（全连接，最灵活最低效） | 通用/表格 | [DL Book Ch.6](https://www.deeplearningbook.org/) |
+| CNN | 空间局部性 + 平移不变性 | 图像、信号 | [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network) · [d2l.ai Ch.7](https://d2l.ai/chapter_convolutional-neural-networks/index.html) |
+| RNN/LSTM | 序列中相邻元素相关 | 文本、时间序列 | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network) · [Colah's blog](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) |
+| Transformer | 不假设局部性，自主学习关注哪里 | 文本、图像、多模态 | [Wikipedia](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture))（已在 LLM/04-05 覆盖） |
+| GNN | 数据有图结构（节点+边） | 分子、社交网络 | [Wikipedia](https://en.wikipedia.org/wiki/Graph_neural_network) · [Distill GNN 入门](https://distill.pub/2021/gnn-intro/) |
 
-### 三、实现
+关键关系：
+- GCN `generalizes` CNN to graphs（从网格卷积推广到图卷积）
+- Transformer `contrasts-with` RNN（并行注意力 vs 循环处理）
+- MLP `is-instance-of` 万能近似器（无结构先验的基线）
 
-| 步骤 | 内容 | 参考 |
-|------|------|------|
-| 1 | PyTorch 基础：张量、自动微分、nn.Module | [PyTorch 官方教程](https://pytorch.org/tutorials/) · [d2l.ai Ch.2](https://d2l.ai/chapter_preliminaries/index.html) |
-| 2 | 手写 MLP（MNIST 手写数字识别） | [d2l.ai Ch.4](https://d2l.ai/chapter_multilayer-perceptrons/index.html) |
-| 3 | 手写 CNN（CIFAR-10 图像分类） | [d2l.ai Ch.7](https://d2l.ai/chapter_convolutional-neural-networks/index.html) |
-| 4 | 手写简单 Transformer | [Karpathy - Let's build GPT](https://www.youtube.com/watch?v=kCc8FmEb1nY) |
-| 5 | 训练技巧：学习率调度、梯度裁剪、混合精度 | [d2l.ai Ch.12](https://d2l.ai/chapter_optimization/index.html) |
+> [Wikipedia - Inductive bias](https://en.wikipedia.org/wiki/Inductive_bias)
+
+### D2 训练范式 — 怎么组织训练
+
+范式定义"用什么目标函数、怎么训练"，可以搭配任何 D1 架构：
+
+| 范式 | 核心机制 | 参考 |
+|------|---------|------|
+| 监督学习 | 有标签，最小化预测误差 | [DL Book Ch.5](https://www.deeplearningbook.org/) |
+| AutoEncoder | 重建：输入→压缩→重建，最小化重建误差 | [Wikipedia](https://en.wikipedia.org/wiki/Autoencoder) |
+| VAE | 变分推断：压缩到概率分布，最大化 ELBO | [Kingma & Welling 2014](https://arxiv.org/abs/1312.6114) |
+| GAN | 对抗博弈：生成器 vs 判别器的 minimax | [Goodfellow 2014](https://arxiv.org/abs/1406.2661) |
+| Diffusion | 去噪：逐步加噪再学习逆向去噪 | [Ho et al. 2020](https://arxiv.org/abs/2006.11239) |
+
+关键关系：
+- VAE `generalizes` AutoEncoder（点估计 → 概率分布）
+- GAN `contrasts-with` VAE（清晰但不稳定 vs 模糊但稳定）
+- Diffusion `contrasts-with` GAN（2022 后在图像生成领域基本取代 GAN）
+
+> **组合示例**：DCGAN = CNN + GAN，VQ-VAE = CNN + VAE + 离散化，GPT = Transformer + 自回归语言模型
+
+### D3 训练数学 — 为什么能训练、为什么不过拟合
+
+| 主题 | 核心问题 | 参考 |
+|------|---------|------|
+| 优化理论 | 损失面地形、SGD 为什么能找到好解 | [DL Book Ch.8](https://www.deeplearningbook.org/contents/optimization.html) |
+| 初始化与归一化 | Xavier/He、BatchNorm/LayerNorm 为什么重要 | [Xavier 论文](http://proceedings.mlr.press/v9/glorot10a.html) · [BN 论文](https://arxiv.org/abs/1502.03167) |
+| 正则化 | L2、Dropout 为什么防过拟合 | [DL Book Ch.7](https://www.deeplearningbook.org/contents/regularization.html) |
+| 泛化理论 | VC 维、PAC、Rademacher、double descent | [Zhang et al. 2017](https://arxiv.org/abs/1611.03530) · [Double Descent](https://arxiv.org/abs/1912.02292) |
+
+### D4 工程实现
+
+| 内容 | 参考 |
+|------|------|
+| PyTorch 基础（Tensor、autograd、nn.Module） | [PyTorch 官方教程](https://pytorch.org/tutorials/) |
+| 手写 MLP / CNN / Transformer | [d2l.ai](https://d2l.ai/) · [Karpathy - Let's build GPT](https://www.youtube.com/watch?v=kCc8FmEb1nY) |
+| 训练技巧（学习率调度、梯度裁剪、混合精度） | [d2l.ai Ch.12](https://d2l.ai/chapter_optimization/index.html) |
 
 ## 前沿方向
 

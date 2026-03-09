@@ -1,5 +1,8 @@
 # 04 - RNN 与 LSTM：处理序列数据
 
+> **主维度**：D1 基础架构
+> **关键关系**：LSTM `generalizes` RNN（加门控解决梯度消失） · Transformer `contrasts-with` RNN（并行注意力 vs 循环） · RNN 的 inductive bias = 序列中相邻元素相关
+>
 > **学习路径**：MLP 基础 → CNN 基础 → **本章（RNN / LSTM）** → Transformer → 训练的数学
 >
 > **前置知识**：反向传播（链式法则）、梯度消失问题的直觉（02 中讲过深层 MLP 的情况）、矩阵乘法与特征值

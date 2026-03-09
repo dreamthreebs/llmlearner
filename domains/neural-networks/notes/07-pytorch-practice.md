@@ -1,5 +1,8 @@
 # 07 - PyTorch 实战：从零手写神经网络
 
+> **主维度**：D4 工程实现
+> **关键关系**：PyTorch `used-for` 实现所有 D1 架构和 D2 范式
+>
 > **学习路径**：Step 6 / 7  
 > **前置知识**：MLP、CNN 架构原理（01-overview）、损失函数与反向传播、正则化（06-generalization）  
 > **参考**：  
