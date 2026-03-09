@@ -4,7 +4,7 @@
 > **关键关系**：
 > - NTK (理论) --用于--> 泛化理论 (理论)：NTK 用于分析泛化
 > - Scaling Laws (理论) --用于--> 泛化理论 (理论)：Scaling Laws 用于理解泛化随规模的变化
-> - Double Descent (概念) --组成--> 泛化理论 (理论)：Double Descent 是泛化理论的重要组成部分
+> - Double Descent (概念) --属于--> 泛化理论 (理论)：Double Descent 属于泛化理论
 >
 > **学习路径**：01-overview → 训练数学 → 泛化理论 → **本章**
 >

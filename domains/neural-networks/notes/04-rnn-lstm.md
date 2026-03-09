@@ -3,7 +3,7 @@
 > **主维度**：D1 基础架构
 > **关键关系**：
 > - RNN (架构) --依赖--> MLP (架构)：RNN 依赖 MLP 作为学习基础
-> - LSTM (架构) --推广--> RNN (架构)：LSTM 通过门控机制推广了 RNN
+> - LSTM (架构) --推广了--> RNN (架构)：LSTM 推广了 RNN，通过门控机制
 > - Transformer (架构) --对比--> RNN (架构)：Transformer 用并行注意力替代 RNN 的循环处理
 >
 > **学习路径**：MLP 基础 → CNN 基础 → **本章（RNN / LSTM）** → Transformer → 训练的数学

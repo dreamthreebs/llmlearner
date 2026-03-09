@@ -5,11 +5,7 @@ digraph CMB {
   node [fontname="Helvetica,Arial,sans-serif", fontsize=11, style=filled, shape=box, margin="0.15,0.08"];
   edge [fontname="Helvetica,Arial,sans-serif", fontsize=9, color="#666666"];
 
-  // 箭头方向约定（字面阅读）：
-  // A → B [关系] 读作 "A 关系 B"
-  // 例：A → B [依赖] = "A 依赖 B"
-  //     A → B [推广] = "A 推广了 B"
-  //     A → B [组成] = "A 是 B 的组成部分"
+  // 箭头约定（字面阅读）：A → B [标签] 读作 "A 标签 B"
 
   // ─── 前置 ───
   Newton [label="牛顿能量守恒\n(理论)", fillcolor="#E0E0E0", style="filled,dashed"];
@@ -80,23 +76,23 @@ digraph CMB {
 
   // ─── D1 内部 ───
   // Friedmann 推广了牛顿能量守恒
-  Friedmann -> Newton [label="推广", color="#4A90D9", style=bold, constraint=false];
+  Friedmann -> Newton [label="推广了", color="#4A90D9", style=bold, constraint=false];
 
   // 机制链：Friedmann → a(t) → 热历史
   Friedmann -> ScaleFactor [label="用于", color="#4A90D9"];
   ScaleFactor -> ThermalHist [label="用于", color="#4A90D9"];
 
-  // 复合与退耦是热历史的组成部分
-  Recomb -> ThermalHist [label="组成", color="#4A90D9", style=bold, constraint=false];
+  // 复合与退耦属于热历史
+  Recomb -> ThermalHist [label="属于", color="#4A90D9", style=bold, constraint=false];
 
   // 声波振荡依赖微扰论、SW 效应依赖微扰论
   Acoustic -> Perturbation [label="依赖", color="#4A90D9", constraint=false];
   SachsWolfe -> Perturbation [label="依赖", color="#4A90D9", constraint=false];
 
-  // Silk 阻尼依赖声波振荡（阻尼的就是声波振荡）
+  // Silk 阻尼依赖声波振荡
   SilkDamping -> Acoustic [label="依赖", color="#4A90D9", constraint=false];
 
-  // ─── D1 → D2：核心物理 → 功率谱 ───
+  // ─── D1 → D2 ───
   Acoustic -> Cl [label="用于", color="#27AE60"];
   Cl -> ParamExtract [label="用于", color="#27AE60"];
 
@@ -108,7 +104,7 @@ digraph CMB {
 
   // ─── 图例 ───
   subgraph cluster_legend {
-    label="图例：A → B [关系] 读作 \"A 关系 B\"";
+    label="图例：A → B 读作 \"A [标签] B\"";
     style=rounded;
     color="#CCCCCC";
     fontsize=11;
@@ -116,10 +112,12 @@ digraph CMB {
     node [shape=plaintext, fillcolor="#FAFAFA"];
 
     leg1 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4">
-      <TR><TD><FONT COLOR="#4A90D9">━━━</FONT></TD><TD ALIGN="LEFT">依赖 / 用于</TD></TR>
-      <TR><TD><FONT COLOR="#4A90D9"><B>━━━</B></FONT></TD><TD ALIGN="LEFT">推广 / 组成</TD></TR>
-      <TR><TD><FONT COLOR="#C0392B">- - -</FONT></TD><TD ALIGN="LEFT">对比</TD></TR>
-      <TR><TD>○</TD><TD ALIGN="LEFT">机制节点</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>标签</B></TD><TD ALIGN="LEFT"><B>读法示例</B></TD></TR>
+      <TR><TD ALIGN="LEFT">依赖</TD><TD ALIGN="LEFT">声波振荡 依赖 微扰论</TD></TR>
+      <TR><TD ALIGN="LEFT">推广了</TD><TD ALIGN="LEFT">Friedmann 推广了 Newton</TD></TR>
+      <TR><TD ALIGN="LEFT">用于</TD><TD ALIGN="LEFT">Friedmann 用于 尺度因子</TD></TR>
+      <TR><TD ALIGN="LEFT">属于</TD><TD ALIGN="LEFT">复合退耦 属于 热历史</TD></TR>
+      <TR><TD ALIGN="LEFT">○</TD><TD ALIGN="LEFT">机制节点</TD></TR>
     </TABLE>>];
   }
 }
