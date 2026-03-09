@@ -2,6 +2,11 @@
 
 用 Cursor Agent 结构化学习新领域。
 
+> **想自己用？** 请克隆 [template 分支](https://github.com/dreamthreebs/llmlearner/tree/template)（干净模板，没有学习内容）：
+> ```bash
+> git clone -b template https://github.com/dreamthreebs/llmlearner.git
+> ```
+
 ## 在线阅读
 
 <https://dreamthreebs.github.io/llmlearner/>
