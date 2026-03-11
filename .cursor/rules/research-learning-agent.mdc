@@ -397,11 +397,20 @@ domains/<领域名>/
 ```yaml
 nav:
   - 领域名:
-    - 概览: domains/<领域名>/README.md
-    - 术语表: domains/<领域名>/glossary.md
+    - 领域概览: domains/<领域名>/README.md
     - 笔记:
-      - 01 标题: domains/<领域名>/notes/01-overview.md
+      - 概览: domains/<领域名>/notes/01-overview.md
 ```
+
+导航规范：
+- 所有领域使用统一结构：`领域概览` + `笔记`（如有术语表加 `术语表`）
+- 顶级领域名**不加 emoji**，纯中文
+- 不要用 `navigation.expand`（默认折叠，避免侧边栏过长）
+- 顶级领域标题通过 `docs/stylesheets/extra.css` 加大加粗，与子项拉开视觉层级
+
+### 自定义样式
+
+`docs/stylesheets/extra.css` 控制侧边栏样式，已在 `mkdocs.yml` 的 `extra_css` 中引用。修改导航外观时编辑该文件。
 
 ### 注意事项
 
