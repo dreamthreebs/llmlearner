@@ -14,6 +14,12 @@
 | `深入` `展开` `没懂` | 深入 | 在对话中解释概念，用户说"加到文章里"再写入 notes |
 | `批改` `看看我回答` | 批改 | 读取回答 → 逐题点评 → 结果写入 questions.md → 清空 notes 中的回答 |
 
+## 个性化设置
+
+`.cursor/rules/research-learning-agent.mdc` 中标注 `[个人]` 的部分是当前用户的个人学习档案（强项、薄弱点、偏好等）。
+
+**如果你 fork 了本项目**：请删除或替换所有 `[个人]` 标注的内容，换成你自己的学习特点。Agent 会在学习过程中逐步帮你积累新的个人档案。
+
 ## 环境配置
 
 详见 [README](https://github.com/dreamthreebs/llmlearner#环境配置)。

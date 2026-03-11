@@ -109,3 +109,7 @@ nav:
     - 概览: domains/point-set-topology/README.md
     - 笔记:
       - 01 全景概览: domains/point-set-topology/notes/01-overview.md
+  - 语言学:
+    - 概览: domains/linguistics/README.md
+    - 笔记:
+      - 01 概览: domains/linguistics/notes/01-overview.md

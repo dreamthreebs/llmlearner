@@ -1,0 +1,80 @@
+digraph linguistics {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Helvetica"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // D1 语言分析层次
+    subgraph cluster_d1 {
+        label="D1 语言分析层次";
+        style=filled; fillcolor="#e8f4f8";
+
+        Phonetics [label="语音学\nPhonetics\n(概念)", fillcolor="#b3d9ff"];
+        Phonology [label="音系学\nPhonology\n(理论)", fillcolor="#b3d9ff"];
+        Morphology [label="形态学\nMorphology\n(概念)", fillcolor="#b3d9ff"];
+        Syntax [label="句法学\nSyntax\n(理论)", fillcolor="#b3d9ff"];
+        Semantics [label="语义学\nSemantics\n(概念)", fillcolor="#b3d9ff"];
+        Pragmatics [label="语用学\nPragmatics\n(概念)", fillcolor="#b3d9ff"];
+    }
+
+    // D2 理论视角
+    subgraph cluster_d2 {
+        label="D2 理论视角";
+        style=filled; fillcolor="#f8f0e8";
+
+        Formalism [label="形式主义\nFormalism\n(理论)", fillcolor="#ffd9b3"];
+        Functionalism [label="功能主义\nFunctionalism\n(理论)", fillcolor="#ffd9b3"];
+        CogLing [label="认知语言学\nCognitive Ling.\n(理论)", fillcolor="#ffd9b3"];
+    }
+
+    // D3 跨语言共性
+    subgraph cluster_d3 {
+        label="D3 跨语言共性";
+        style=filled; fillcolor="#e8f8e8";
+
+        Typology [label="语言类型学\nTypology\n(方法)", fillcolor="#b3ffb3"];
+        Universals [label="语言共性\nUniversals\n(概念)", fillcolor="#b3ffb3"];
+        Historical [label="历史语言学\nHistorical Ling.\n(概念)", fillcolor="#b3ffb3"];
+    }
+
+    // D4 方法与量化
+    subgraph cluster_d4 {
+        label="D4 方法与量化";
+        style=filled; fillcolor="#f8e8f8";
+
+        Corpus [label="语料库方法\nCorpus Ling.\n(方法)", fillcolor="#ffb3ff"];
+        Experiment [label="实验方法\nExperimental\n(方法)", fillcolor="#ffb3ff"];
+        FormalDesc [label="形式化描写\nFormal Description\n(方法)", fillcolor="#ffb3ff"];
+    }
+
+    // 关系：A → B 读作 "A [标签] B"
+
+    // 依赖（后学 → 先学）——只标真正的学习依赖
+    Phonology -> Phonetics [label="依赖"];
+    Syntax -> Morphology [label="依赖"];
+    Semantics -> Syntax [label="依赖"];
+
+    // 用于
+    Formalism -> Syntax [label="用于"];
+    FormalDesc -> Syntax [label="用于"];
+    Corpus -> Typology [label="用于"];
+    Typology -> Universals [label="用于"];
+
+    // 对比
+    Formalism -> Functionalism [label="对比", dir=both];
+    Formalism -> CogLing [label="对比", dir=both];
+
+    // 类比
+    Historical -> Typology [label="类比"];
+
+    // 图例
+    subgraph cluster_legend {
+        label="关系图例";
+        style=filled; fillcolor="#f5f5f5";
+        node [shape=plaintext, fillcolor="#f5f5f5"];
+
+        L1 [label="A → B [依赖]\n读作：A 依赖 B"];
+        L2 [label="A → B [用于]\n读作：A 用于 B"];
+        L3 [label="A ↔ B [对比]\n读作：A 与 B 对比"];
+        L4 [label="A → B [类比]\n读作：A 与 B 类比"];
+    }
+}
