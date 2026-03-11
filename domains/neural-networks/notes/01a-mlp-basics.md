@@ -742,11 +742,83 @@ $$\hat{z} = \frac{z - \mu_{\text{batch}}}{\sqrt{\sigma^2_{\text{batch}} + \epsil
 >
 > **参考**：[Glorot & Bengio 2010](http://proceedings.mlr.press/v9/glorot10a.html) · [He et al. 2015](https://arxiv.org/abs/1502.01852) · [Ioffe & Szegedy 2015](https://arxiv.org/abs/1502.03167) · [Santurkar et al. 2018](https://arxiv.org/abs/1805.11604)
 
-这就是 [02-deep-mlp.md](02-deep-mlp.md) 第 1 节详细讨论的问题。
+#### 残差连接：给梯度开一条直通路
+
+前面说的所有方法（ReLU、初始化、BN）都是在想办法让缩放因子 $w \cdot f'(z) \approx 1$。残差连接的思路完全不同——**我不管你乘什么，我给梯度多开一条不需要连乘的高速路**。
+
+##### 没有残差连接（普通网络）
+
+继续用两层标量网络。每层的计算是：
+
+$$h_1 = f(w_1 x + b_1), \quad y = w_2 h_1 + b_2$$
+
+梯度穿过第一层的缩放因子是 $w_2 \cdot f'(z_1)$，这个我们已经推过了。
+
+##### 加上残差连接
+
+残差连接的做法是：**把输入直接加到输出上**。每层变成：
+
+$$h_1 = f(w_1 x + b_1) + x$$
+
+注意最后多了一个 $+ \, x$。输出 = 原来的变换 + 输入本身。
+
+现在对 $x$ 求导看看梯度长什么样：
+
+$$\frac{\partial h_1}{\partial x} = \frac{\partial}{\partial x}\big[f(w_1 x + b_1)\big] + \frac{\partial x}{\partial x} = w_1 \cdot f'(z_1) + 1$$
+
+**多出来的那个 $+1$ 就是关键！**
+
+##### 对比
+
+| | 梯度穿过一层的因子 | 100 层连乘 |
+|---|---|---|
+| **普通网络** | $w \cdot f'(z)$ | $(w \cdot f')^{99}$ → 可能爆炸或消失 |
+| **残差网络** | $w \cdot f'(z) + 1$ | $(w \cdot f' + 1)^{99}$ → 永远 ≥ 1，不会消失 |
+
+即使 $w \cdot f'(z) = 0$（比如 ReLU 的负区间，或者 Sigmoid 饱和），乘上的因子还是 $0 + 1 = 1$，梯度原封不动地通过。
+
+##### 多层的情况
+
+对于 $N$ 层残差网络，第 1 层的梯度不再是简单的连乘，而是：
+
+$$\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\partial h_N} \cdot \Big(\underbrace{1}_{\text{直通路}} + \underbrace{\text{各种包含 } w \cdot f' \text{ 的项}}_{\text{弯路}}\Big)$$
+
+关键在那个 **$1$**：不管中间层的 $w$ 和 $f'$ 多小，梯度都有一条不经过任何乘法的直通路径，从最后一层直接传到第一层。
+
+这就是 ResNet（He et al., 2015）能训练 152 层甚至 1000+ 层网络的原因——在它之前，超过 20 层的网络几乎都训不动。
+
+##### 那不会 $1 + 0.3 = 1.3$ 连乘导致爆炸吗？
+
+会！残差连接**主要解决消失，不解决爆炸**。实际中靠几个东西配合防爆炸：
+
+- **He 初始化**让 $w \cdot f'$ 的期望很小，因子 ≈ $1 + \epsilon$
+- **BN** 稳定每层的尺度
+- **网络自己学到让残差分支输出接近 0**：如果恒等映射已经够好，$f(Wx+b) \approx 0$，因子 ≈ $1$
+
+##### 为什么学残差这么厉害？
+
+不只是"梯度能传过去"，残差连接从根本上改变了网络要学的东西。
+
+**一个反直觉的现象**：2015 年之前，人们发现 56 层网络的**训练误差**竟然比 20 层的还高。这不是过拟合——理论上 56 层至少可以让多出来的 36 层"什么都不做"（恒等映射），应该和 20 层一样好才对。
+
+问题在于：**让非线性层学会"什么都不做"其实很难**。
+
+| | 要学"什么都不做"（输出 = 输入） | 怎么学 |
+|---|---|---|
+| **普通网络** $h = f(Wx+b)$ | 需要 $f(Wx+b) = x$ | $W$ 必须精确等于某个特定值，很难优化到 |
+| **残差网络** $h = f(Wx+b) + x$ | 需要 $f(Wx+b) = 0$ | $W \approx 0$ 就行——初始化时本来就接近 0！ |
+
+所以残差连接的本质是：**把默认行为从"随机变换"改成了"什么都不做"**。
+
+- 多出来的层如果没用，自动退化为恒等映射，不会帮倒忙
+- 网络只需要学"在现有基础上改一点点"，而不是"从头算出完整答案"
+- 初始化时整个网络 ≈ 恒等映射，这是一个很好的优化起点
 
 > **可靠程度**：Level 1（教科书共识）
 >
-> **参考**：[3Blue1Brown - Backpropagation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) · [Wikipedia - Backpropagation](https://en.wikipedia.org/wiki/Backpropagation) · [Michael Nielsen - Ch.2](http://neuralnetworksanddeeplearning.com/chap2.html)
+> **参考**：[He et al. 2015 - Deep Residual Learning](https://arxiv.org/abs/1512.03385) · [3Blue1Brown - Backpropagation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) · [Wikipedia - Backpropagation](https://en.wikipedia.org/wiki/Backpropagation) · [Michael Nielsen - Ch.2](http://neuralnetworksanddeeplearning.com/chap2.html)
+
+这就是 [02-deep-mlp.md](02-deep-mlp.md) 第 1 节详细讨论的问题。
 
 ---
 
