@@ -399,21 +399,44 @@ $$
 
 ---
 
+### 公式速查卡
+
+| 公式 | 含义 |
+|------|------|
+| $\text{梯度} \propto \alpha^n$（$\alpha$ 为每层缩放因子） | 梯度消失/爆炸的根源 |
+| Xavier：$\text{Var}(w) = \frac{1}{n_{\text{in}}}$ | 配合 Tanh / Sigmoid |
+| He：$\text{Var}(w) = \frac{2}{n_{\text{in}}}$ | 配合 ReLU（补偿负半轴截断） |
+| $\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}$，$\tilde{x} = \gamma \hat{x} + \beta$ | Batch Normalization |
+| $\mathbf{h} = f(\mathbf{x}) + \mathbf{x}$ | 残差连接 |
+| $\frac{\partial \mathbf{h}}{\partial \mathbf{x}} = \frac{\partial f}{\partial \mathbf{x}} + \mathbf{I}$ | 残差连接的梯度（$+I$ 是关键） |
+| $m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t$ | Adam 一阶矩 |
+| $\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}$ | Adam 参数更新 |
+
+**关键数值**：Xavier < He（He 是 Xavier 的 2 倍）；Sigmoid $f'_{\max} = 0.25$；$\beta_1 = 0.9$，$\beta_2 = 0.999$
+
+---
+
 ## 理解检测
 
-**Q1**：假设你用 Sigmoid 激活函数训练一个 20 层 MLP，发现前几层的权重几乎不更新。你的同事建议"把学习率调大 100 倍"。这个建议好不好？为什么？（提示：想想梯度消失的本质原因和调大学习率可能带来的问题。）
+**Q1**：假设你用 Sigmoid 激活函数训练一个 20 层 MLP，发现前几层的权重几乎不更新。你的同事建议"把学习率调大 100 倍"。这个建议好不好？为什么？
+
+> 提示：Sigmoid 的 $f' \leq 0.25$，20 层连乘后梯度 $\approx 0.25^{20} \approx ?$。调大学习率对前几层和后几层的影响分别是什么？
 
 你的回答：
 
 
 
-**Q2**：Xavier 初始化要求 $\text{Var}(w) = 1/n_{\text{in}}$，He 初始化要求 $\text{Var}(w) = 2/n_{\text{in}}$。如果你用 Xavier 初始化来训练一个使用 ReLU 激活函数的深层网络，会发生什么？（提示：ReLU 对输出的方差做了什么？）
+**Q2**：Xavier 初始化要求 $\text{Var}(w) = 1/n_{\text{in}}$，He 初始化要求 $\text{Var}(w) = 2/n_{\text{in}}$。如果你用 Xavier 初始化来训练一个使用 ReLU 激活函数的深层网络，会发生什么？
+
+> 提示：查速查卡——Xavier 和 He 谁大？ReLU 砍掉负半轴会让每层方差变大还是变小？
 
 你的回答：
 
 
 
 **Q3**：有人说"残差连接本质上就是让网络可以选择性地跳过某些层"。你同意这个说法吗？请用反向传播的梯度公式来解释残差连接到底在做什么。
+
+> 提示：查速查卡中残差连接的梯度公式，关注 $+I$ 这一项的作用
 
 你的回答：
 

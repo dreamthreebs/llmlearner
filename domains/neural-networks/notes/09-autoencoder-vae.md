@@ -225,6 +225,20 @@ VAE 生成图像偏模糊的原因：MSE 重建损失本质上是在计算像素
 
 ---
 
+### 公式速查卡
+
+| 公式 | 含义 |
+|------|------|
+| $z = f_\phi(x)$, $\hat{x} = g_\psi(z)$ | 编码器与解码器 |
+| $\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} \|x_i - \hat{x}_i\|^2$ | AutoEncoder MSE 重建损失 |
+| $q_\phi(z|x) = \mathcal{N}(z; \mu_\phi(x), \text{diag}(\sigma_\phi^2(x)))$ | VAE 编码器输出的条件分布 |
+| $z = \mu + \sigma \odot \epsilon$, $\epsilon \sim \mathcal{N}(0, I)$ | 重参数化技巧 |
+| $\mathcal{L}_{\text{VAE}} = -\mathbb{E}_{q}[\log p_\theta(x|z)] + D_{KL}(q_\phi(z|x) \| p(z))$ | VAE 损失：重建 + KL 正则 |
+| $D_{KL}(q \| p) = -\frac{1}{2}\sum_{j=1}^{d}(1 + \log \sigma_j^2 - \mu_j^2 - \sigma_j^2)$ | 对角高斯 KL 散度闭合解 |
+| $z \sim \mathcal{N}(0, I) \Rightarrow \hat{x} = g_\psi(z)$ | 从潜在空间采样生成新数据 |
+
+---
+
 ## 理解检测
 
 **Q1**：AutoEncoder 的编码器把 MNIST 图片压缩到 2 维。如果我们把瓶颈层维度从 2 增加到 784（和输入一样大），会发生什么？损失函数会怎么变？学到的表示还有意义吗？为什么？

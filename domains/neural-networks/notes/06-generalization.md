@@ -429,6 +429,20 @@ SGD 噪声的大小和学习率 $\eta$ 以及批量大小 $B$ 有关：噪声 $\
 
 ---
 
+### 公式速查卡
+
+| 公式 | 含义 |
+|------|------|
+| $\mathbb{E}[(y - \hat{f}(x))^2] = \text{偏差}^2 + \text{方差} + \sigma^2$ | 偏差-方差分解 |
+| 测试误差 $-$ 训练误差 $\leq O(\sqrt{d_{\text{VC}} \log n / n})$ | VC 维泛化上界 |
+| $n = O((d_{\text{VC}} + \log(1/\delta))/\epsilon^2)$ | PAC 学习样本量 |
+| $\mathcal{L}_{\text{reg}} = \mathcal{L}(\theta) + \frac{\lambda}{2}\|\theta\|^2$ | L2 正则化 / Weight Decay |
+| $\theta_{t+1} = (1 - \eta\lambda)\theta_t - \eta \nabla_\theta \mathcal{L}$ | L2 正则化下的梯度更新（权重衰减） |
+| $\mathcal{L}_{\text{reg}} = \mathcal{L}(\theta) + \lambda \|\theta\|_1$ | L1 正则化（促进稀疏） |
+| $\tilde{\mathbf{h}} = \mathbf{m} \odot \mathbf{h}$，$m_j \sim \text{Bernoulli}(1-p)$ | Dropout（$p$ 通常取 0.5） |
+
+---
+
 ## 理解检测
 
 **Q1**：Zhang et al. (2017) 用随机标签训练了神经网络。假设你用 L2 正则化 + Dropout + 数据增强训练同一个网络，它还能拟合随机标签吗？如果可以，这对"正则化是泛化的根本原因"这个观点意味着什么？

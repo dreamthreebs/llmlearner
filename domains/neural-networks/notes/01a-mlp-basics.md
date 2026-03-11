@@ -907,6 +907,22 @@ $$\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\parti
 
 ---
 
+### 公式速查卡
+
+| 公式 | 含义 |
+|------|------|
+| $\mathbf{z} = W\mathbf{x} + \mathbf{b}$ | 线性变换 |
+| $\mathbf{h} = f(\mathbf{z})$ | 激活函数 |
+| $W$ 的形状：$d_{\text{out}} \times d_{\text{in}}$ | 参数量 = $d_{\text{out}} \times d_{\text{in}}$（不算偏置） |
+| $\mathcal{L}_{\text{MSE}} = \frac{1}{n}\sum(y_i - \hat{y}_i)^2$ | 回归损失 |
+| $\mathcal{L}_{\text{CE}} = -\log p_{\text{correct}}$ | 分类交叉熵损失 |
+| $\text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$ | 把输出变成概率（和为 1） |
+| $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}$ | 梯度下降更新 |
+| $\frac{\partial \mathcal{L}}{\partial w_\ell} = \delta_\ell \cdot h_{\ell-1}$ | 反向传播参数梯度 |
+| $\delta_\ell = \delta_{\ell+1} \cdot w_{\ell+1} \cdot f'(z_\ell)$ | 误差信号递推 |
+
+---
+
 ## 理解检测
 
 **Q1**：用你自己的话解释：为什么没有激活函数的多层网络和单层线性网络没有区别？
@@ -916,6 +932,8 @@ $$\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\parti
 
 
 **Q2**：一张 $256 \times 256$ 的 RGB 图像展平后有多少维？如果第一个隐藏层有 1000 个神经元，权重矩阵 $W^{(1)}$ 有多少个参数？（不算偏置）
+
+> 提示：RGB 有几个通道？参数量 = $d_{\text{out}} \times d_{\text{in}}$
 
 你的回答：
 
@@ -928,6 +946,8 @@ $$\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\parti
 
 
 **Q4**：假设你在训练一个分类网络，正确答案是第 3 类。模型给第 3 类的概率从 0.01 提升到 0.99，交叉熵损失从多少变到多少？
+
+> 提示：交叉熵 = $-\log p_{\text{correct}}$，分别代入 $p = 0.01$ 和 $p = 0.99$
 
 你的回答：
 

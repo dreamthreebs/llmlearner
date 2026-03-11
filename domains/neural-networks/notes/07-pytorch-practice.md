@@ -673,6 +673,26 @@ with torch.autograd.detect_anomaly():
 
 ---
 
+### 公式速查卡
+
+| 公式 | 含义 |
+|------|------|
+| $\mathbf{y} = \mathbf{W}\mathbf{x} + \mathbf{b}$ | 全连接层（nn.Linear）的前向计算 |
+| $\eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min})\left(1 + \cos\left(\frac{t}{T}\pi\right)\right)$ | 余弦退火学习率调度 |
+| Conv2d 参数量 = $C_{out} \times C_{in} \times k_h \times k_w + C_{out}$ | 卷积层参数：权重 $C_{out} \times C_{in} \times k_h \times k_w$，偏置 $C_{out}$ |
+
+**常用超参数默认值**：
+
+| 超参数 | MNIST (MLP) | CIFAR-10 (CNN) |
+|--------|-------------|----------------|
+| batch_size | 128 | 128 |
+| learning_rate | $10^{-3}$ | $10^{-3}$ |
+| epochs | 10 | 20 |
+| dropout | 0.2 | 0.5 |
+| weight_decay | — | $10^{-4}$ |
+
+---
+
 ## 理解检测
 
 **Q1**：在训练循环中，`optimizer.zero_grad()` 如果放在 `loss.backward()` 之后、`optimizer.step()` 之前，会发生什么？训练还能正确进行吗？（提示：想想 PyTorch 梯度累加的默认行为。）

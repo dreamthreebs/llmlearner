@@ -400,6 +400,26 @@ $$\mathbf{g} \leftarrow \begin{cases} \mathbf{g} & \text{if } \|\mathbf{g}\| \le
 
 ---
 
+### 公式速查卡
+
+| 公式 | 含义 |
+|------|------|
+| $\theta_{t+1} = \theta_t - \eta \nabla \mathcal{L}(\theta_t)$ | GD 更新 |
+| $\theta_{t+1} = \theta_t - \eta \mathbf{g}_t$，$\mathbf{g}_t$ 为 mini-batch 梯度 | SGD 更新 |
+| $\mathbb{E}[\mathcal{L}(\bar{\theta}_T)] - \mathcal{L}(\theta^*) \leq O(1/\sqrt{T})$ | SGD 凸情况收敛率 |
+| $\eta_{\max} = \frac{2}{\lambda_{\max}(H)}$ | 最大稳定学习率（$H$ 为 Hessian） |
+| $\mathbf{v}_t = \beta \mathbf{v}_{t-1} + \nabla \mathcal{L}(\theta_t)$ | Momentum 速度更新 |
+| $\theta_{t+1} = \theta_t - \eta \mathbf{v}_t$ | Momentum 参数更新 |
+| $\mathbf{m}_t = \beta_1 \mathbf{m}_{t-1} + (1 - \beta_1) \mathbf{g}_t$ | Adam 一阶矩 |
+| $\mathbf{v}_t = \beta_2 \mathbf{v}_{t-1} + (1 - \beta_2) \mathbf{g}_t^2$ | Adam 二阶矩 |
+| $\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1 - \beta_1^t}$，$\hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1 - \beta_2^t}$ | Adam 偏差修正 |
+| $\theta_{t+1} = \theta_t - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon}$ | Adam 参数更新 |
+| $\mathbf{g} \leftarrow c \cdot \frac{\mathbf{g}}{\|\mathbf{g}\|}$ 当 $\|\mathbf{g}\| > c$ | 梯度裁剪（按范数） |
+
+**常用超参数**：Momentum $\beta = 0.9$；Adam $\eta = 0.001$，$\beta_1 = 0.9$，$\beta_2 = 0.999$，$\epsilon = 10^{-8}$；梯度裁剪 $c = 1.0$ 或 $5.0$。
+
+---
+
 ## 理解检测
 
 **Q1**：有人说"神经网络训练的主要困难是陷入局部最小值"。根据本章学到的内容，你认为这个说法准确吗？在高维参数空间中，更常见的困境是什么？
@@ -409,6 +429,8 @@ $$\mathbf{g} \leftarrow \begin{cases} \mathbf{g} & \text{if } \|\mathbf{g}\| \le
 
 
 **Q2**：Adam 的更新公式中，$\frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t}}$ 可以被理解为一种"信噪比"。请解释：如果某个参数方向上的梯度在过去很多步中大小差不多但方向一致，$\hat{\mathbf{m}}_t$ 和 $\sqrt{\hat{\mathbf{v}}_t}$ 分别大约是多少（相对于梯度大小 $g$）？这个参数方向上的实际步长大约是多少？
+
+> 提示：用 Adam 的一阶矩 $\mathbf{m}_t$、二阶矩 $\mathbf{v}_t$ 的指数滑动平均公式，以及 $\mathbf{g}_t^2$ 在梯度恒为 $g$ 时的期望。
 
 你的回答：
 
