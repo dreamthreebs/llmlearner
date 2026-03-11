@@ -329,17 +329,420 @@ $$
 
 三项都是已知量！乘起来就得到了 $w$ 的梯度。
 
-### 7.3 多层的情况
+### 7.3 完整数值例子：两层网络的反向传播
 
-对于多层网络，原理完全一样——从最后一层开始，逐层往回乘。每一层的"误差信号"传给上一层，上一层再传给更上一层。这就是"反向传播"名字的由来。
+下面用一个两层网络，全部用具体数字算一遍，让你看清链式法则的每一环。
 
-**计算效率**：反向传播的计算量大约只是前向传播的 2-3 倍。如果有 10 亿个参数，不用反向传播而是对每个参数做数值微分（微小扰动法），需要前向传播 10 亿次。反向传播只需要一次前向 + 一次反向。
+**网络结构**：1 个输入 → 1 个隐藏层（1 个神经元，ReLU 激活）→ 1 个输出（无激活）
 
-**没有反向传播就没有深度学习。**
+**参数**：$w_1 = 0.5$，$b_1 = 0.1$，$w_2 = -0.3$，$b_2 = 0.2$
 
-### 7.4 和梯度消失/爆炸的联系
+**输入**：$x = 2.0$，**真实值**：$y_{\text{true}} = 1.0$，**损失函数**：MSE = $(y - y_{\text{true}})^2$
 
-反向传播从最后一层算到第一层，每经过一层都要乘上该层的"局部梯度"（包含激活函数的导数和权重矩阵）。如果这些因子一直 < 1，连乘后梯度消失；一直 > 1，连乘后梯度爆炸。这就是 [02-deep-mlp.md](02-deep-mlp.md) 第 1 节讨论的问题。
+#### 前向传播（从左到右算输出）
+
+第一层：
+
+$$z_1 = w_1 \cdot x + b_1 = 0.5 \times 2.0 + 0.1 = 1.1$$
+
+$$h_1 = \text{ReLU}(z_1) = \text{ReLU}(1.1) = 1.1 \quad \text{（正数，原样保留）}$$
+
+第二层：
+
+$$z_2 = w_2 \cdot h_1 + b_2 = -0.3 \times 1.1 + 0.2 = -0.13$$
+
+$$y = z_2 = -0.13 \quad \text{（输出层无激活函数）}$$
+
+损失：
+
+$$\mathcal{L} = (y - y_{\text{true}})^2 = (-0.13 - 1.0)^2 = (-1.13)^2 = 1.2769$$
+
+预测是 $-0.13$，真实值是 $1.0$，差得远，损失 = 1.28。
+
+#### 反向传播（从右到左算梯度）
+
+目标：算出 $\frac{\partial \mathcal{L}}{\partial w_1}$、$\frac{\partial \mathcal{L}}{\partial b_1}$、$\frac{\partial \mathcal{L}}{\partial w_2}$、$\frac{\partial \mathcal{L}}{\partial b_2}$。
+
+**第 1 步：损失对输出**
+
+$$\frac{\partial \mathcal{L}}{\partial y} = 2(y - y_{\text{true}}) = 2(-0.13 - 1.0) = -2.26$$
+
+**第 2 步：过第二层**（$y = z_2 = w_2 \cdot h_1 + b_2$）
+
+对 $w_2$ 求导：$\frac{\partial y}{\partial w_2} = h_1 = 1.1$
+
+$$\frac{\partial \mathcal{L}}{\partial w_2} = -2.26 \times 1.1 = -2.486$$
+
+对 $b_2$ 求导：$\frac{\partial y}{\partial b_2} = 1$
+
+$$\frac{\partial \mathcal{L}}{\partial b_2} = -2.26 \times 1 = -2.26$$
+
+往前传的信号（第一层需要）：$\frac{\partial y}{\partial h_1} = w_2 = -0.3$
+
+$$\frac{\partial \mathcal{L}}{\partial h_1} = -2.26 \times (-0.3) = 0.678$$
+
+**第 3 步：过 ReLU**（$h_1 = \text{ReLU}(z_1)$）
+
+$$\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\partial h_1} \times \text{ReLU}'(z_1) = 0.678 \times 1 = 0.678$$
+
+$z_1 = 1.1 > 0$，所以 ReLU 导数 = 1，梯度原样通过。**如果 $z_1 < 0$，这里就是 0，后面所有梯度全部归零——这就是 dead neuron。**
+
+**第 4 步：过第一层**（$z_1 = w_1 \cdot x + b_1$）
+
+对 $w_1$ 求导：$\frac{\partial z_1}{\partial w_1} = x = 2.0$
+
+$$\frac{\partial \mathcal{L}}{\partial w_1} = 0.678 \times 2.0 = 1.356$$
+
+对 $b_1$ 求导：$\frac{\partial z_1}{\partial b_1} = 1$
+
+$$\frac{\partial \mathcal{L}}{\partial b_1} = 0.678 \times 1 = 0.678$$
+
+#### 汇总
+
+| 参数 | 梯度 | 含义 |
+|------|------|------|
+| $w_1 = 0.5$ | $1.356$ | 应该减小 $w_1$ |
+| $b_1 = 0.1$ | $0.678$ | 应该减小 $b_1$ |
+| $w_2 = -0.3$ | $-2.486$ | 应该增大 $w_2$ |
+| $b_2 = 0.2$ | $-2.26$ | 应该增大 $b_2$ |
+
+#### 更新参数（学习率 $\eta = 0.1$）
+
+$$w_1' = 0.5 - 0.1 \times 1.356 = 0.364$$
+
+$$b_1' = 0.1 - 0.1 \times 0.678 = 0.032$$
+
+$$w_2' = -0.3 - 0.1 \times (-2.486) = -0.051$$
+
+$$b_2' = 0.2 - 0.1 \times (-2.26) = 0.426$$
+
+#### 验证：新参数再前向一次
+
+$$z_1 = 0.364 \times 2.0 + 0.032 = 0.760$$
+
+$$h_1 = \text{ReLU}(0.760) = 0.760$$
+
+$$y = -0.051 \times 0.760 + 0.426 = 0.387$$
+
+$$\mathcal{L} = (0.387 - 1.0)^2 = 0.376$$
+
+损失从 **1.28 → 0.38**，一步就降了 70%。
+
+#### 流程总图
+
+```
+前向（→）：
+x=2.0 →[×w₁+b₁]→ z₁=1.1 →[ReLU]→ h₁=1.1 →[×w₂+b₂]→ y=-0.13 → L=1.28
+
+反向（←）：
+∂L/∂y = -2.26
+   │×h₁          │×1           │×w₂
+   ▼              ▼              ▼
+∂L/∂w₂=-2.486  ∂L/∂b₂=-2.26  ∂L/∂h₁=0.678
+                                │×ReLU'(z₁)=1
+                                ▼
+                              ∂L/∂z₁=0.678
+                              │×x           │×1
+                              ▼              ▼
+                          ∂L/∂w₁=1.356  ∂L/∂b₁=0.678
+```
+
+每一步就是链式法则的**一环乘一环**，没有别的东西。
+
+### 7.4 一般性理论推导
+
+下面推导 $L$ 层 MLP 的反向传播公式。你会看到 7.3 的数值例子只是这些公式的特殊情况。
+
+#### 符号约定
+
+考虑一个 $L$ 层网络，第 $\ell$ 层（$\ell = 1, 2, \ldots, L$）的前向传播是：
+
+$$\mathbf{z}^{(\ell)} = W^{(\ell)} \mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}$$
+
+$$\mathbf{h}^{(\ell)} = f^{(\ell)}(\mathbf{z}^{(\ell)})$$
+
+其中：
+- $\mathbf{h}^{(0)} = \mathbf{x}$（输入数据）
+- $\mathbf{z}^{(\ell)}$ 是第 $\ell$ 层的**预激活值**（线性变换的结果）
+- $\mathbf{h}^{(\ell)}$ 是第 $\ell$ 层的**输出**（激活后的结果）
+- $f^{(\ell)}$ 是第 $\ell$ 层的激活函数（逐元素作用）
+- $W^{(\ell)}$ 维度为 $d_\ell \times d_{\ell-1}$，$\mathbf{b}^{(\ell)}$ 维度为 $d_\ell \times 1$
+
+最终损失为 $\mathcal{L}(\mathbf{h}^{(L)}, \mathbf{y})$，其中 $\mathbf{y}$ 是真实标签。
+
+#### 核心量：误差信号 $\boldsymbol{\delta}^{(\ell)}$
+
+定义第 $\ell$ 层的**误差信号**为损失对预激活值的梯度：
+
+$$\boldsymbol{\delta}^{(\ell)} \equiv \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell)}}$$
+
+这是反向传播的核心量——一旦知道了每层的 $\boldsymbol{\delta}^{(\ell)}$，就能直接算出参数梯度。
+
+#### 第 1 步：输出层的误差信号
+
+最后一层 $\ell = L$ 的误差信号：
+
+$$\boldsymbol{\delta}^{(L)} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}^{(L)}} \odot f'^{(L)}(\mathbf{z}^{(L)})$$
+
+其中 $\odot$ 是逐元素乘法，$f'^{(L)}$ 是激活函数的逐元素导数。
+
+**MSE + 无激活输出层的例子**：$\mathcal{L} = \|\mathbf{h}^{(L)} - \mathbf{y}\|^2$，输出层无激活（$f^{(L)}$ 是恒等函数，$f' = 1$），则：
+
+$$\boldsymbol{\delta}^{(L)} = 2(\mathbf{h}^{(L)} - \mathbf{y})$$
+
+在 7.3 的例子中：$\delta^{(2)} = 2(-0.13 - 1.0) = -2.26$，和前面算的一致。
+
+#### 第 2 步：误差信号的逐层回传（核心递推公式）
+
+知道了第 $\ell + 1$ 层的 $\boldsymbol{\delta}^{(\ell+1)}$，怎么算第 $\ell$ 层的 $\boldsymbol{\delta}^{(\ell)}$？
+
+$$\boxed{\boldsymbol{\delta}^{(\ell)} = \left( W^{(\ell+1)\top} \boldsymbol{\delta}^{(\ell+1)} \right) \odot f'^{(\ell)}(\mathbf{z}^{(\ell)})}$$
+
+推导过程（链式法则）：
+
+$$\boldsymbol{\delta}^{(\ell)} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell)}} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell+1)}} \cdot \frac{\partial \mathbf{z}^{(\ell+1)}}{\partial \mathbf{h}^{(\ell)}} \cdot \frac{\partial \mathbf{h}^{(\ell)}}{\partial \mathbf{z}^{(\ell)}}$$
+
+三项分别是：
+- $\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell+1)}} = \boldsymbol{\delta}^{(\ell+1)}$（上一步已知）
+- $\frac{\partial \mathbf{z}^{(\ell+1)}}{\partial \mathbf{h}^{(\ell)}} = W^{(\ell+1)}$（因为 $\mathbf{z}^{(\ell+1)} = W^{(\ell+1)} \mathbf{h}^{(\ell)} + \mathbf{b}^{(\ell+1)}$）
+- $\frac{\partial \mathbf{h}^{(\ell)}}{\partial \mathbf{z}^{(\ell)}} = \text{diag}(f'^{(\ell)}(\mathbf{z}^{(\ell)}))$（激活函数逐元素求导）
+
+乘起来就得到了上面的递推公式。
+
+**直觉**：$W^{(\ell+1)\top}$ 把下一层的误差信号"投影回"当前层的维度，$f'$ 决定这层的每个神经元让多少信号通过。
+
+**梯度消失/爆炸的来源**就在这里：从第 $L$ 层回传到第 $1$ 层，$\boldsymbol{\delta}$ 被反复乘以 $W^\top$ 和 $f'$。如果这些因子的模一直 < 1，$\boldsymbol{\delta}$ 指数衰减（消失）；一直 > 1，$\boldsymbol{\delta}$ 指数增长（爆炸）。
+
+#### 第 3 步：从误差信号算参数梯度
+
+有了 $\boldsymbol{\delta}^{(\ell)}$，参数梯度就是一步之遥：
+
+$$\boxed{\frac{\partial \mathcal{L}}{\partial W^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} \cdot \mathbf{h}^{(\ell-1)\top}}$$
+
+$$\boxed{\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)}}$$
+
+推导：因为 $\mathbf{z}^{(\ell)} = W^{(\ell)} \mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}$，所以 $\frac{\partial \mathbf{z}^{(\ell)}}{\partial W^{(\ell)}} = \mathbf{h}^{(\ell-1)\top}$，$\frac{\partial \mathbf{z}^{(\ell)}}{\partial \mathbf{b}^{(\ell)}} = \mathbf{I}$。
+
+注意：$\frac{\partial \mathcal{L}}{\partial W^{(\ell)}}$ 的计算需要 $\mathbf{h}^{(\ell-1)}$——这是前向传播时保存的中间结果。**这就是为什么训练比推理更吃内存：前向传播时每层的输出都要存着，等反向传播时用。**
+
+#### 算法总结
+
+```
+输入：数据 x, 真实标签 y, 学习率 η
+
+前向传播（保存中间结果）：
+  h⁽⁰⁾ = x
+  for ℓ = 1 to L:
+      z⁽ℓ⁾ = W⁽ℓ⁾ h⁽ℓ⁻¹⁾ + b⁽ℓ⁾     ← 保存 z⁽ℓ⁾
+      h⁽ℓ⁾ = f⁽ℓ⁾(z⁽ℓ⁾)              ← 保存 h⁽ℓ⁾
+  L = Loss(h⁽ᴸ⁾, y)
+
+反向传播（逐层回传误差信号）：
+  δ⁽ᴸ⁾ = ∂L/∂h⁽ᴸ⁾ ⊙ f'⁽ᴸ⁾(z⁽ᴸ⁾)     ← 输出层
+  for ℓ = L-1 down to 1:
+      δ⁽ℓ⁾ = (W⁽ℓ⁺¹⁾ᵀ δ⁽ℓ⁺¹⁾) ⊙ f'⁽ℓ⁾(z⁽ℓ⁾)   ← 核心递推
+
+参数更新：
+  for ℓ = 1 to L:
+      W⁽ℓ⁾ ← W⁽ℓ⁾ - η · δ⁽ℓ⁾ · h⁽ℓ⁻¹⁾ᵀ
+      b⁽ℓ⁾ ← b⁽ℓ⁾ - η · δ⁽ℓ⁾
+```
+
+整个算法就三个公式：输出层误差信号、误差信号递推、参数梯度。其余都是符号展开。
+
+#### 标量版本：两层网络的完整推导
+
+上面的公式有矩阵和求和符号，不太直觉。下面把网络固定为**两层、每层一个神经元、所有量都是标量**，把每一步的链式法则写到底，不跳步。
+
+##### 网络定义
+
+```
+输入 x → 第一层 → 第二层 → 输出 y → 损失 L
+```
+
+写成公式，一共 5 个等式，从左到右：
+
+$$z_1 = w_1 x + b_1 \quad \text{（第一层线性变换）}$$
+
+$$h_1 = f(z_1) \quad \text{（第一层激活函数）}$$
+
+$$z_2 = w_2 h_1 + b_2 \quad \text{（第二层线性变换）}$$
+
+$$y = z_2 \quad \text{（输出层无激活——回归任务的标准做法）}$$
+
+$$\mathcal{L} = (y - y_{\text{true}})^2 \quad \text{（MSE 损失）}$$
+
+> **为什么输出层不加激活函数？** 回归任务要预测任意实数，加了 Sigmoid 会压到 (0,1)，加了 ReLU 不能输出负数。分类任务则不同：二分类用 Sigmoid，多分类用 Softmax。如果输出层也有激活 $g$，推导唯一的区别是上面的 $\frac{\partial y}{\partial z_2} = 1$ 变成 $g'(z_2)$，其余完全一样。
+
+要求的东西：$\frac{\partial \mathcal{L}}{\partial w_1}$，$\frac{\partial \mathcal{L}}{\partial b_1}$，$\frac{\partial \mathcal{L}}{\partial w_2}$，$\frac{\partial \mathcal{L}}{\partial b_2}$。
+
+##### 画出依赖关系
+
+从 $\mathcal{L}$ 出发，往回看每个量依赖谁：
+
+```
+L 依赖 y
+y 依赖 z₂
+z₂ 依赖 w₂, h₁, b₂
+h₁ 依赖 z₁
+z₁ 依赖 w₁, x, b₁
+```
+
+链式法则就是沿着这条链，**从右往左逐段求导，然后乘起来**。
+
+##### 求 $\frac{\partial \mathcal{L}}{\partial w_2}$（第二层权重）
+
+$w_2$ 离 $\mathcal{L}$ 近，链比较短：$\mathcal{L} \leftarrow y \leftarrow z_2 \leftarrow w_2$
+
+$$\frac{\partial \mathcal{L}}{\partial w_2} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial z_2} \cdot \frac{\partial z_2}{\partial w_2}$$
+
+逐项算：
+
+| 项 | 怎么算 | 结果 |
+|---|---|---|
+| $\frac{\partial \mathcal{L}}{\partial y}$ | $\mathcal{L} = (y - y_{\text{true}})^2$，对 $y$ 求导 | $2(y - y_{\text{true}})$ |
+| $\frac{\partial y}{\partial z_2}$ | $y = z_2$，对 $z_2$ 求导 | $1$ |
+| $\frac{\partial z_2}{\partial w_2}$ | $z_2 = w_2 h_1 + b_2$，对 $w_2$ 求导 | $h_1$ |
+
+乘起来：
+
+$$\boxed{\frac{\partial \mathcal{L}}{\partial w_2} = 2(y - y_{\text{true}}) \cdot 1 \cdot h_1}$$
+
+##### 求 $\frac{\partial \mathcal{L}}{\partial b_2}$（第二层偏置）
+
+和上面一样，只是最后一项变了：$z_2 = w_2 h_1 + b_2$，对 $b_2$ 求导 = 1
+
+$$\boxed{\frac{\partial \mathcal{L}}{\partial b_2} = 2(y - y_{\text{true}}) \cdot 1 \cdot 1 = 2(y - y_{\text{true}})}$$
+
+##### 求 $\frac{\partial \mathcal{L}}{\partial w_1}$（第一层权重）
+
+$w_1$ 离 $\mathcal{L}$ 远，链更长：$\mathcal{L} \leftarrow y \leftarrow z_2 \leftarrow h_1 \leftarrow z_1 \leftarrow w_1$
+
+$$\frac{\partial \mathcal{L}}{\partial w_1} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial z_2} \cdot \frac{\partial z_2}{\partial h_1} \cdot \frac{\partial h_1}{\partial z_1} \cdot \frac{\partial z_1}{\partial w_1}$$
+
+逐项算：
+
+| 项 | 怎么算 | 结果 |
+|---|---|---|
+| $\frac{\partial \mathcal{L}}{\partial y}$ | 同上 | $2(y - y_{\text{true}})$ |
+| $\frac{\partial y}{\partial z_2}$ | 同上 | $1$ |
+| $\frac{\partial z_2}{\partial h_1}$ | $z_2 = w_2 h_1 + b_2$，对 $h_1$ 求导 | $w_2$ |
+| $\frac{\partial h_1}{\partial z_1}$ | $h_1 = f(z_1)$，对 $z_1$ 求导 | $f'(z_1)$ |
+| $\frac{\partial z_1}{\partial w_1}$ | $z_1 = w_1 x + b_1$，对 $w_1$ 求导 | $x$ |
+
+乘起来：
+
+$$\boxed{\frac{\partial \mathcal{L}}{\partial w_1} = 2(y - y_{\text{true}}) \cdot 1 \cdot w_2 \cdot f'(z_1) \cdot x}$$
+
+注意中间多出来的 $w_2 \cdot f'(z_1)$——这就是梯度**穿过第二层和激活函数**时被乘上的因子。层数越多，这样的因子越多，连乘后就可能爆炸或消失。
+
+##### 求 $\frac{\partial \mathcal{L}}{\partial b_1}$（第一层偏置）
+
+和 $w_1$ 一样，只是最后一项变了：$\frac{\partial z_1}{\partial b_1} = 1$
+
+$$\boxed{\frac{\partial \mathcal{L}}{\partial b_1} = 2(y - y_{\text{true}}) \cdot 1 \cdot w_2 \cdot f'(z_1) \cdot 1}$$
+
+##### 四个梯度放在一起看
+
+| 参数 | 梯度公式 |
+|------|---------|
+| $w_2$ | $2(y - y_{\text{true}}) \cdot h_1$ |
+| $b_2$ | $2(y - y_{\text{true}})$ |
+| $w_1$ | $2(y - y_{\text{true}}) \cdot w_2 \cdot f'(z_1) \cdot x$ |
+| $b_1$ | $2(y - y_{\text{true}}) \cdot w_2 \cdot f'(z_1)$ |
+
+**观察**：
+- $w_2$ 和 $b_2$ 的梯度只乘了 $2(y - y_{\text{true}})$ 和 $h_1$，很"直接"
+- $w_1$ 和 $b_1$ 的梯度**多乘了 $w_2 \cdot f'(z_1)$**——这就是梯度从第二层传到第一层时被"缩放"的因子
+- 如果 $f$ 是 Sigmoid，$f'(z_1) \leq 0.25$，第一层的梯度比第二层小至少 4 倍
+- 如果 $f$ 是 ReLU 且 $z_1 > 0$，$f'(z_1) = 1$，缩放因子只有 $w_2$
+
+##### 代入 7.3 的数字验证
+
+$w_1=0.5, b_1=0.1, w_2=-0.3, b_2=0.2, x=2.0, y_{\text{true}}=1.0$
+
+前向：$z_1=1.1, h_1=1.1, z_2=-0.13, y=-0.13$
+
+代入公式：
+
+$$\frac{\partial \mathcal{L}}{\partial w_2} = 2(-0.13 - 1.0) \times 1.1 = -2.26 \times 1.1 = -2.486 \quad \checkmark$$
+
+$$\frac{\partial \mathcal{L}}{\partial w_1} = 2(-0.13 - 1.0) \times (-0.3) \times 1 \times 2.0 = -2.26 \times (-0.3) \times 1 \times 2.0 = 1.356 \quad \checkmark$$
+
+和 7.3 数值例子完全一致。公式就是把数字例子里的具体数换成了字母。
+
+### 7.5 和梯度消失/爆炸的联系
+
+从上面两层的推导可以精确看出来源。回顾四个梯度：
+
+| 参数 | 梯度公式 | 离输出层 |
+|------|---------|---------|
+| $w_2$ | $2(y - y_{\text{true}}) \cdot h_1$ | 近（第二层） |
+| $w_1$ | $2(y - y_{\text{true}}) \cdot \boldsymbol{w_2 \cdot f'(z_1)} \cdot x$ | 远（第一层） |
+
+第一层比第二层**多乘了一个 $w_2 \cdot f'(z_1)$**。这个乘积就是梯度"穿过一层"时的缩放因子。
+
+两层只多乘一次，影响不大。但如果有 $N$ 层，第一层的梯度要连乘 $N-1$ 个这样的因子：
+
+$$\underbrace{w_N \cdot f'(z_{N-1})}_{穿过第 N 层} \cdot \underbrace{w_{N-1} \cdot f'(z_{N-2})}_{穿过第 N-1 层} \cdots \underbrace{w_2 \cdot f'(z_1)}_{穿过第 2 层}$$
+
+- **每个因子 < 1**（例如 Sigmoid 的 $f' \leq 0.25$，乘上 $w$ 后仍然 < 1）→ 连乘 $N-1$ 次后趋近于 0 → **梯度消失**
+- **每个因子 > 1**（例如 $w$ 初始化过大）→ 连乘 $N-1$ 次后趋近于 $\infty$ → **梯度爆炸**
+
+所以**解决思路都是让每个因子尽量接近 1**：
+
+| 方法 | 怎么让因子 ≈ 1 |
+|------|---------------|
+| **ReLU** | 正区间 $f'=1$，去掉了 $f'$ 这半边的衰减 |
+| **合理初始化**（He/Xavier） | 控制 $w$ 的大小，让 $w \cdot f'$ 的期望 ≈ 1 |
+| **残差连接** | 给梯度开一条不经过 $w \cdot f'$ 连乘的直通路 |
+| **梯度裁剪** | 暴力截断，防止爆炸（不治本但管用） |
+| **Batch Normalization** | 不是专门为此设计，但间接有帮助（见下文） |
+
+#### He/Xavier 初始化：为什么能防梯度爆炸？
+
+核心想法非常简单：**让每一层输出的方差等于输入的方差**。
+
+一层网络：$z_j = \sum_{i=1}^{n} W_{ji} \, h_i$（$n$ 个输入）。假设 $W_{ji}$ 和 $h_i$ 独立、均值为 0：
+
+$$\text{Var}(z_j) = n \cdot \text{Var}(W_{ji}) \cdot \text{Var}(h_i)$$
+
+要让 $\text{Var}(z_j) = \text{Var}(h_i)$（输出方差 = 输入方差）：
+
+$$n \cdot \text{Var}(W_{ji}) = 1 \quad \Rightarrow \quad \boxed{\text{Var}(W_{ji}) = \frac{1}{n}}$$
+
+这就是 **Xavier 初始化**。He 初始化考虑了 ReLU 砍掉负半轴（一半神经元输出为 0），所以方差 ×2：$\text{Var}(W_{ji}) = \frac{2}{n}$。
+
+**为什么这能防梯度爆炸？** 方差 $= 1/n$ 意味着 $W \mathbf{h}$ 的"放大倍数"期望为 1 倍。反向传播中 $W^\top \boldsymbol{\delta}$ 也是类似的。每穿过一层，信号既不放大也不缩小，连乘多少层都不会爆炸或消失。
+
+> **跟特征值的关系**：随机矩阵理论（Marchenko-Pastur 定律）告诉我们，$n \times n$ 随机矩阵每个元素方差为 $1/n$ 时，奇异值会集中在 1 附近。这跟上面的方差分析一致——奇异值 ≈ 1 意味着 $W$ 不放大也不缩小信号。但初始化的设计者（Glorot、He）并没有从特征值出发，他们就是做了上面这个简单的方差计算。
+
+#### Batch Normalization：不是为了防梯度爆炸
+
+BN 经常和梯度爆炸一起被提到，但它的**设计初衷并不是解决梯度问题**。
+
+| 说法 | 状态 |
+|------|------|
+| BN 减少了 Internal Covariate Shift（每层输入分布漂移） | 原始论文的动机（Ioffe & Szegedy, 2015），但后来发现不是主要原因 |
+| BN 平滑了损失地形，让优化更容易 | **真正起作用的原因**（Santurkar et al., NeurIPS 2018） |
+| BN 允许更大的学习率 | 正确，是平滑地形的直接后果 |
+| BN 缓解梯度消失/爆炸 | 正确，但是**副作用**，不是设计初衷 |
+
+BN 的做法是在激活函数之前把 $z$ 归一化到均值 0、方差 1：
+
+$$\hat{z} = \frac{z - \mu_{\text{batch}}}{\sqrt{\sigma^2_{\text{batch}} + \epsilon}}$$
+
+然后用可学习参数 $\gamma, \beta$ 恢复表达能力：$\tilde{z} = \gamma \hat{z} + \beta$。
+
+它间接帮助梯度的方式是：把 $z$ 拉回 0 附近，$f'(z)$ 不容易跑到极端值（比如 Sigmoid 的饱和区），缩放因子 $w \cdot f'(z)$ 因此更稳定。
+
+> 类比：ReLU / 残差连接 = **专门修路防塌方**；BN = **把整个地形推平了**，路自然也不容易塌。
+
+> **可靠程度**：Level 1（Xavier/He 初始化）· Level 2（BN 的机制解释，学界仍有讨论）
+>
+> **参考**：[Glorot & Bengio 2010](http://proceedings.mlr.press/v9/glorot10a.html) · [He et al. 2015](https://arxiv.org/abs/1502.01852) · [Ioffe & Szegedy 2015](https://arxiv.org/abs/1502.03167) · [Santurkar et al. 2018](https://arxiv.org/abs/1805.11604)
+
+这就是 [02-deep-mlp.md](02-deep-mlp.md) 第 1 节详细讨论的问题。
 
 > **可靠程度**：Level 1（教科书共识）
 >
