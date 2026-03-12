@@ -8,7 +8,7 @@
 >
 > **学习路径**：01-overview → 训练数学 → 泛化理论 → **本章**
 >
-> **前置知识**：梯度下降与反向传播、损失函数、过参数化与泛化的基本概念、MLP/CNN/Transformer 架构
+> **前置知识**：梯度下降与反向传播、损失函数、过参数化与泛化的基本概念、MLP/CNN 架构、Transformer 架构（参见 `domains/LLM/notes/04-attention.md` 和 `05-transformer.md`）
 >
 > **参考**：
 > - [Jacot et al. 2018 - Neural Tangent Kernel](https://arxiv.org/abs/1806.07572)
@@ -134,7 +134,7 @@ $$L(D) \approx L_{\infty} + \left(\frac{D_0}{D}\right)^{\alpha_D}$$
 
 在双对数坐标下，这些关系呈现为直线——这是幂律的标志性特征，你在物理中应该很熟悉（类比：光学中的 Stefan-Boltzmann 定律 $j \propto T^4$，虽然物理机制完全不同，但数学形式类似）。
 
-更令人惊讶的是，计算量 $C$（以 FLOPs 计）和损失之间也有幂律关系：
+更令人惊讶的是，计算量 $C$（以 FLOPs 计，即浮点运算总次数，Floating Point Operations）和损失之间也有幂律关系：
 
 $$L(C) \approx L_{\infty} + \left(\frac{C_0}{C}\right)^{\alpha_C}$$
 

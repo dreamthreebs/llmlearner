@@ -18,6 +18,63 @@
 
 ---
 
+## 0. 前置：Mini-batch 训练流程
+
+**可靠程度：Level 1（教科书共识）**
+
+在进入优化理论之前，先系统理解神经网络的训练到底是怎么"跑"的。
+
+### 0.1 三种梯度计算方式
+
+训练神经网络需要计算损失函数对参数的梯度。问题是：**用多少数据来算这个梯度？**
+
+| 方式 | 每次用多少数据 | 名称 |
+|------|-------------|------|
+| 全部 | 全部 $N$ 个样本 | **Batch GD**（全梯度下降） |
+| 1 个 | 随机抽 1 个样本 | **纯 SGD**（随机梯度下降） |
+| 一小批 | 随机抽 $B$ 个（如 32/128/256） | **Mini-batch SGD**（最常用） |
+
+实践中说的"SGD"几乎都是指 mini-batch SGD。
+
+### 0.2 训练一轮（Epoch）的完整流程
+
+假设训练集有 $N = 60000$ 个样本，batch size $B = 256$：
+
+1. 把 60000 个样本**随机打乱**
+2. 分成 $\lceil 60000/256 \rceil = 235$ 个 mini-batch
+3. 对每个 mini-batch：
+   - **前向传播**：计算这 $B$ 个样本的平均损失 $\mathcal{L} = \frac{1}{B}\sum_{i=1}^{B}\ell(\theta; x_i, y_i)$
+   - **反向传播**：计算梯度 $\mathbf{g} = \nabla_\theta \mathcal{L}$
+   - **参数更新**：$\theta \leftarrow \theta - \eta \mathbf{g}$
+4. 235 个 batch 都过完 = **一个 epoch** 结束
+5. 重新打乱，进入下一个 epoch
+
+所以一个 epoch 内，参数被更新了 **235 次**（不是 1 次）。训练通常跑几十到几百个 epoch。
+
+### 0.3 Batch Size 的权衡
+
+Mini-batch 梯度 $\mathbf{g}$ 是真实梯度的**无偏估计**，但有噪声。噪声大小和 batch size 的关系是：
+
+$$\text{Var}(\mathbf{g}) = \frac{\sigma^2}{B}$$
+
+其中 $\sigma^2$ 是单个样本梯度的方差。这就是统计学中"样本均值方差 = 总体方差 / 样本量"的直接应用。
+
+| Batch size $B$ | 梯度噪声（标准差） | 特点 |
+|---|---|---|
+| 32（小） | $\sigma / 5.7$ | 噪声大，每步快，有探索效果 |
+| 256（中） | $\sigma / 16$ | 常用折中 |
+| 8192（大） | $\sigma / 90.5$ | 噪声小，接近真实梯度，但失去探索效果 |
+
+- **小 batch**：噪声大 → 梯度方向不太准但计算快，且噪声有正面效果（后面会讲）
+- **大 batch**：噪声小 → 梯度更准但 GPU 显存占用大，且可能影响泛化
+- **全 batch**：每步要遍历全部数据才更新一次，太慢
+
+Mini-batch SGD 是**计算效率和梯度质量之间的折中**。
+
+> 参考：[d2l.ai - Minibatches](https://d2l.ai/chapter_optimization/minibatch-sgd.html) · [Deep Learning Book Ch.8](https://www.deeplearningbook.org/contents/optimization.html)
+
+---
+
 ## 1. 核心问题：为什么梯度下降居然能工作？
 
 **可靠程度：Level 2-3**
@@ -49,11 +106,17 @@
 
 ### 2.2 高维空间的关键直觉：鞍点比局部最小值多得多
 
-**临界点（critical point）**是梯度为零的点，即 $\nabla \mathcal{L}(\theta) = \mathbf{0}$。临界点有三种：
+**临界点（critical point）**是梯度为零的点，即 $\nabla \mathcal{L}(\theta) = \mathbf{0}$。要判断临界点的类型，需要用到 **Hessian 矩阵**——损失函数的二阶导数矩阵：
 
-- **局部最小值（local minimum）**：所有方向都是"上坡"——Hessian 矩阵的特征值全为正
+$$H_{ij} = \frac{\partial^2 \mathcal{L}}{\partial \theta_i \partial \theta_j}$$
+
+Hessian 矩阵描述了损失面在某个点附近的"曲率"：特征值为正的方向是"上凸的"（碗底），特征值为负的方向是"下凸的"（山顶）。
+
+临界点有三种：
+
+- **局部最小值（local minimum）**：所有方向都是"上坡"——Hessian 的特征值全为正
 - **局部最大值（local maximum）**：所有方向都是"下坡"——特征值全为负
-- **鞍点（saddle point）**：有些方向上坡，有些方向下坡——Hessian 矩阵的特征值有正有负
+- **鞍点（saddle point）**：有些方向上坡，有些方向下坡——特征值有正有负
 
 在 $n$ 维空间中，一个随机的临界点是局部最小值还是鞍点，取决于其 Hessian 矩阵的 $n$ 个特征值是否全为正。如果每个特征值正或负的概率各为 50%，那么全部 $n$ 个特征值都为正的概率是：
 
@@ -106,7 +169,9 @@ $\mathbf{g}_t$ 是**真实梯度的无偏估计**：$\mathbb{E}[\mathbf{g}_t] = 
 
 ### 3.2 凸优化下的收敛保证
 
-为了建立直觉，先看最简单的情况。如果损失函数 $\mathcal{L}(\theta)$ 是**凸函数**（碗形，只有一个全局最小值），SGD 的收敛性有经典结论。
+为了建立直觉，先看最简单的情况。如果损失函数 $\mathcal{L}(\theta)$ 是**凸函数**，SGD 的收敛性有经典结论。
+
+凸函数的数学定义：对任意两点 $\theta_1, \theta_2$ 和任意 $t \in [0,1]$，满足 $\mathcal{L}(t\theta_1 + (1-t)\theta_2) \leq t\mathcal{L}(\theta_1) + (1-t)\mathcal{L}(\theta_2)$。直觉上就是"碗形"——任意两点之间的连线在函数图像上方，只有一个全局最小值，没有局部最小值或鞍点。
 
 **定理（SGD 在凸函数上的收敛，简化版）**：
 
