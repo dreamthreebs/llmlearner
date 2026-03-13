@@ -1,0 +1,3436 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="帮你快速建立新领域的可靠知识结构">
+      
+      
+      
+      
+        <link rel="prev" href="../01b-activation-functions/">
+      
+      
+        <link rel="next" href="../03-cnn/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>深入 MLP - LLM Learner — 研究者知识库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#02-mlp" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-header__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM Learner — 研究者知识库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              深入 MLP
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-nav__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM Learner — 研究者知识库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    神经网络
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01a-mlp-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLP 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01b-activation-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    激活函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    深入 MLP
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    深入 MLP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引言：为什么"堆层"不够？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 梯度消失与梯度爆炸
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 梯度消失与梯度爆炸">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 问题的根源：链式法则中的连乘
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 为什么会指数衰减或爆炸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 为什么 RNN 里更严重
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 解决方案总览
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 和激活函数的关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 权重初始化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 权重初始化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 为什么不能全部初始化为 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 为什么不能用太大或太小的随机数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-xavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Xavier 初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-he" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 He 初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-batch-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Batch Normalization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Batch Normalization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 问题：内部协变量偏移
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 数学操作
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 为什么有效
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-layer-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Layer Normalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-skip-connection-residual-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 残差连接（Skip Connection / Residual Connection）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 残差连接（Skip Connection / Residual Connection）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 为什么这解决了梯度消失
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-resnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 ResNet 的设计思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 和 Transformer 的联系
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 优化器细节
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 优化器细节">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-sgd-with-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 SGD with Momentum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-adam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Adam：自适应学习率
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 学习率调度
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 总结：现代深层网络的标准配方
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 总结：现代深层网络的标准配方">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-rnn-lstm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN 与 LSTM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-training-math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    训练的数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-generalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    正则化与泛化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-pytorch-practice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch 实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-autoencoder-vae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AutoEncoder 与 VAE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-gan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-gnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LLM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/02-neural-network-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/03-word-embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    词嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/04-attention-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    注意力机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/05-transformer-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/06-pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    预训练
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/07-finetuning-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微调与对齐
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMB
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CMB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/02-expanding-universe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    膨胀宇宙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/03-thermal-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    热历史
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    点集拓扑
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    点集拓扑
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Agent
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Agent
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/02-prompting-reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示与推理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/03-tool-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/05-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    规划
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/06-architectures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/07-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/08-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    评估与调试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/09-applications-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    应用与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    语言学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引言：为什么"堆层"不够？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 梯度消失与梯度爆炸
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 梯度消失与梯度爆炸">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 问题的根源：链式法则中的连乘
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 为什么会指数衰减或爆炸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 为什么 RNN 里更严重
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 解决方案总览
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 和激活函数的关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 权重初始化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 权重初始化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 为什么不能全部初始化为 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 为什么不能用太大或太小的随机数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-xavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Xavier 初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-he" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 He 初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-batch-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Batch Normalization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Batch Normalization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 问题：内部协变量偏移
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 数学操作
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 为什么有效
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-layer-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Layer Normalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-skip-connection-residual-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 残差连接（Skip Connection / Residual Connection）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 残差连接（Skip Connection / Residual Connection）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 为什么这解决了梯度消失
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-resnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 ResNet 的设计思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 和 Transformer 的联系
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 优化器细节
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 优化器细节">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-sgd-with-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 SGD with Momentum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-adam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Adam：自适应学习率
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 学习率调度
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 总结：现代深层网络的标准配方
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 总结：现代深层网络的标准配方">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="02-mlp">02 - 深入 MLP：让深层网络能训练起来<a class="headerlink" href="#02-mlp" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>主维度</strong>：D1 基础架构 + D3 训练数学
+<strong>关键关系</strong>：
+- CNN (架构) --依赖--&gt; MLP (架构)：CNN 依赖 MLP 作为学习基础
+- RNN (架构) --依赖--&gt; MLP (架构)：RNN 依赖 MLP 作为学习基础
+- Adam (方法) --推广了--&gt; SGD (方法)：Adam 推广了 SGD，加入自适应学习率</p>
+<p><strong>学习路径</strong>：MLP 基础 → 激活函数 → <strong>本章</strong> → CNN → RNN/LSTM → 训练数学</p>
+<p><strong>前置知识</strong>：神经元、MLP 结构、损失函数、反向传播、梯度下降（见 <a href="../01a-mlp-basics/">01a-MLP 基础</a>）</p>
+<p><strong>参考</strong>：
+- <a href="https://www.deeplearningbook.org/">Goodfellow 等《Deep Learning》Ch.6-8</a>
+- <a href="https://d2l.ai/chapter_deep-learning-computation/index.html">d2l.ai Ch.5 - 深度学习计算</a>
+- <a href="https://d2l.ai/chapter_optimization/index.html">d2l.ai Ch.12 - 优化算法</a></p>
+</blockquote>
+<hr />
+<h2 id="_1">引言：为什么"堆层"不够？<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>在 <a href="../01a-mlp-basics/">01a-MLP 基础</a> 中你学了 MLP 的基本结构：输入层 → 若干隐藏层（每层做线性变换 + 非线性激活） → 输出层。理论上，只有一个隐藏层的 MLP 就能拟合任意连续函数（万能近似定理）。但实践中，<strong>更深的网络往往比更宽的网络更高效</strong>——用更少的参数就能表达更复杂的函数。</p>
+<p>直觉上可以这样理解：深层网络可以逐层构建越来越抽象的特征。比如识别人脸时，第一层检测边缘，第二层组合边缘成局部纹理，第三层组合纹理成五官，第四层组合五官判断是谁。这种<strong>层次化表示</strong>是深度网络的核心优势。</p>
+<p>然而，<strong>直接把 MLP 堆到 50 层、100 层，你会发现网络根本训不动</strong>。损失函数下降极其缓慢甚至完全不动，或者突然飙到无穷大。这不是因为理论错了，而是因为训练过程中出现了几个致命的数值问题。</p>
+<p>本章覆盖的就是这些问题和解决方案。它们不是 MLP 独有的——<strong>Transformer 中每一层都用了残差连接和 Layer Normalization，Adam 是训练 LLM 的标准优化器</strong>。理解这些技术是理解现代深度学习的基础。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：本章内容大部分是教科书共识（Level 1），BatchNorm 的有效机制仍有争议（Level 2-3）。</p>
+</blockquote>
+<hr />
+<h2 id="1">1. 梯度消失与梯度爆炸<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<h3 id="11">1.1 问题的根源：链式法则中的连乘<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p>反向传播的数学本质是链式法则。设一个 <span class="arithmatex">\(L\)</span> 层网络每层的变换是 <span class="arithmatex">\(\mathbf{h}_l = f_l(\mathbf{h}_{l-1})\)</span>，那么损失 <span class="arithmatex">\(\mathcal{L}\)</span> 对第 <span class="arithmatex">\(l\)</span> 层参数的梯度涉及这样一个连乘：</p>
+<div class="arithmatex">\[
+\frac{\partial \mathcal{L}}{\partial \mathbf{h}_l} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}_L} \cdot \frac{\partial \mathbf{h}_L}{\partial \mathbf{h}_{L-1}} \cdot \frac{\partial \mathbf{h}_{L-1}}{\partial \mathbf{h}_{L-2}} \cdots \frac{\partial \mathbf{h}_{l+1}}{\partial \mathbf{h}_l}
+\]</div>
+<p>其中：
+- <span class="arithmatex">\(\mathbf{h}_l\)</span> 是第 <span class="arithmatex">\(l\)</span> 层的输出（激活值）
+- <span class="arithmatex">\(\frac{\partial \mathbf{h}_{k+1}}{\partial \mathbf{h}_k}\)</span> 是每一层的<strong>局部雅可比矩阵</strong>（Jacobian），描述第 <span class="arithmatex">\(k\)</span> 层输出的微小变化如何影响第 <span class="arithmatex">\(k+1\)</span> 层的输出
+- 整个梯度是 <span class="arithmatex">\(L - l\)</span> 个矩阵连乘的结果</p>
+<h3 id="12">1.2 为什么会指数衰减或爆炸<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<p>为了建立直觉，先看一个极简的标量例子。假设每层的梯度传播因子是一个常数 <span class="arithmatex">\(\alpha\)</span>（对应雅可比矩阵的"有效乘子"），那么经过 <span class="arithmatex">\(n\)</span> 层后，梯度变为：</p>
+<div class="arithmatex">\[
+\text{梯度} \propto \alpha^n
+\]</div>
+<table>
+<thead>
+<tr>
+<th>每层因子 <span class="arithmatex">\(\alpha\)</span></th>
+<th>经过 50 层</th>
+<th>现象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(0.9\)</span></td>
+<td><span class="arithmatex">\(0.9^{50} \approx 0.005\)</span></td>
+<td>梯度缩小 200 倍 → <strong>梯度消失</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(0.5\)</span></td>
+<td><span class="arithmatex">\(0.5^{50} \approx 10^{-15}\)</span></td>
+<td>梯度几乎为零 → 前面的层完全学不动</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(1.1\)</span></td>
+<td><span class="arithmatex">\(1.1^{50} \approx 117\)</span></td>
+<td>梯度增大 100 多倍 → <strong>梯度爆炸</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(2.0\)</span></td>
+<td><span class="arithmatex">\(2.0^{50} \approx 10^{15}\)</span></td>
+<td>梯度飞到天文数字 → 参数更新直接 NaN</td>
+</tr>
+</tbody>
+</table>
+<p>只要每层的梯度传播因子不精确等于 1，经过足够多层，梯度要么消失要么爆炸。这就是深层网络难以训练的核心原因。</p>
+<h3 id="13-rnn">1.3 为什么 RNN 里更严重<a class="headerlink" href="#13-rnn" title="Permanent link">&para;</a></h3>
+<p>在普通 MLP 里，每层的权重矩阵 <span class="arithmatex">\(W_l\)</span> 各不相同，放大因子各层不同，有一定的相互抵消效果。但在 RNN 里，每个时间步<strong>共享同一个</strong> <span class="arithmatex">\(W_h\)</span>。梯度传播时反复乘同一个矩阵：</p>
+<div class="arithmatex">\[
+\text{梯度} \propto (W_h)^{T-1}
+\]</div>
+<p>如果 <span class="arithmatex">\(W_h\)</span> 的最大特征值 <span class="arithmatex">\(|\lambda_{\max}| = 1.1\)</span>，序列长 100 步：<span class="arithmatex">\(1.1^{99} \approx 12000\)</span>——梯度放大一万多倍，参数更新直接崩溃。反过来，<span class="arithmatex">\(|\lambda_{\max}| = 0.9\)</span> 时：<span class="arithmatex">\(0.9^{99} \approx 2.6 \times 10^{-5}\)</span>——网络完全无法学到第 1 个词和第 100 个词之间的依赖关系。</p>
+<p>这就是为什么基础 RNN 在实践中无法处理长序列（详见 <a href="../04-rnn-lstm/">04-rnn-lstm.md</a> 第 3 节）。</p>
+<h3 id="14">1.4 解决方案总览<a class="headerlink" href="#14" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解决方案</th>
+<th>核心原理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>梯度爆炸</td>
+<td><strong>Gradient Clipping</strong>（梯度裁剪）</td>
+<td>梯度范数超过阈值时按比例缩小，简单粗暴但有效</td>
+</tr>
+<tr>
+<td>梯度消失（MLP）</td>
+<td><strong>残差连接</strong></td>
+<td><span class="arithmatex">\(\mathbf{h} = f(\mathbf{x}) + \mathbf{x}\)</span>，梯度传播多了 <span class="arithmatex">\(+\mathbf{I}\)</span> 项，等于给梯度开了一条不经过连乘的"高速公路"（见本章第 4 节）</td>
+</tr>
+<tr>
+<td>梯度消失（RNN）</td>
+<td><strong>LSTM 的细胞状态</strong></td>
+<td>用<strong>加法</strong>更新 <span class="arithmatex">\(\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \ldots\)</span>，梯度乘的是可学习的遗忘门（可接近 1），而不是固定的 <span class="arithmatex">\(W_h\)</span>（见 <a href="../04-rnn-lstm/">04-rnn-lstm.md</a> 第 4 节）</td>
+</tr>
+<tr>
+<td>方差不稳定</td>
+<td><strong>Xavier / He 初始化</strong></td>
+<td>让每层输出方差保持稳定，不逐层放大或缩小（见本章第 2 节）</td>
+</tr>
+</tbody>
+</table>
+<p>后续章节会逐一展开这些方案。</p>
+<h3 id="15">1.5 和激活函数的关系<a class="headerlink" href="#15" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>激活函数的完整讲解见 <a href="../01b-activation-functions/">01b-激活函数</a>。这里只讲它和梯度问题的关系。</p>
+</blockquote>
+<p>Sigmoid 激活函数 <span class="arithmatex">\(\sigma(x) = 1/(1+e^{-x})\)</span> 的导数最大值只有 0.25（在 <span class="arithmatex">\(x=0\)</span> 处）。这意味着每过一层，梯度至少缩小到原来的 1/4。10 层就缩小到 <span class="arithmatex">\(0.25^{10} \approx 10^{-6}\)</span>。这是早期深层网络训不动的重要原因之一。</p>
+<p><strong>ReLU</strong>（Rectified Linear Unit）<span class="arithmatex">\(f(x) = \max(0, x)\)</span> 的导数是 0 或 1，不会像 Sigmoid 那样持续压缩梯度，因此在一定程度上缓解了梯度消失。但仅靠换激活函数是不够的——我们还需要更多技术（初始化、残差连接等，见后续章节）。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://www.deeplearningbook.org/contents/mlp.html">Deep Learning Book §6.2 - Gradient-Based Learning</a> · <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">Wikipedia - Vanishing gradient problem</a></p>
+</blockquote>
+<hr />
+<h2 id="2">2. 权重初始化<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<h3 id="21-0">2.1 为什么不能全部初始化为 0<a class="headerlink" href="#21-0" title="Permanent link">&para;</a></h3>
+<p>如果把所有权重都设为 0，那么每个神经元接收到的输入完全相同（都是 0），输出也完全相同，反向传播时得到的梯度也完全相同。结果：所有神经元在整个训练过程中始终保持一致——它们永远是同一个神经元的 <span class="arithmatex">\(n\)</span> 份拷贝。</p>
+<p>这叫<strong>对称性问题</strong>（symmetry breaking problem）。初始化的第一个要求就是<strong>打破对称性</strong>：让不同神经元从不同的起点开始，这样它们才能分化成不同的特征检测器。</p>
+<h3 id="22">2.2 为什么不能用太大或太小的随机数<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<p>打破对称性只需要随机初始化。但随机的<strong>尺度</strong>很重要：</p>
+<ul>
+<li><strong>太大</strong>：每层输出的值域（方差）逐层放大 → 到了深层，激活值变得非常大或非常小 → 梯度爆炸或进入激活函数的饱和区（Sigmoid 输出接近 0 或 1，梯度接近 0）</li>
+<li><strong>太小</strong>：每层输出的方差逐层缩小 → 到了深层，所有激活值都接近 0 → 网络退化为近似线性，失去非线性表达能力</li>
+</ul>
+<p>关键思路是：<strong>让每层输出的方差在逐层传播时保持稳定</strong>。</p>
+<h3 id="23-xavier">2.3 Xavier 初始化<a class="headerlink" href="#23-xavier" title="Permanent link">&para;</a></h3>
+<p>Xavier 初始化（也叫 Glorot 初始化）就是基于上述思路推导出来的。考虑一层线性变换（先忽略激活函数）：</p>
+<div class="arithmatex">\[
+y = w_1 x_1 + w_2 x_2 + \cdots + w_{n_{\text{in}}} x_{n_{\text{in}}}
+\]</div>
+<p>其中 <span class="arithmatex">\(n_{\text{in}}\)</span> 是输入维度，<span class="arithmatex">\(x_i\)</span> 是输入，<span class="arithmatex">\(w_i\)</span> 是权重。假设 <span class="arithmatex">\(x_i\)</span> 和 <span class="arithmatex">\(w_i\)</span> 都是均值为 0 的独立随机变量，那么输出 <span class="arithmatex">\(y\)</span> 的方差为：</p>
+<div class="arithmatex">\[
+\text{Var}(y) = n_{\text{in}} \cdot \text{Var}(w) \cdot \text{Var}(x)
+\]</div>
+<p>（这里用到了"独立随机变量乘积的方差 = 各自方差的乘积"这一性质，以及"和的方差 = 方差的和"——因为 <span class="arithmatex">\(w_i\)</span> 和 <span class="arithmatex">\(x_i\)</span> 独立且均值为 0。）</p>
+<p>要让输出方差等于输入方差（<span class="arithmatex">\(\text{Var}(y) = \text{Var}(x)\)</span>），我们需要：</p>
+<div class="arithmatex">\[
+\boxed{\text{Var}(w) = \frac{1}{n_{\text{in}}}}
+\]</div>
+<p>实践中，Xavier 初始化从以下分布中采样权重：</p>
+<div class="arithmatex">\[
+w \sim \mathcal{N}\!\left(0,\; \frac{1}{n_{\text{in}}}\right) \quad \text{或} \quad w \sim U\!\left[-\sqrt{\frac{3}{n_{\text{in}}}},\; \sqrt{\frac{3}{n_{\text{in}}}}\right]
+\]</div>
+<p>（均匀分布的范围是为了让方差等于 <span class="arithmatex">\(1/n_{\text{in}}\)</span>，因为 <span class="arithmatex">\(U[-a, a]\)</span> 的方差是 <span class="arithmatex">\(a^2/3\)</span>。）</p>
+<blockquote>
+<p>更精确的版本同时考虑前向和反向传播，取 <span class="arithmatex">\(\text{Var}(w) = 2/(n_{\text{in}} + n_{\text{out}})\)</span>。</p>
+</blockquote>
+<h3 id="24-he">2.4 He 初始化<a class="headerlink" href="#24-he" title="Permanent link">&para;</a></h3>
+<p>Xavier 初始化的推导假设激活函数在 0 附近近似线性（对 tanh 成立）。但 <strong>ReLU</strong> 会把约一半的输出变成 0（负半轴全部截断），这意味着有效方差减半。</p>
+<p>He 初始化（以 Kaiming He 命名）对此做了修正：</p>
+<div class="arithmatex">\[
+\boxed{\text{Var}(w) = \frac{2}{n_{\text{in}}}}
+\]</div>
+<p>多出来的因子 2 正是补偿 ReLU 截断掉一半激活值带来的方差损失。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识，广泛使用）</p>
+<p><strong>参考</strong>：
+- Xavier 初始化：<a href="http://proceedings.mlr.press/v9/glorot10a.html">Glorot &amp; Bengio, 2010 - "Understanding the difficulty of training deep feedforward neural networks"</a>
+- He 初始化：<a href="https://arxiv.org/abs/1502.01852">He et al., 2015 - "Delving Deep into Rectifiers"</a></p>
+</blockquote>
+<hr />
+<h2 id="3-batch-normalization">3. Batch Normalization<a class="headerlink" href="#3-batch-normalization" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 问题：内部协变量偏移<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>即使初始化做得好，训练过程中每层的参数在不断更新，导致<strong>每层的输入分布在不断变化</strong>。后面的层需要不断适应前面层输出的新分布——这被称为 <strong>internal covariate shift</strong>（内部协变量偏移）。</p>
+<p>想象你在学射箭，但靶子每隔几秒就换一个位置——你很难练好。Batch Normalization（简称 BN）的直觉就是：<strong>把靶子钉住</strong>，让每层的输入分布保持稳定。</p>
+<h3 id="32">3.2 数学操作<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>对于一个 mini-batch 的数据 <span class="arithmatex">\(\{x_1, x_2, \ldots, x_m\}\)</span>，BN 对每个特征维度分别做以下操作：</p>
+<p><strong>第一步：标准化（normalize）</strong></p>
+<div class="arithmatex">\[
+\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}
+\]</div>
+<p>其中：
+- <span class="arithmatex">\(\mu_B = \frac{1}{m}\sum_{i=1}^{m} x_i\)</span> 是 mini-batch 的均值
+- <span class="arithmatex">\(\sigma_B^2 = \frac{1}{m}\sum_{i=1}^{m}(x_i - \mu_B)^2\)</span> 是 mini-batch 的方差
+- <span class="arithmatex">\(\epsilon\)</span> 是一个很小的常数（如 <span class="arithmatex">\(10^{-5}\)</span>），防止除以零</p>
+<p>这一步把分布拉回均值 0、方差 1。</p>
+<p><strong>第二步：可学习的仿射变换（scale and shift）</strong></p>
+<div class="arithmatex">\[
+y_i = \gamma \hat{x}_i + \beta
+\]</div>
+<p>其中 <span class="arithmatex">\(\gamma\)</span>（缩放）和 <span class="arithmatex">\(\beta\)</span>（偏移）是<strong>可学习参数</strong>，通过反向传播和其他权重一起更新。</p>
+<p>为什么还要加这一步？因为强制让所有层的输出都是均值 0、方差 1 太过约束——有些情况下，网络<strong>需要</strong>某层的输出有特定的均值和方差（比如 Sigmoid 激活前，你可能希望输入集中在非饱和区域）。<span class="arithmatex">\(\gamma\)</span> 和 <span class="arithmatex">\(\beta\)</span> 让网络可以自己学出最合适的分布。</p>
+<blockquote>
+<p>特殊情况：如果网络学出 <span class="arithmatex">\(\gamma = \sigma_B\)</span> 和 <span class="arithmatex">\(\beta = \mu_B\)</span>，那么 BN 层就退化为恒等映射，等于什么都没做。所以 BN 不会损失网络的表达能力。</p>
+</blockquote>
+<h3 id="33">3.3 为什么有效<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
+<p>原始论文（Ioffe &amp; Szegedy, 2015）的解释是减少了 internal covariate shift。但后续研究（Santurkar et al., 2018）发现 BN 的效果主要来自<strong>平滑损失面</strong>——让损失函数的梯度变化更平滑，从而允许使用更大的学习率，加速收敛。</p>
+<p>目前学术界的共识是：BN 有效，但确切原因仍不完全清楚。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：BN 的操作和效果 Level 1-2，BN 为什么有效的理论解释 Level 2-3</p>
+</blockquote>
+<h3 id="34-layer-normalization">3.4 Layer Normalization<a class="headerlink" href="#34-layer-normalization" title="Permanent link">&para;</a></h3>
+<p>BN 依赖 mini-batch 的统计量，这有两个问题：
+1. batch size 太小时统计量不稳定
+2. 在序列模型（如 Transformer）中，不同序列长度不同，batch 的概念不太自然</p>
+<p><strong>Layer Normalization</strong>（简称 LN）的解决方案：不在 batch 维度上统计，而在<strong>特征维度</strong>上统计。也就是说，对单个样本的所有特征求均值和方差，然后做标准化。</p>
+<table>
+<thead>
+<tr>
+<th>归一化方式</th>
+<th>统计维度</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Batch Norm</td>
+<td>同一特征跨所有样本</td>
+<td>CNN、图像任务</td>
+</tr>
+<tr>
+<td>Layer Norm</td>
+<td>同一样本的所有特征</td>
+<td>Transformer、序列任务</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Transformer 中每一层都使用 Layer Normalization</strong>。这是你在 LLM/04-05 中学到的 Transformer 结构的关键组件之一。</p>
+<blockquote>
+<p><strong>参考</strong>：
+- BatchNorm：<a href="https://arxiv.org/abs/1502.03167">Ioffe &amp; Szegedy, 2015 - "Batch Normalization: Accelerating Deep Network Training"</a>
+- BN 有效原因的质疑：<a href="https://arxiv.org/abs/1805.11604">Santurkar et al., 2018 - "How Does Batch Normalization Help Optimization?"</a>
+- Layer Norm：<a href="https://arxiv.org/abs/1607.06450">Ba et al., 2016 - "Layer Normalization"</a></p>
+</blockquote>
+<hr />
+<h2 id="4-skip-connection-residual-connection">4. 残差连接（Skip Connection / Residual Connection）<a class="headerlink" href="#4-skip-connection-residual-connection" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 核心思想<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>残差连接是深度学习中最重要的结构创新之一，来自 He et al. 2015 年的 ResNet 论文。</p>
+<p>普通网络中，每一层试图学一个完整的映射 <span class="arithmatex">\(\mathbf{h} = f(\mathbf{x})\)</span>。残差连接的思想是：<strong>让每一层只学输入和输出之间的"差异"（残差）</strong>，然后把输入直接加回来：</p>
+<div class="arithmatex">\[
+\boxed{\mathbf{h} = f(\mathbf{x}) + \mathbf{x}}
+\]</div>
+<p>其中：
+- <span class="arithmatex">\(\mathbf{x}\)</span> 是这一层的输入
+- <span class="arithmatex">\(f(\mathbf{x})\)</span> 是这一层的变换（比如 "线性 → BN → ReLU → 线性 → BN"）
+- <span class="arithmatex">\(\mathbf{h}\)</span> 是这一层的输出</p>
+<p>"残差"这个名字来自 <span class="arithmatex">\(f(\mathbf{x}) = \mathbf{h} - \mathbf{x}\)</span>，即 <span class="arithmatex">\(f\)</span> 学的是"输出相对于输入还差什么"。</p>
+<h3 id="42">4.2 为什么这解决了梯度消失<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>考虑反向传播时梯度的传播。对于残差块 <span class="arithmatex">\(\mathbf{h} = f(\mathbf{x}) + \mathbf{x}\)</span>，梯度为：</p>
+<div class="arithmatex">\[
+\frac{\partial \mathbf{h}}{\partial \mathbf{x}} = \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}} + \mathbf{I}
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathbf{I}\)</span> 是单位矩阵。关键在于这个 <strong><span class="arithmatex">\(+\mathbf{I}\)</span></strong>：即使 <span class="arithmatex">\(\frac{\partial f}{\partial \mathbf{x}}\)</span> 很小（梯度消失），梯度至少还有 <span class="arithmatex">\(\mathbf{I}\)</span> 这一项。这为梯度提供了一条<strong>高速公路</strong>——梯度可以直接通过 skip connection "跳过"这一层，一路畅通地传回网络前端。</p>
+<p>如果有 <span class="arithmatex">\(L\)</span> 个残差块，梯度可以通过 <span class="arithmatex">\(2^L\)</span> 条不同路径传播（每一层可选择"穿过"或"跳过"），其中最短的路径完全由 skip connection 组成，梯度不经过任何变换，不会衰减。</p>
+<h3 id="43-resnet">4.3 ResNet 的设计思想<a class="headerlink" href="#43-resnet" title="Permanent link">&para;</a></h3>
+<p>ResNet（Residual Network，He et al., 2015）把残差连接应用到 CNN 中，成功训练了 152 层的网络（之前超过 20 层就很难训练了），并赢得了 2015 年 ImageNet 竞赛。</p>
+<p>ResNet 的核心观察：<strong>如果额外的层只需要学习恒等映射（什么都不做），那么带残差连接的网络只需要让 <span class="arithmatex">\(f(\mathbf{x}) = 0\)</span> 就行了</strong>——学"什么都不加"比学"原样输出"简单得多。这意味着加深网络至少不会让性能变差（worst case 是多余的层什么都不做）。</p>
+<h3 id="44-transformer">4.4 和 Transformer 的联系<a class="headerlink" href="#44-transformer" title="Permanent link">&para;</a></h3>
+<p>在你学过的 Transformer 中，<strong>每个 Attention 子层和每个 FFN 子层都有残差连接</strong>：</p>
+<div class="arithmatex">\[
+\text{output} = \text{LayerNorm}(\mathbf{x} + \text{Sublayer}(\mathbf{x}))
+\]</div>
+<p>没有残差连接，几十层的 Transformer 根本训不起来。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识，深度学习的基石技术）</p>
+<p><strong>参考</strong>：<a href="https://arxiv.org/abs/1512.03385">He et al., 2015 - "Deep Residual Learning for Image Recognition"</a> · <a href="https://en.wikipedia.org/wiki/Residual_neural_network">Wikipedia - Residual neural network</a></p>
+</blockquote>
+<hr />
+<h2 id="5">5. 优化器细节<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>你已经知道<strong>梯度下降</strong>（Gradient Descent）的基本思想：沿着损失函数梯度的反方向更新参数。但最简单的梯度下降（vanilla SGD）在实践中有很多问题：收敛慢、在"峡谷"型损失面上来回振荡、对学习率敏感。本节介绍两个关键改进。</p>
+<h3 id="51-sgd-with-momentum">5.1 SGD with Momentum<a class="headerlink" href="#51-sgd-with-momentum" title="Permanent link">&para;</a></h3>
+<p><strong>Momentum</strong>（动量）的物理类比非常直接——你作为物理背景的学习者会很熟悉。</p>
+<p>想象一个小球在损失面上滚动。没有动量时，小球在每个位置都严格沿着当前的最陡方向移动（纯梯度）。加上动量后，小球有了<strong>惯性</strong>：它不再每步都急转弯，而是受之前运动方向的影响。这让它在平坦方向上积累速度，在振荡方向上因为方向交替正负而自然抵消。</p>
+<p>数学上，引入一个<strong>速度变量</strong> <span class="arithmatex">\(\mathbf{v}\)</span>：</p>
+<div class="arithmatex">\[
+\mathbf{v}_t = \mu \mathbf{v}_{t-1} + \eta \nabla_\theta \mathcal{L}(\theta_{t-1})
+\]</div>
+<div class="arithmatex">\[
+\theta_t = \theta_{t-1} - \mathbf{v}_t
+\]</div>
+<p>其中：
+- <span class="arithmatex">\(\theta\)</span> 是网络参数
+- <span class="arithmatex">\(\eta\)</span> 是学习率
+- <span class="arithmatex">\(\nabla_\theta \mathcal{L}\)</span> 是损失函数对参数的梯度
+- <span class="arithmatex">\(\mu\)</span> 是动量系数（通常取 0.9），物理上对应"摩擦力"——<span class="arithmatex">\(\mu = 0\)</span> 无惯性退化回 vanilla SGD，<span class="arithmatex">\(\mu = 1\)</span> 完全无摩擦永不减速
+- <span class="arithmatex">\(\mathbf{v}_t\)</span> 是"速度"，是历史梯度的<strong>指数加权移动平均</strong></p>
+<h3 id="52-adam">5.2 Adam：自适应学习率<a class="headerlink" href="#52-adam" title="Permanent link">&para;</a></h3>
+<p><strong>Adam</strong>（Adaptive Moment Estimation，Kingma &amp; Ba, 2015）是目前最广泛使用的优化器，也是训练 Transformer/LLM 的标准选择。</p>
+<p>Adam 的核心思想：<strong>为每个参数单独维护一个自适应的学习率</strong>。具体方法是追踪梯度的一阶矩（均值）和二阶矩（未中心化方差）的指数移动平均。</p>
+<p>完整更新公式（每一步 <span class="arithmatex">\(t\)</span>）：</p>
+<p><strong>第一步：更新一阶矩估计</strong>（梯度的指数移动平均，追踪梯度的"方向"）</p>
+<div class="arithmatex">\[
+m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t
+\]</div>
+<p><strong>第二步：更新二阶矩估计</strong>（梯度平方的指数移动平均，追踪梯度的"大小"）</p>
+<div class="arithmatex">\[
+v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2
+\]</div>
+<p><strong>第三步：偏差修正</strong>（因为 <span class="arithmatex">\(m_0 = 0, v_0 = 0\)</span>，初期估计偏小）</p>
+<div class="arithmatex">\[
+\hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}
+\]</div>
+<p><strong>第四步：参数更新</strong></p>
+<div class="arithmatex">\[
+\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
+\]</div>
+<p>其中：
+- <span class="arithmatex">\(g_t = \nabla_\theta \mathcal{L}(\theta_{t-1})\)</span> 是当前梯度
+- <span class="arithmatex">\(\beta_1 = 0.9\)</span>（一阶矩的衰减率，类似 momentum 系数）
+- <span class="arithmatex">\(\beta_2 = 0.999\)</span>（二阶矩的衰减率）
+- <span class="arithmatex">\(\eta\)</span> 是学习率（通常 <span class="arithmatex">\(10^{-3}\)</span> 到 <span class="arithmatex">\(10^{-4}\)</span>）
+- <span class="arithmatex">\(\epsilon \approx 10^{-8}\)</span>（防止除以零）</p>
+<p><strong>为什么有效</strong>：
+- <span class="arithmatex">\(\hat{m}_t\)</span> 起到了类似 Momentum 的作用——累积梯度的方向
+- 分母 <span class="arithmatex">\(\sqrt{\hat{v}_t}\)</span> 实现了<strong>自适应</strong>：对于梯度一直很大的参数，<span class="arithmatex">\(\hat{v}_t\)</span> 大，有效学习率小（不要走太快）；对于梯度一直很小的参数，<span class="arithmatex">\(\hat{v}_t\)</span> 小，有效学习率大（加速探索）</p>
+<h3 id="53">5.3 学习率调度<a class="headerlink" href="#53" title="Permanent link">&para;</a></h3>
+<p>即使用了 Adam，学习率 <span class="arithmatex">\(\eta\)</span> 也不应该在整个训练过程中保持不变。现代训练通常使用 <strong>warmup + cosine decay</strong> 调度：</p>
+<ol>
+<li><strong>Warmup</strong>（热身）：训练刚开始时，学习率从接近 0 线性增长到目标值。原因是训练初期参数离最优很远，梯度的方向不太可靠，大学习率会导致不稳定。</li>
+<li><strong>Cosine decay</strong>（余弦衰减）：warmup 结束后，学习率按余弦函数从最大值平滑下降到接近 0。</li>
+</ol>
+<div class="arithmatex">\[
+\eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min})\left(1 + \cos\frac{t \cdot \pi}{T}\right)
+\]</div>
+<p>其中 <span class="arithmatex">\(T\)</span> 是总训练步数。这比简单的线性衰减更平滑，在训练后期给模型更多时间做精细调整。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（SGD with Momentum、Adam 是教科书内容，warmup + cosine decay 是 Level 2 工程实践共识）</p>
+<p><strong>参考</strong>：
+- Adam：<a href="https://arxiv.org/abs/1412.6980">Kingma &amp; Ba, 2015 - "Adam: A Method for Stochastic Optimization"</a>
+- <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam">Wikipedia - Stochastic gradient descent § Extensions and variants</a>
+- <a href="https://www.deeplearningbook.org/contents/optimization.html">Deep Learning Book Ch.8 - Optimization for Training Deep Models</a></p>
+</blockquote>
+<hr />
+<h2 id="6">6. 总结：现代深层网络的标准配方<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>把上面的技术组合在一起，现代深层网络的训练标准配方是：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解决方案</th>
+<th>出现年代</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对称性破坏</td>
+<td>随机初始化</td>
+<td>—</td>
+</tr>
+<tr>
+<td>前向/反向传播中方差不稳定</td>
+<td>Xavier / He 初始化</td>
+<td>2010 / 2015</td>
+</tr>
+<tr>
+<td>每层输入分布漂移</td>
+<td>Batch Norm / Layer Norm</td>
+<td>2015 / 2016</td>
+</tr>
+<tr>
+<td>梯度消失</td>
+<td>残差连接 + ReLU</td>
+<td>2015</td>
+</tr>
+<tr>
+<td>优化困难</td>
+<td>Adam + 学习率调度</td>
+<td>2015</td>
+</tr>
+</tbody>
+</table>
+<p>这些技术不是各自独立的——它们相互配合。比如 He 初始化是为 ReLU 设计的，残差连接配合 BN/LN 使用效果最好，Adam 配合 warmup 更稳定。</p>
+<p><strong>Transformer 是这些技术的集大成者</strong>：每一层都有残差连接 + LayerNorm，用 Adam + warmup + cosine decay 训练。理解了本章内容，你就理解了 Transformer 训练基础设施的大部分。</p>
+<hr />
+<h3 id="_2">公式速查卡<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>公式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\text{梯度} \propto \alpha^n\)</span>（<span class="arithmatex">\(\alpha\)</span> 为每层缩放因子）</td>
+<td>梯度消失/爆炸的根源</td>
+</tr>
+<tr>
+<td>Xavier：<span class="arithmatex">\(\text{Var}(w) = \frac{1}{n_{\text{in}}}\)</span></td>
+<td>配合 Tanh / Sigmoid</td>
+</tr>
+<tr>
+<td>He：<span class="arithmatex">\(\text{Var}(w) = \frac{2}{n_{\text{in}}}\)</span></td>
+<td>配合 ReLU（补偿负半轴截断）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}\)</span>，<span class="arithmatex">\(\tilde{x} = \gamma \hat{x} + \beta\)</span></td>
+<td>Batch Normalization</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h} = f(\mathbf{x}) + \mathbf{x}\)</span></td>
+<td>残差连接</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial \mathbf{h}}{\partial \mathbf{x}} = \frac{\partial f}{\partial \mathbf{x}} + \mathbf{I}\)</span></td>
+<td>残差连接的梯度（<span class="arithmatex">\(+I\)</span> 是关键）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t\)</span></td>
+<td>Adam 一阶矩</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}\)</span></td>
+<td>Adam 参数更新</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键数值</strong>：Xavier &lt; He（He 是 Xavier 的 2 倍）；Sigmoid <span class="arithmatex">\(f'_{\max} = 0.25\)</span>；<span class="arithmatex">\(\beta_1 = 0.9\)</span>，<span class="arithmatex">\(\beta_2 = 0.999\)</span></p>
+<hr />
+<h2 id="_3">理解检测<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><strong>Q1</strong>：假设你用 Sigmoid 激活函数训练一个 20 层 MLP，发现前几层的权重几乎不更新。你的同事建议"把学习率调大 100 倍"。这个建议好不好？为什么？</p>
+<blockquote>
+<p>提示：Sigmoid 的 <span class="arithmatex">\(f' \leq 0.25\)</span>，20 层连乘后梯度 <span class="arithmatex">\(\approx 0.25^{20} \approx ?\)</span>。调大学习率对前几层和后几层的影响分别是什么？</p>
+</blockquote>
+<p>你的回答：</p>
+<p><strong>Q2</strong>：Xavier 初始化要求 <span class="arithmatex">\(\text{Var}(w) = 1/n_{\text{in}}\)</span>，He 初始化要求 <span class="arithmatex">\(\text{Var}(w) = 2/n_{\text{in}}\)</span>。如果你用 Xavier 初始化来训练一个使用 ReLU 激活函数的深层网络，会发生什么？</p>
+<blockquote>
+<p>提示：查速查卡——Xavier 和 He 谁大？ReLU 砍掉负半轴会让每层方差变大还是变小？</p>
+</blockquote>
+<p>你的回答：</p>
+<p><strong>Q3</strong>：有人说"残差连接本质上就是让网络可以选择性地跳过某些层"。你同意这个说法吗？请用反向传播的梯度公式来解释残差连接到底在做什么。</p>
+<blockquote>
+<p>提示：查速查卡中残差连接的梯度公式，关注 <span class="arithmatex">\(+I\)</span> 这一项的作用</p>
+</blockquote>
+<p>你的回答：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

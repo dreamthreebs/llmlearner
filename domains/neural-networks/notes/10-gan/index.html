@@ -1,0 +1,3051 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="帮你快速建立新领域的可靠知识结构">
+      
+      
+      
+      
+        <link rel="prev" href="../09-autoencoder-vae/">
+      
+      
+        <link rel="next" href="../11-gnn/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>GAN - LLM Learner — 研究者知识库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#10-gan" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-header__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM Learner — 研究者知识库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GAN
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-nav__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM Learner — 研究者知识库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    神经网络
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01a-mlp-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLP 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01b-activation-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    激活函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-deep-mlp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    深入 MLP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-rnn-lstm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN 与 LSTM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-training-math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    训练的数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-generalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    正则化与泛化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-pytorch-practice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch 实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-autoencoder-vae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AutoEncoder 与 VAE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAN
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-gan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. GAN 的核心思想
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. GAN 的核心思想">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 伪造者与鉴定师
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 数学形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gan-minimax-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. GAN 的目标函数（Minimax Game）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. GAN 的目标函数（Minimax Game）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-max_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 判别器的视角（\(\max_D\)）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-min_g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 生成器的视角（\(\min_G\)）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-nash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Nash 均衡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 训练过程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 训练过程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 交替训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 训练不稳定性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-gan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. GAN 的重要变体
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. GAN 的重要变体">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-dcgandeep-convolutional-gan-2016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 DCGAN（Deep Convolutional GAN, 2016）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-wganwasserstein-gan-2017" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 WGAN（Wasserstein GAN, 2017）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-stylegan2019" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 StyleGAN（2019）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-gancgan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 条件 GAN（cGAN）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-gan-vs-vae-vs-diffusion-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GAN vs VAE vs Diffusion Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-gan-diffusion-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GAN 的衰落与 Diffusion Model 的崛起
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. GAN 的衰落与 Diffusion Model 的崛起">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-gnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LLM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/02-neural-network-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/03-word-embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    词嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/04-attention-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    注意力机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/05-transformer-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/06-pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    预训练
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/07-finetuning-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微调与对齐
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMB
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CMB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/02-expanding-universe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    膨胀宇宙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/03-thermal-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    热历史
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    点集拓扑
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    点集拓扑
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Agent
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Agent
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/02-prompting-reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示与推理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/03-tool-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/05-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    规划
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/06-architectures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/07-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/08-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    评估与调试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/09-applications-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    应用与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    语言学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-gan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. GAN 的核心思想
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. GAN 的核心思想">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 伪造者与鉴定师
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 数学形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gan-minimax-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. GAN 的目标函数（Minimax Game）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. GAN 的目标函数（Minimax Game）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-max_d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 判别器的视角（\(\max_D\)）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-min_g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 生成器的视角（\(\min_G\)）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-nash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Nash 均衡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 训练过程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 训练过程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 交替训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 训练不稳定性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-gan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. GAN 的重要变体
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. GAN 的重要变体">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-dcgandeep-convolutional-gan-2016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 DCGAN（Deep Convolutional GAN, 2016）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-wganwasserstein-gan-2017" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 WGAN（Wasserstein GAN, 2017）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-stylegan2019" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 StyleGAN（2019）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-gancgan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 条件 GAN（cGAN）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-gan-vs-vae-vs-diffusion-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GAN vs VAE vs Diffusion Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-gan-diffusion-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GAN 的衰落与 Diffusion Model 的崛起
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. GAN 的衰落与 Diffusion Model 的崛起">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="10-gan">10 - GAN：对抗生成网络<a class="headerlink" href="#10-gan" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>主维度</strong>：D2 训练范式
+<strong>关键关系</strong>：
+- GAN (方法) --对比--&gt; VAE (方法)：GAN 用对抗训练，VAE 用变分推断
+- Diffusion (方法) --对比--&gt; GAN (方法)：Diffusion 用去噪替代对抗训练
+- DCGAN (方法) --实例--&gt; GAN (方法)：DCGAN 是用 CNN 架构实现的 GAN 实例</p>
+<p><strong>学习路径</strong>：01-overview → 深入 MLP（02） → CNN（03） → AutoEncoder/VAE（09） → <strong>本章</strong> → GNN（11）</p>
+<p><strong>前置知识</strong>：MLP 与反向传播、CNN（卷积/转置卷积）、概率论基础（概率分布、期望）、VAE 的基本思想（09 已覆盖）</p>
+<p><strong>参考</strong>：
+- <a href="https://arxiv.org/abs/1406.2661">Goodfellow et al. 2014 - Generative Adversarial Nets</a>
+- <a href="https://arxiv.org/abs/1701.07875">Arjovsky et al. 2017 - WGAN</a>
+- <a href="https://arxiv.org/abs/1812.04948">Karras et al. 2019 - StyleGAN</a>
+- <a href="https://en.wikipedia.org/wiki/Generative_adversarial_network">Wikipedia - Generative adversarial network</a>
+- <a href="https://lilianweng.github.io/posts/2017-08-20-gan/">Lilian Weng - From GAN to WGAN</a>
+- <a href="https://d2l.ai/chapter_generative-adversarial-networks/index.html">d2l.ai - Generative Adversarial Networks</a></p>
+</blockquote>
+<hr />
+<h2 id="_1">核心问题<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>上一章我们学了 VAE——通过学习数据的潜在分布来生成新数据。但 VAE 生成的图像总是偏模糊。</p>
+<p>一个更激进的问题：<strong>能不能训练一个网络，直接生成逼真到人眼无法区分的图像、音乐、甚至文本？</strong></p>
+<p>2014 年，Ian Goodfellow 提出了<strong>生成对抗网络</strong>（Generative Adversarial Network，GAN），用一个全新的思路来回答这个问题：不需要显式地建模数据分布，只需要让两个网络<strong>互相对抗</strong>。</p>
+<blockquote>
+<p>可靠程度：<strong>Level 1</strong>（教科书共识）</p>
+</blockquote>
+<hr />
+<h2 id="1-gan">1. GAN 的核心思想<a class="headerlink" href="#1-gan" title="Permanent link">&para;</a></h2>
+<h3 id="11">1.1 伪造者与鉴定师<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p>GAN 的直觉可以用一个类比来理解：</p>
+<blockquote>
+<p>想象一个<strong>伪造者</strong>（Forger）在学习造假钞，一个<strong>鉴定师</strong>（Detective）在学习辨别真假。伪造者不断改进自己的技术，鉴定师也不断提升自己的鉴别能力。两者互相竞争，不断进步。最终，伪造者造出的假钞好到连鉴定师也分辨不出来。</p>
+</blockquote>
+<p>对应到 GAN 中：</p>
+<ul>
+<li>
+<p><strong>生成器</strong>（Generator，<span class="arithmatex">\(G\)</span>）：扮演伪造者。它接收一个随机噪声向量 <span class="arithmatex">\(z\)</span>，输出一个"假数据"样本 <span class="arithmatex">\(G(z)\)</span>。目标是让生成的数据尽可能逼真，骗过判别器。</p>
+</li>
+<li>
+<p><strong>判别器</strong>（Discriminator，<span class="arithmatex">\(D\)</span>）：扮演鉴定师。它接收一个数据样本（可能是真数据，也可能是生成器造的假数据），输出一个概率 <span class="arithmatex">\(D(x) \in [0, 1]\)</span>——表示这个样本是真数据的概率。目标是正确区分真假。</p>
+</li>
+</ul>
+<h3 id="12">1.2 数学形式<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<p>生成器从随机噪声出发：</p>
+<div class="arithmatex">\[z \sim p_z(z) = \mathcal{N}(0, I), \quad \text{假数据} = G(z)\]</div>
+<p>其中 <span class="arithmatex">\(z\)</span> 是从标准正态分布采样的低维噪声向量（比如 100 维），<span class="arithmatex">\(G\)</span> 是一个神经网络，把 <span class="arithmatex">\(z\)</span> 映射到数据空间（比如 <span class="arithmatex">\(64 \times 64 \times 3\)</span> 的图像）。</p>
+<p>判别器是一个二分类器：</p>
+<div class="arithmatex">\[D(x) = \text{输入 } x \text{ 是真数据的概率}\]</div>
+<p><span class="arithmatex">\(D\)</span> 的输出经过 sigmoid 函数，范围在 <span class="arithmatex">\([0, 1]\)</span> 之间。<span class="arithmatex">\(D(x) = 1\)</span> 表示"完全确定是真数据"，<span class="arithmatex">\(D(x) = 0\)</span> 表示"完全确定是假数据"。</p>
+<hr />
+<h2 id="2-gan-minimax-game">2. GAN 的目标函数（Minimax Game）<a class="headerlink" href="#2-gan-minimax-game" title="Permanent link">&para;</a></h2>
+<p>GAN 的训练目标是一个<strong>极小极大博弈</strong>（minimax game）：</p>
+<div class="arithmatex">\[\min_G \max_D \; V(D, G) = \mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]\]</div>
+<p>这个公式信息量很大，逐项拆解：</p>
+<h3 id="21-max_d">2.1 判别器的视角（<span class="arithmatex">\(\max_D\)</span>）<a class="headerlink" href="#21-max_d" title="Permanent link">&para;</a></h3>
+<p>判别器要最大化 <span class="arithmatex">\(V(D,G)\)</span>，即：</p>
+<ul>
+<li>
+<p><strong><span class="arithmatex">\(\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]\)</span></strong>：对真数据，<span class="arithmatex">\(D\)</span> 希望输出接近 1。<span class="arithmatex">\(\log D(x)\)</span> 在 <span class="arithmatex">\(D(x) \to 1\)</span> 时趋向 0（最大值），在 <span class="arithmatex">\(D(x) \to 0\)</span> 时趋向 <span class="arithmatex">\(-\infty\)</span>。所以这一项鼓励 <span class="arithmatex">\(D\)</span> 给真数据打高分。</p>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]\)</span></strong>：对假数据 <span class="arithmatex">\(G(z)\)</span>，<span class="arithmatex">\(D\)</span> 希望输出接近 0。<span class="arithmatex">\(\log(1 - D(G(z)))\)</span> 在 <span class="arithmatex">\(D(G(z)) \to 0\)</span> 时趋向 0（最大值），在 <span class="arithmatex">\(D(G(z)) \to 1\)</span> 时趋向 <span class="arithmatex">\(-\infty\)</span>。所以这一项鼓励 <span class="arithmatex">\(D\)</span> 给假数据打低分。</p>
+</li>
+</ul>
+<p>总结：<strong>判别器想让真数据得分高、假数据得分低。</strong></p>
+<h3 id="22-min_g">2.2 生成器的视角（<span class="arithmatex">\(\min_G\)</span>）<a class="headerlink" href="#22-min_g" title="Permanent link">&para;</a></h3>
+<p>生成器要最小化 <span class="arithmatex">\(V(D,G)\)</span>。它只能影响第二项（因为真数据和 <span class="arithmatex">\(G\)</span> 无关）：</p>
+<ul>
+<li><strong><span class="arithmatex">\(\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]\)</span></strong>：<span class="arithmatex">\(G\)</span> 希望 <span class="arithmatex">\(D(G(z)) \to 1\)</span>（骗过判别器），这样 <span class="arithmatex">\(\log(1 - D(G(z))) \to -\infty\)</span>，<span class="arithmatex">\(V\)</span> 被最小化。</li>
+</ul>
+<p>总结：<strong>生成器想让假数据骗过判别器。</strong></p>
+<h3 id="23-nash">2.3 Nash 均衡<a class="headerlink" href="#23-nash" title="Permanent link">&para;</a></h3>
+<p>博弈论告诉我们，这个游戏的<strong>Nash 均衡</strong>是：</p>
+<div class="arithmatex">\[p_G = p_{\text{data}}, \quad D(x) = \frac{1}{2} \quad \forall x\]</div>
+<p>即生成器学到的分布 <span class="arithmatex">\(p_G\)</span> 完全等于真实数据分布 <span class="arithmatex">\(p_{\text{data}}\)</span>，判别器对任何输入都输出 0.5——因为它真的无法区分真假了。</p>
+<p>Goodfellow 在原始论文中证明了：在理想情况下（<span class="arithmatex">\(G\)</span> 和 <span class="arithmatex">\(D\)</span> 都有无限容量、训练充分），GAN 的全局最优解确实是 <span class="arithmatex">\(p_G = p_{\text{data}}\)</span>。</p>
+<blockquote>
+<p>可靠程度：<strong>Level 1</strong>（理论证明存在于原始论文；但实践中几乎不可能达到这个理想状态）</p>
+</blockquote>
+<hr />
+<h2 id="3">3. 训练过程<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 交替训练<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>GAN 的训练不像普通网络那样只优化一个损失函数——它需要<strong>交替训练</strong>两个网络：</p>
+<ol>
+<li><strong>固定 <span class="arithmatex">\(G\)</span>，训练 <span class="arithmatex">\(D\)</span> 几步</strong>：用真数据和 <span class="arithmatex">\(G\)</span> 生成的假数据训练判别器，让它更好地区分真假</li>
+<li><strong>固定 <span class="arithmatex">\(D\)</span>，训练 <span class="arithmatex">\(G\)</span> 一步</strong>：让生成器生成假数据，通过判别器的反馈更新 <span class="arithmatex">\(G\)</span>，让它更好地骗过 <span class="arithmatex">\(D\)</span></li>
+<li>重复</li>
+</ol>
+<p>在实践中，通常每轮先训练 <span class="arithmatex">\(D\)</span> 1-5 步，再训练 <span class="arithmatex">\(G\)</span> 1 步。判别器需要"跟上"生成器，否则它给出的反馈信号就没有意义——就像一个完全不懂行的鉴定师，伪造者从它那里学不到任何东西。</p>
+<h3 id="32">3.2 训练不稳定性<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>GAN 的训练出了名地难。两个主要问题：</p>
+<p><strong>模式坍塌（Mode Collapse）</strong></p>
+<p>生成器发现只生成某一种类型的输出就能骗过判别器，于是放弃了生成其他类型。例如在 MNIST 上训练时，生成器可能只生成数字"1"（因为它学到了一种很逼真的"1"的画法），完全不生成其他数字。</p>
+<p>为什么会这样？因为生成器的目标只是骗过判别器，而不是覆盖整个数据分布。如果只生成一种模式就足以让 <span class="arithmatex">\(D(G(z))\)</span> 接近 1，<span class="arithmatex">\(G\)</span> 就没有动力去探索其他模式。</p>
+<p><strong>训练震荡</strong></p>
+<p><span class="arithmatex">\(G\)</span> 和 <span class="arithmatex">\(D\)</span> 可能陷入"你追我赶"的震荡：<span class="arithmatex">\(D\)</span> 学会识别某种假数据，<span class="arithmatex">\(G\)</span> 就换一种方式造假；<span class="arithmatex">\(D\)</span> 再学会识别新的假数据，<span class="arithmatex">\(G\)</span> 再变……损失函数上下波动，不收敛。</p>
+<p>这和物理中的问题很像：两个耦合的振荡器，如果阻尼不够，就会永远振荡下去。</p>
+<blockquote>
+<p>可靠程度：<strong>Level 1</strong>（训练不稳定性是 GAN 的已知核心问题）</p>
+</blockquote>
+<hr />
+<h2 id="4-gan">4. GAN 的重要变体<a class="headerlink" href="#4-gan" title="Permanent link">&para;</a></h2>
+<p>GAN 提出后催生了大量变体，每个都试图解决原始 GAN 的某个问题。以下是最重要的几个：</p>
+<h3 id="41-dcgandeep-convolutional-gan-2016">4.1 DCGAN（Deep Convolutional GAN, 2016）<a class="headerlink" href="#41-dcgandeep-convolutional-gan-2016" title="Permanent link">&para;</a></h3>
+<p><strong>核心改进</strong>：用卷积网络替代全连接网络。</p>
+<p>原始 GAN 使用 MLP，对图像生成效果有限。DCGAN 把生成器和判别器都换成 CNN：生成器使用<strong>转置卷积</strong>（transposed convolution，也叫反卷积）把低维向量逐步上采样成图像；判别器使用标准卷积逐步下采样图像到一个标量。</p>
+<p><strong>转置卷积的直觉</strong>：标准卷积把一个大的特征图"压缩"成小的特征图（比如 <span class="arithmatex">\(8 \times 8 \to 6 \times 6\)</span>）。转置卷积做相反的事——把一个小的特征图"扩展"成大的特征图（比如 <span class="arithmatex">\(4 \times 4 \to 8 \times 8\)</span>）。具体做法是在输入像素之间插入零（padding），然后做标准卷积，使得输出尺寸大于输入尺寸。在生成器中，多层转置卷积把一个 <span class="arithmatex">\(1 \times 1\)</span> 的向量逐步放大成 <span class="arithmatex">\(64 \times 64\)</span> 甚至更大的图像。</p>
+<p>DCGAN 还总结了一套架构经验法则（如使用 BatchNorm、避免全连接层、生成器用 ReLU、判别器用 LeakyReLU），这些成为后续 GAN 工作的标准实践。</p>
+<blockquote>
+<p>参考：<a href="https://arxiv.org/abs/1511.06434">Radford et al. 2016</a></p>
+</blockquote>
+<h3 id="42-wganwasserstein-gan-2017">4.2 WGAN（Wasserstein GAN, 2017）<a class="headerlink" href="#42-wganwasserstein-gan-2017" title="Permanent link">&para;</a></h3>
+<p><strong>核心改进</strong>：用 <strong>Wasserstein 距离</strong>（也叫推土机距离，Earth Mover's Distance）替代原始 GAN 中的 JS 散度，训练更稳定。</p>
+<p>原始 GAN 目标函数隐含地最小化生成分布和真实分布之间的 <strong>JS 散度</strong>（Jensen-Shannon divergence）。问题是：当两个分布没有重叠时，JS 散度恒为常数 <span class="arithmatex">\(\log 2\)</span>，梯度为零——判别器给出的信号完全没有用，生成器无法学习。</p>
+<p>Wasserstein 距离的直觉是："把分布 <span class="arithmatex">\(p\)</span> 变成分布 <span class="arithmatex">\(q\)</span> 需要搬运多少'土'？"它即使在两个分布不重叠时也能给出有意义的梯度，因此训练更稳定、模式坍塌更少。</p>
+<p>代价是判别器（在 WGAN 中改叫 <strong>critic</strong>）需要满足 <strong>Lipschitz 约束</strong>——原始论文通过权重裁剪（weight clipping）实现，后来 WGAN-GP 使用梯度惩罚（gradient penalty）效果更好。</p>
+<blockquote>
+<p>参考：<a href="https://arxiv.org/abs/1701.07875">Arjovsky et al. 2017</a> · <a href="https://arxiv.org/abs/1704.00028">WGAN-GP (Gulrajani et al. 2017)</a></p>
+</blockquote>
+<h3 id="43-stylegan2019">4.3 StyleGAN（2019）<a class="headerlink" href="#43-stylegan2019" title="Permanent link">&para;</a></h3>
+<p><strong>核心改进</strong>：对生成过程引入<strong>风格控制</strong>，让生成器可以分层控制图像的不同属性。</p>
+<p>StyleGAN 的生成器不是简单地从噪声 <span class="arithmatex">\(z\)</span> 直接生成图像，而是先把 <span class="arithmatex">\(z\)</span> 映射到一个"风格空间" <span class="arithmatex">\(w\)</span>，然后在网络的每一层通过<strong>自适应实例归一化</strong>（AdaIN）注入风格信息。低层控制整体结构（如人脸形状、姿态），高层控制细节（如头发颜色、皮肤纹理）。</p>
+<p>StyleGAN 能生成 1024×1024 的超逼真人脸（<a href="https://thispersondoesnotexist.com">thispersondoesnotexist.com</a> 就是用 StyleGAN 做的），标志着 GAN 在图像生成质量上的巅峰。</p>
+<blockquote>
+<p>参考：<a href="https://arxiv.org/abs/1812.04948">Karras et al. 2019 - StyleGAN</a> · <a href="https://arxiv.org/abs/1912.04958">StyleGAN2 (2020)</a></p>
+</blockquote>
+<h3 id="44-gancgan">4.4 条件 GAN（cGAN）<a class="headerlink" href="#44-gancgan" title="Permanent link">&para;</a></h3>
+<p><strong>核心改进</strong>：给生成器和判别器额外的<strong>条件信息</strong>（如类别标签）。</p>
+<p>原始 GAN 只能生成随机样本，无法控制生成内容。cGAN 在生成器的输入中加入条件 <span class="arithmatex">\(y\)</span>（比如"生成一个数字 7"），判别器也同时接收条件和数据，判断"这个数据在给定条件 <span class="arithmatex">\(y\)</span> 下是否真实"。</p>
+<p>目标函数变为：</p>
+<div class="arithmatex">\[\min_G \max_D \; \mathbb{E}_{x \sim p_{\text{data}}}[\log D(x|y)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z|y)|y))]\]</div>
+<p>应用：文字转图像（pix2pix）、图像超分辨率（SRGAN）、图像风格转换。</p>
+<blockquote>
+<p>参考：<a href="https://arxiv.org/abs/1411.1784">Mirza &amp; Osindero 2014</a> · <a href="https://arxiv.org/abs/1611.07004">pix2pix (Isola et al. 2017)</a></p>
+</blockquote>
+<hr />
+<h2 id="5-gan-vs-vae-vs-diffusion-model">5. GAN vs VAE vs Diffusion Model<a class="headerlink" href="#5-gan-vs-vae-vs-diffusion-model" title="Permanent link">&para;</a></h2>
+<p>2020 年代后，图像生成领域出现了三种主流方法。它们各有优劣：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>VAE</th>
+<th>GAN</th>
+<th>Diffusion Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生成质量</td>
+<td>模糊</td>
+<td>清晰锐利</td>
+<td>最高质量</td>
+</tr>
+<tr>
+<td>训练稳定性</td>
+<td>稳定</td>
+<td>不稳定（模式坍塌）</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>生成多样性</td>
+<td>高</td>
+<td>低（容易模式坍塌）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>生成速度</td>
+<td>快（一次前向传播）</td>
+<td>快（一次前向传播）</td>
+<td>慢（需要迭代去噪）</td>
+</tr>
+<tr>
+<td>理论基础</td>
+<td>变分推断</td>
+<td>博弈论</td>
+<td>随机过程（分数匹配）</td>
+</tr>
+<tr>
+<td>潜在空间</td>
+<td>有意义、可插值</td>
+<td>可控性差</td>
+<td>有意义</td>
+</tr>
+<tr>
+<td>代表模型</td>
+<td>β-VAE, VQ-VAE</td>
+<td>StyleGAN</td>
+<td>Stable Diffusion, DALL-E</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Diffusion Model</strong>（扩散模型）是 2020 年后崛起的生成模型。它的思路和 GAN 完全不同：不是对抗训练，而是学习一个<strong>逐步去噪</strong>的过程——先把真实图片逐步加噪声变成纯噪声，然后训练一个网络学习反转这个过程（从噪声恢复图片）。详细内容超出本章范围，这里只做对比。</p>
+<blockquote>
+<p>可靠程度：<strong>Level 2</strong>（三者对比是领域常见总结，具体优劣取决于任务和模型规模）</p>
+</blockquote>
+<hr />
+<h2 id="6-gan-diffusion-model">6. GAN 的衰落与 Diffusion Model 的崛起<a class="headerlink" href="#6-gan-diffusion-model" title="Permanent link">&para;</a></h2>
+<p>这是一个值得了解的历史趋势。</p>
+<p><strong>GAN 的黄金期（2014-2021）</strong>：从 Goodfellow 提出 GAN 到 StyleGAN3，GAN 一直是图像生成的主流方法。arXiv 上每年有数千篇 GAN 相关论文。</p>
+<p><strong>转折点（2021-2022）</strong>：</p>
+<ul>
+<li>2020 年，DDPM（Denoising Diffusion Probabilistic Models）展示了 Diffusion Model 可以生成高质量图像。</li>
+<li>2021 年，Dhariwal &amp; Nichol 的论文 <a href="https://arxiv.org/abs/2105.05233">"Diffusion Models Beat GANs on Image Synthesis"</a> 直接在标题里宣告了 Diffusion Model 超越 GAN。</li>
+<li>2022 年，DALL-E 2、Stable Diffusion、Imagen 等模型横空出世，在文字转图像任务上达到了惊人的质量和多样性——全部基于 Diffusion Model，不用 GAN。</li>
+</ul>
+<p><strong>为什么 GAN 被取代了？</strong> 核心原因是 GAN 的训练不稳定性问题从未被根本解决。模式坍塌、训练震荡、超参数敏感等问题使得 GAN 在大规模、高分辨率生成任务上越来越力不从心。Diffusion Model 虽然生成速度慢，但训练稳定、生成质量高、多样性好，这些优势在大规模部署中更重要。</p>
+<p>当然，GAN 并没有完全消亡。在一些需要实时生成的场景（如视频游戏中的纹理生成）和对抗样本研究中，GAN 仍然有用。但在图像/视频生成的主流研究中，GAN 已经基本让位给了 Diffusion Model。</p>
+<blockquote>
+<p>可靠程度：<strong>Level 2</strong>（趋势准确，但"取代"的程度因子领域而异）</p>
+</blockquote>
+<hr />
+<h3 id="_2">公式速查卡<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>公式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(z \sim p_z(z) = \mathcal{N}(0, I)\)</span></td>
+<td>噪声 <span class="arithmatex">\(z\)</span> 服从标准正态分布</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(G(z)\)</span></td>
+<td>生成器输出：假数据</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D(x) \in [0, 1]\)</span></td>
+<td>判别器输出：样本为真数据的概率</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\min_G \max_D V(D,G) = \mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1-D(G(z)))]\)</span></td>
+<td>GAN 极小极大目标</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(p_G = p_{\text{data}}, \; D(x) = 1/2\)</span></td>
+<td>Nash 均衡：最优时生成分布等于真实分布</td>
+</tr>
+<tr>
+<td>cGAN: <span class="arithmatex">\(\mathbb{E}[\log D(x\|y)] + \mathbb{E}[\log(1-D(G(z\|y)\|y))]\)</span></td>
+<td>条件 GAN 目标（含条件 <span class="arithmatex">\(y\)</span>）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>常用数值</strong>：噪声维度通常 100 维；训练时通常 D 每轮 1–5 步、G 每轮 1 步。</p>
+<hr />
+<h2 id="_3">理解检测<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><strong>Q1</strong>：GAN 的目标函数是 <span class="arithmatex">\(\min_G \max_D \mathbb{E}[\log D(x)] + \mathbb{E}[\log(1-D(G(z)))]\)</span>。假设判别器已经训练到最优（对于当前的 <span class="arithmatex">\(G\)</span>），那么生成器的最优化目标等价于最小化什么统计量？（提示：Goodfellow 在原始论文中证明了这一点。）现在再想想：当生成分布和真实分布完全不重叠时（这在高维空间中很常见），这个统计量的梯度是多少？这解释了原始 GAN 的什么训练问题？</p>
+<blockquote>
+<p>提示：用 GAN 极小极大目标 <span class="arithmatex">\(V(D,G)\)</span>；当 D 最优时，G 的目标等价于最小化 JS 散度；考虑 JS 散度在分布不重叠时的梯度。</p>
+</blockquote>
+<p>你的回答：</p>
+<p><strong>Q2</strong>：模式坍塌（mode collapse）是 GAN 训练中最常见的失败模式。请用具体例子解释：如果用 GAN 生成 MNIST 手写数字，模式坍塌会表现为什么现象？从生成器的损失函数角度解释，为什么生成器"偷懒"只生成一种数字是一个局部最优策略？</p>
+<p>你的回答：</p>
+<p><strong>Q3</strong>：VAE 和 GAN 都可以生成新图像，但方式完全不同。假设你需要做一个药物分子生成任务：在潜在空间中搜索满足特定性质（如高药效、低毒性）的分子，然后解码生成新分子。你会选 VAE 还是 GAN？为什么？（提示：想想哪种模型的潜在空间更适合"搜索和优化"。）</p>
+<p>你的回答：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

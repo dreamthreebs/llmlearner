@@ -1,0 +1,4926 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="帮你快速建立新领域的可靠知识结构">
+      
+      
+      
+      
+        <link rel="prev" href="../01-overview/">
+      
+      
+        <link rel="next" href="../01b-activation-functions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>MLP 基础 - LLM Learner — 研究者知识库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#01a-mlp" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-header__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM Learner — 研究者知识库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MLP 基础
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-nav__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM Learner — 研究者知识库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    神经网络
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLP 基础
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLP 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 核心问题：我们在做什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 神经元：最小计算单元
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 为什么要激活函数（非线性）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 多层感知机（MLP）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 多层感知机（MLP）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 每层的数学
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 "全连接"的含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 万能近似定理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 损失函数：衡量"学得好不好"
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 损失函数：衡量&#34;学得好不好&#34;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-mse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 回归任务：均方误差（MSE）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-cross-entropy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 分类任务：交叉熵（Cross-Entropy）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 分类任务：交叉熵（Cross-Entropy）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题：网络的输出是"裸分"，不是概率
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Softmax：把裸分变成概率
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        交叉熵：衡量概率预测有多差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整的例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 为什么分成两类任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 其他任务类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 梯度下降：怎么找到最好的参数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 梯度下降：怎么找到最好的参数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 基本思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 学习率的影响
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-sgd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 随机梯度下降（SGD）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 反向传播：高效计算梯度
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 反向传播：高效计算梯度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 最简单的例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 完整数值例子：两层网络的反向传播
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 完整数值例子：两层网络的反向传播">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前向传播（从左到右算输出）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        反向传播（从右到左算梯度）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        汇总
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eta-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        更新参数（学习率 \(\eta = 0.1\)）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        验证：新参数再前向一次
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        流程总图
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 一般性理论推导
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.4 一般性理论推导">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        符号约定
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boldsymboldeltaell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心量：误差信号 \(\boldsymbol{\delta}^{(\ell)}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第 1 步：输出层的误差信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第 2 步：误差信号的逐层回传（核心递推公式）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第 3 步：从误差信号算参数梯度
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算法总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        标量版本：两层网络的完整推导
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="标量版本：两层网络的完整推导">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        网络定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        画出依赖关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-w_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial w_2}\)（第二层权重）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-b_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial b_2}\)（第二层偏置）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-w_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial w_1}\)（第一层权重）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-b_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial b_1}\)（第一层偏置）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四个梯度放在一起看
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代入 7.3 的数字验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 和梯度消失/爆炸的联系
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 和梯度消失/爆炸的联系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hexavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        He/Xavier 初始化：为什么能防梯度爆炸？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch Normalization：不是为了防梯度爆炸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        残差连接：给梯度开一条直通路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="残差连接：给梯度开一条直通路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        没有残差连接（普通网络）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        加上残差连接
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多层的情况
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-03-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        那不会 \(1 + 0.3 = 1.3\) 连乘导致爆炸吗？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么学残差这么厉害？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 过拟合：学"太好"反而不好
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 过拟合：学&#34;太好&#34;反而不好">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 训练误差 vs 测试误差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 对策
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 完整训练流程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. MLP 的优缺点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. MLP 的优缺点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01b-activation-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    激活函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-deep-mlp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    深入 MLP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-rnn-lstm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN 与 LSTM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-training-math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    训练的数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-generalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    正则化与泛化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-pytorch-practice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch 实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-autoencoder-vae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AutoEncoder 与 VAE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-gan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-gnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LLM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/02-neural-network-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/03-word-embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    词嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/04-attention-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    注意力机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/05-transformer-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/06-pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    预训练
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/07-finetuning-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微调与对齐
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMB
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CMB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/02-expanding-universe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    膨胀宇宙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/03-thermal-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    热历史
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    点集拓扑
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    点集拓扑
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Agent
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Agent
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/02-prompting-reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示与推理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/03-tool-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/05-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    规划
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/06-architectures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/07-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/08-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    评估与调试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/09-applications-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    应用与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    语言学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 核心问题：我们在做什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 神经元：最小计算单元
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 为什么要激活函数（非线性）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 多层感知机（MLP）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 多层感知机（MLP）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 每层的数学
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 "全连接"的含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 万能近似定理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 损失函数：衡量"学得好不好"
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 损失函数：衡量&#34;学得好不好&#34;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-mse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 回归任务：均方误差（MSE）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-cross-entropy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 分类任务：交叉熵（Cross-Entropy）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 分类任务：交叉熵（Cross-Entropy）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题：网络的输出是"裸分"，不是概率
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Softmax：把裸分变成概率
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        交叉熵：衡量概率预测有多差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整的例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 为什么分成两类任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 其他任务类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 梯度下降：怎么找到最好的参数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 梯度下降：怎么找到最好的参数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 基本思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 学习率的影响
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-sgd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 随机梯度下降（SGD）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 反向传播：高效计算梯度
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 反向传播：高效计算梯度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 最简单的例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 完整数值例子：两层网络的反向传播
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 完整数值例子：两层网络的反向传播">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前向传播（从左到右算输出）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        反向传播（从右到左算梯度）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        汇总
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eta-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        更新参数（学习率 \(\eta = 0.1\)）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        验证：新参数再前向一次
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        流程总图
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 一般性理论推导
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.4 一般性理论推导">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        符号约定
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boldsymboldeltaell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心量：误差信号 \(\boldsymbol{\delta}^{(\ell)}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第 1 步：输出层的误差信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第 2 步：误差信号的逐层回传（核心递推公式）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第 3 步：从误差信号算参数梯度
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算法总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        标量版本：两层网络的完整推导
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="标量版本：两层网络的完整推导">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        网络定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        画出依赖关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-w_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial w_2}\)（第二层权重）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-b_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial b_2}\)（第二层偏置）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-w_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial w_1}\)（第一层权重）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fracpartial-mathcallpartial-b_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        求 \(\frac{\partial \mathcal{L}}{\partial b_1}\)（第一层偏置）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四个梯度放在一起看
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代入 7.3 的数字验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 和梯度消失/爆炸的联系
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 和梯度消失/爆炸的联系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hexavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        He/Xavier 初始化：为什么能防梯度爆炸？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch Normalization：不是为了防梯度爆炸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        残差连接：给梯度开一条直通路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="残差连接：给梯度开一条直通路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        没有残差连接（普通网络）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        加上残差连接
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多层的情况
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-03-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        那不会 \(1 + 0.3 = 1.3\) 连乘导致爆炸吗？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么学残差这么厉害？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 过拟合：学"太好"反而不好
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 过拟合：学&#34;太好&#34;反而不好">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 训练误差 vs 测试误差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 对策
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 完整训练流程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. MLP 的优缺点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. MLP 的优缺点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="01a-mlp">01a - MLP 基础：从神经元到多层网络<a class="headerlink" href="#01a-mlp" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>主维度</strong>：D1 基础架构</p>
+<p><strong>学习路径</strong>：<strong>本章（MLP 基础）</strong> → 激活函数 → 深入 MLP → CNN → ...</p>
+<p><strong>前置知识</strong>：线性代数（向量、矩阵乘法）、微积分（偏导数、链式法则）</p>
+<p><strong>参考</strong>：
+- <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi">3Blue1Brown - Neural Networks 视频系列</a>（最佳入门视频）
+- <a href="http://neuralnetworksanddeeplearning.com/">Michael Nielsen 在线书（免费）</a>
+- <a href="https://www.deeplearningbook.org/">Goodfellow 等《Deep Learning》Ch.6</a>
+- <a href="https://en.wikipedia.org/wiki/Artificial_neural_network">Wikipedia - Artificial Neural Network</a></p>
+</blockquote>
+<hr />
+<h2 id="1">1. 核心问题：我们在做什么<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>你做物理实验时经常要拟合数据——比如测了一堆 <span class="arithmatex">\((x_i, y_i)\)</span> 数据点，然后假设 <span class="arithmatex">\(y = ax + b\)</span>，用最小二乘法求出 <span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(b\)</span>。</p>
+<p>这就是"学习"的最简单形式：<strong>你选定一个函数的形式（<span class="arithmatex">\(y = ax+b\)</span>），然后从数据中找出最好的参数（<span class="arithmatex">\(a, b\)</span>）。</strong></p>
+<p>但线性函数太简单了。如果数据的关系是复杂的非线性呢？你可能试过用多项式 <span class="arithmatex">\(y = ax^2 + bx + c\)</span>，甚至更高阶。但如果输入不是一个数而是几百个数呢（比如一张图片有几万个像素值）？人工选函数形式就不现实了。</p>
+<p><strong>神经网络的核心思想</strong>：不人工选函数形式，而是构造一种"可以变成几乎任何函数"的通用结构，然后让数据自动决定它应该长什么样。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://en.wikipedia.org/wiki/Function_approximation">Wikipedia - Function approximation</a></p>
+</blockquote>
+<hr />
+<h2 id="2">2. 神经元：最小计算单元<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>名字听着玄乎，但一个神经元就是一个极其简单的数学操作：</p>
+<div class="arithmatex">\[
+y = f(w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b)
+\]</div>
+<p>拆开看：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>数学</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入</td>
+<td><span class="arithmatex">\(x_1, x_2, ..., x_n\)</span></td>
+<td>一组数字（比如物理量的测量值）</td>
+</tr>
+<tr>
+<td>权重</td>
+<td><span class="arithmatex">\(w_1, w_2, ..., w_n\)</span></td>
+<td>每个输入乘一个系数，表示"这个输入有多重要"</td>
+</tr>
+<tr>
+<td>偏置</td>
+<td><span class="arithmatex">\(b\)</span></td>
+<td>一个可调的常数，类似线性回归里的截距</td>
+</tr>
+<tr>
+<td>加权求和</td>
+<td><span class="arithmatex">\(z = \mathbf{w} \cdot \mathbf{x} + b\)</span></td>
+<td>线性组合</td>
+</tr>
+<tr>
+<td>激活函数</td>
+<td><span class="arithmatex">\(y = f(z)\)</span></td>
+<td>非线性变换（下一节解释为什么需要）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>为什么叫"神经元"？</strong> 1943 年 McCulloch 和 Pitts 提出这个模型时，灵感来自生物神经元：树突接收信号（输入），胞体整合信号（加权求和），超过阈值就放电（激活函数）。但<strong>现在不需要在意生物类比</strong>——把它当成一个简单的数学函数就行。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://en.wikipedia.org/wiki/Perceptron">Wikipedia - Perceptron</a> · <a href="https://en.wikipedia.org/wiki/Artificial_neuron">Wikipedia - Artificial neuron</a></p>
+</blockquote>
+<hr />
+<h2 id="3">3. 为什么要激活函数（非线性）<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>如果没有激活函数 <span class="arithmatex">\(f\)</span>，神经元就是 <span class="arithmatex">\(y = \mathbf{w} \cdot \mathbf{x} + b\)</span>，一个线性函数。</p>
+<p>关键问题：<strong>多个线性函数叠加还是线性函数。</strong> 矩阵乘矩阵还是矩阵：</p>
+<div class="arithmatex">\[
+y = W_2(W_1 \mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2 = (W_2 W_1)\mathbf{x} + (W_2\mathbf{b}_1 + \mathbf{b}_2)
+\]</div>
+<p>不管叠多少层，最终都可以合并成 <span class="arithmatex">\(y = W'\mathbf{x} + \mathbf{b}'\)</span>——一个单层线性变换。<strong>100 层线性网络 = 1 层线性网络，叠层没有带来任何新的表达能力。</strong></p>
+<p>所以每层之后必须加一个非线性函数 <span class="arithmatex">\(f\)</span>，打断这种"可合并性"。常用的几种：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>公式</th>
+<th>一句话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ReLU</strong></td>
+<td><span class="arithmatex">\(f(z) = \max(0, z)\)</span></td>
+<td>负数变 0，正数不变。最简单，用得最多</td>
+</tr>
+<tr>
+<td><strong>Sigmoid</strong></td>
+<td><span class="arithmatex">\(f(z) = \frac{1}{1+e^{-z}}\)</span></td>
+<td>把任意数压缩到 <span class="arithmatex">\((0,1)\)</span>。用于输出层和门控</td>
+</tr>
+<tr>
+<td><strong>GELU</strong></td>
+<td><span class="arithmatex">\(f(z) \approx z \cdot \sigma(1.702z)\)</span></td>
+<td>ReLU 的平滑版，Transformer 中常用</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>激活函数的完整讲解见 <a href="../01b-activation-functions/">01b-激活函数</a>。</p>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://en.wikipedia.org/wiki/Activation_function">Wikipedia - Activation function</a></p>
+</blockquote>
+<hr />
+<h2 id="4-mlp">4. 多层感知机（MLP）<a class="headerlink" href="#4-mlp" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 结构<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>一个神经元只能做很简单的事。把很多神经元连起来，就组成了<strong>多层感知机（Multilayer Perceptron, MLP）</strong>，也叫<strong>前馈网络（Feed-forward Network）</strong>：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>输入层          隐藏层 1        隐藏层 2         输出层
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>x₁ ──┐     ┌── h₁⁽¹⁾ ──┐     ┌── h₁⁽²⁾ ──┐     ┌── y₁
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>x₂ ──┼──→──┤── h₂⁽¹⁾ ──┼──→──┤── h₂⁽²⁾ ──┼──→──┤── y₂
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>x₃ ──┘     └── h₃⁽¹⁾ ──┘     └── h₃⁽²⁾ ──┘     └── y₃
+</code></pre></div>
+<ul>
+<li><strong>输入层</strong>：原始数据（比如 3 个数字）</li>
+<li><strong>隐藏层</strong>：中间的计算层。每个节点接收上一层<strong>所有</strong>节点的输出，做加权求和 + 激活</li>
+<li><strong>输出层</strong>：最终结果</li>
+</ul>
+<h3 id="42">4.2 每层的数学<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>每一层做的事情：</p>
+<div class="arithmatex">\[
+\mathbf{h}^{(\ell)} = f\!\left(W^{(\ell)} \cdot \mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\right)
+\]</div>
+<p>其中：
+- <span class="arithmatex">\(W^{(\ell)}\)</span> 是第 <span class="arithmatex">\(\ell\)</span> 层的<strong>权重矩阵</strong>，维度为 <span class="arithmatex">\(d_{\text{out}} \times d_{\text{in}}\)</span>
+- <span class="arithmatex">\(\mathbf{b}^{(\ell)}\)</span> 是第 <span class="arithmatex">\(\ell\)</span> 层的<strong>偏置向量</strong>
+- <span class="arithmatex">\(f\)</span> 是激活函数
+- <span class="arithmatex">\(\mathbf{h}^{(\ell-1)}\)</span> 是上一层的输出（第 0 层就是输入 <span class="arithmatex">\(\mathbf{x}\)</span>）
+- <span class="arithmatex">\(\mathbf{h}^{(\ell)}\)</span> 是这一层的输出</p>
+<p><strong>整个网络就是这些矩阵乘法和非线性变换的多次叠加。</strong> 网络的"知识"全部存储在权重矩阵 <span class="arithmatex">\(W^{(1)}, W^{(2)}, \ldots\)</span> 和偏置 <span class="arithmatex">\(\mathbf{b}^{(1)}, \mathbf{b}^{(2)}, \ldots\)</span> 中。</p>
+<h3 id="43">4.3 "全连接"的含义<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<p>MLP 也叫"全连接网络"（Fully Connected Network），因为相邻两层之间<strong>每个</strong>神经元都和另一层的<strong>每个</strong>神经元有连接。</p>
+<p><strong>参数量</strong>：如果第 <span class="arithmatex">\(\ell\)</span> 层有 <span class="arithmatex">\(d_{\text{in}}\)</span> 个输入、<span class="arithmatex">\(d_{\text{out}}\)</span> 个输出，那么 <span class="arithmatex">\(W^{(\ell)}\)</span> 有 <span class="arithmatex">\(d_{\text{in}} \times d_{\text{out}}\)</span> 个参数，<span class="arithmatex">\(\mathbf{b}^{(\ell)}\)</span> 有 <span class="arithmatex">\(d_{\text{out}}\)</span> 个参数。</p>
+<p><strong>例子</strong>：一张 <span class="arithmatex">\(256 \times 256\)</span> 的灰度图像，展平后是 65536 维向量。如果第一个隐藏层有 1000 个神经元，光 <span class="arithmatex">\(W^{(1)}\)</span> 就有 <span class="arithmatex">\(65536 \times 1000 = 6553.6\)</span> 万个参数。这是 MLP 的核心问题——参数量随输入维度线性增长，对高维数据（如图像）非常浪费。CNN 就是为了解决这个问题而发明的（见 <a href="../03-cnn/">03-cnn.md</a>）。</p>
+<h3 id="44">4.4 万能近似定理<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
+<p>一个深刻的数学结论：只要有<strong>一个隐藏层</strong>且神经元足够多，配上非线性激活函数，MLP 可以以任意精度逼近任何连续函数。这叫<strong>万能近似定理</strong>（Universal Approximation Theorem）。</p>
+<p>换句话说，这个结构足够"灵活"，可以拟合几乎任何输入-输出关系。</p>
+<p><strong>但这不意味着一层就够了</strong>：定理只说"存在"这样的参数，没说"找得到"。实践中，更深的网络比更宽的网络更容易训练（见 <a href="../02-deep-mlp/">02-deep-mlp.md</a>）。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="http://neuralnetworksanddeeplearning.com/chap4.html">Michael Nielsen - 可视化万能近似</a> · <a href="https://en.wikipedia.org/wiki/Universal_approximation_theorem">Wikipedia - Universal approximation theorem</a></p>
+</blockquote>
+<hr />
+<h2 id="5">5. 损失函数：衡量"学得好不好"<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>网络有了结构，但权重一开始是随机的，输出是乱的。怎么衡量"当前的输出有多差"？</p>
+<p>这就是<strong>损失函数（Loss Function）</strong>的作用——一个数字，告诉你当前参数下模型的预测和真实值差多远。<strong>损失越小，模型越好。</strong></p>
+<h3 id="51-mse">5.1 回归任务：均方误差（MSE）<a class="headerlink" href="#51-mse" title="Permanent link">&para;</a></h3>
+<p>预测一个连续数值时使用：</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{MSE}} = \frac{1}{N}\sum_{i=1}^{N}(\hat{y}_i - y_i)^2
+\]</div>
+<p>就是预测值 <span class="arithmatex">\(\hat{y}_i\)</span> 和真实值 <span class="arithmatex">\(y_i\)</span> 之差的平方的平均。你在物理实验中用最小二乘法拟合直线，本质上就是在最小化 MSE。</p>
+<h3 id="52-cross-entropy">5.2 分类任务：交叉熵（Cross-Entropy）<a class="headerlink" href="#52-cross-entropy" title="Permanent link">&para;</a></h3>
+<h4 id="_1">问题：网络的输出是"裸分"，不是概率<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>假设你要分类"猫 / 狗 / 鸟"（<span class="arithmatex">\(K = 3\)</span> 类）。网络最后一层输出 3 个数字——每个类别对应一个，叫做 <strong>logits</strong>（未归一化的分数）：</p>
+<div class="arithmatex">\[
+z_1 = 2.0, \quad z_2 = 1.0, \quad z_3 = -1.0
+\]</div>
+<p>这些数字可以是任意实数，可以是负数，加起来也不等于 1——它们<strong>不是概率</strong>。但我们需要概率，才能说"模型有多大把握认为这是猫"。</p>
+<h4 id="softmax">Softmax：把裸分变成概率<a class="headerlink" href="#softmax" title="Permanent link">&para;</a></h4>
+<p><strong>Softmax</strong> 做的事情就是：把任意 <span class="arithmatex">\(K\)</span> 个实数变成 <span class="arithmatex">\(K\)</span> 个正数，加起来等于 1，可以解释为概率。</p>
+<p>做法分两步：</p>
+<p><strong>第一步</strong>：对每个分数取指数 <span class="arithmatex">\(e^{z_k}\)</span>，把任意实数变成正数：</p>
+<div class="arithmatex">\[
+e^{2.0} = 7.39, \quad e^{1.0} = 2.72, \quad e^{-1.0} = 0.37
+\]</div>
+<p><strong>第二步</strong>：除以总和，归一化到概率：</p>
+<div class="arithmatex">\[
+\hat{p}_k = \frac{e^{z_k}}{\sum_{j=1}^K e^{z_j}}
+\]</div>
+<p>代入数字：总和 = <span class="arithmatex">\(7.39 + 2.72 + 0.37 = 10.48\)</span></p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>裸分 <span class="arithmatex">\(z_k\)</span></th>
+<th><span class="arithmatex">\(e^{z_k}\)</span></th>
+<th>概率 <span class="arithmatex">\(\hat{p}_k\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>猫</td>
+<td>2.0</td>
+<td>7.39</td>
+<td><span class="arithmatex">\(7.39 / 10.48 = 0.71\)</span></td>
+</tr>
+<tr>
+<td>狗</td>
+<td>1.0</td>
+<td>2.72</td>
+<td><span class="arithmatex">\(2.72 / 10.48 = 0.26\)</span></td>
+</tr>
+<tr>
+<td>鸟</td>
+<td>-1.0</td>
+<td>0.37</td>
+<td><span class="arithmatex">\(0.37 / 10.48 = 0.03\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>三个概率加起来 = 1.00。模型认为 71% 的可能性是猫。</p>
+<p><strong>为什么用 <span class="arithmatex">\(e^{z}\)</span> 而不是直接用 <span class="arithmatex">\(z\)</span>？</strong> 因为 <span class="arithmatex">\(z\)</span> 可以是负数（概率不能是负数），而 <span class="arithmatex">\(e^z\)</span> 永远是正数。并且 <span class="arithmatex">\(e^z\)</span> 会放大差距——<span class="arithmatex">\(z\)</span> 大的类别得到更大的概率份额，让模型的"选择"更鲜明。</p>
+<h4 id="_2">交叉熵：衡量概率预测有多差<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>有了概率之后，怎么衡量"猜得好不好"？假设真实答案是"猫"（第 1 类），我们只关心模型给"猫"分配了多少概率：</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{CE}} = -\log \hat{p}_c
+\]</div>
+<p>其中 <span class="arithmatex">\(c\)</span> 是正确类别的编号（这里 <span class="arithmatex">\(c = 1\)</span>）。</p>
+<p><strong>为什么用 <span class="arithmatex">\(-\log\)</span>？</strong> 看一下它的行为：</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(\hat{p}_c\)</span>（给正确答案的概率）</th>
+<th><span class="arithmatex">\(-\log \hat{p}_c\)</span>（损失）</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.99</td>
+<td>0.01</td>
+<td>很有信心且猜对了 → 损失几乎为零</td>
+</tr>
+<tr>
+<td>0.71</td>
+<td>0.34</td>
+<td>有信心但不确定 → 损失较小</td>
+</tr>
+<tr>
+<td>0.5</td>
+<td>0.69</td>
+<td>半猜半猜 → 损失中等</td>
+</tr>
+<tr>
+<td>0.1</td>
+<td>2.3</td>
+<td>基本猜错了 → 损失大</td>
+</tr>
+<tr>
+<td>0.01</td>
+<td>4.6</td>
+<td>几乎完全猜错 → 损失很大</td>
+</tr>
+</tbody>
+</table>
+<p><span class="arithmatex">\(-\log\)</span> 有两个好性质：
+1. 概率越大，损失越小（我们希望模型给正确答案高概率）
+2. 概率接近 0 时损失趋向无穷大（严厉惩罚"完全猜错"）</p>
+<h4 id="_3">完整的例子<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<p>继续上面的例子。真实类别是"猫"，模型给猫的概率是 <span class="arithmatex">\(\hat{p}_1 = 0.71\)</span>：</p>
+<div class="arithmatex">\[
+\mathcal{L} = -\log(0.71) = 0.34
+\]</div>
+<p>如果模型再训练一会儿，给猫的概率变成 0.95：</p>
+<div class="arithmatex">\[
+\mathcal{L} = -\log(0.95) = 0.05
+\]</div>
+<p>损失从 0.34 降到了 0.05——模型在进步。</p>
+<h3 id="53">5.3 为什么分成两类任务<a class="headerlink" href="#53" title="Permanent link">&para;</a></h3>
+<p>回归和分类是最基础的两类任务，区别在于输出的<strong>性质</strong>：</p>
+<ul>
+<li><strong>回归</strong>：输出是连续数字（如温度 23.5°C），预测值和真实值之间有"距离"概念，所以用差的平方（MSE）衡量</li>
+<li><strong>分类</strong>：输出是离散类别（如猫/狗/鸟），类别之间没有"远近"——猜成狗和猜成鸟不存在哪个离猫更近，所以用概率 + 交叉熵衡量"你对正确答案有多大信心"</li>
+</ul>
+<h3 id="54">5.4 其他任务类型<a class="headerlink" href="#54" title="Permanent link">&para;</a></h3>
+<p>回归和分类不能覆盖所有任务，但大部分复杂任务最终都是它们的组合：</p>
+<table>
+<thead>
+<tr>
+<th>任务类型</th>
+<th>输出</th>
+<th>例子</th>
+<th>本质上是</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回归</td>
+<td>连续数字</td>
+<td>预测房价、温度</td>
+<td>—</td>
+</tr>
+<tr>
+<td>分类</td>
+<td>K 类中选一个</td>
+<td>猫/狗/鸟、垃圾邮件</td>
+<td>—</td>
+</tr>
+<tr>
+<td>生成（如 GPT）</td>
+<td>一段文本</td>
+<td>写文章、对话</td>
+<td>每一步从词表中做分类（softmax + 交叉熵）</td>
+</tr>
+<tr>
+<td>目标检测</td>
+<td>物体位置 + 类别</td>
+<td>自动驾驶识别行人</td>
+<td>回归（框坐标）+ 分类（框里是什么）</td>
+</tr>
+<tr>
+<td>图像分割</td>
+<td>每个像素的类别</td>
+<td>医学影像分割肿瘤</td>
+<td>对每个像素做分类</td>
+</tr>
+</tbody>
+</table>
+<p>在 MLP 基础阶段，理解回归和分类就够用了——它们是构建更复杂任务的"积木"。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://en.wikipedia.org/wiki/Loss_function">Wikipedia - Loss function</a> · <a href="https://en.wikipedia.org/wiki/Cross-entropy">Wikipedia - Cross-entropy</a> · <a href="https://en.wikipedia.org/wiki/Softmax_function">Wikipedia - Softmax function</a></p>
+</blockquote>
+<hr />
+<h2 id="6">6. 梯度下降：怎么找到最好的参数<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>有了损失函数 <span class="arithmatex">\(\mathcal{L}(\theta)\)</span>（<span class="arithmatex">\(\theta\)</span> 代表所有权重和偏置），"学习"就变成了一个优化问题：<strong>找到让 <span class="arithmatex">\(\mathcal{L}\)</span> 最小的 <span class="arithmatex">\(\theta\)</span>。</strong></p>
+<p>你在物理中求过函数极值：令导数等于零。但神经网络有几百万甚至几十亿个参数，解析解不存在。怎么办？</p>
+<h3 id="61">6.1 基本思想<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p><strong>梯度下降（Gradient Descent）</strong>：别试图一步到位，而是一小步一小步地往"下坡方向"走。</p>
+<div class="arithmatex">\[
+\theta_{\text{new}} = \theta_{\text{old}} - \eta \cdot \frac{\partial \mathcal{L}}{\partial \theta}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial \theta}\)</span>：损失对参数的偏导数（<strong>梯度</strong>），指向"上坡"方向</li>
+<li><span class="arithmatex">\(\eta\)</span>：<strong>学习率</strong>，步长有多大</li>
+<li>减号：往梯度的反方向走（下坡）</li>
+</ul>
+<p><strong>类比</strong>：你蒙着眼站在一个山谷里，想找到最低点。你能做的就是用脚感受当前位置的坡度（梯度），然后朝着最陡的下坡方向迈一小步。重复很多次，最终走到谷底附近。</p>
+<h3 id="62">6.2 学习率的影响<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>学习率 <span class="arithmatex">\(\eta\)</span></th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>太大</td>
+<td>步子迈太大，跳过最低点，甚至越走越远（损失飙升）</td>
+</tr>
+<tr>
+<td>太小</td>
+<td>步子太小，走了一万步还没走多远（收敛极慢）</td>
+</tr>
+<tr>
+<td>合适</td>
+<td>稳步下降，最终收敛到一个好的解</td>
+</tr>
+</tbody>
+</table>
+<h3 id="63-sgd">6.3 随机梯度下降（SGD）<a class="headerlink" href="#63-sgd" title="Permanent link">&para;</a></h3>
+<p>实际训练中，不用全部数据算梯度（太慢），而是每次随机取一小批数据（<strong>mini-batch</strong>，通常 32-512 个样本）算一个"近似梯度"，然后更新参数。这叫<strong>随机梯度下降（Stochastic Gradient Descent, SGD）</strong>。</p>
+<p>虽然每一步的梯度有噪声（因为只用了部分数据），但平均下来方向是对的，而且训练速度大大加快。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://www.youtube.com/watch?v=IHZwWFHWa-w">3Blue1Brown - Gradient descent</a> · <a href="https://en.wikipedia.org/wiki/Gradient_descent">Wikipedia - Gradient descent</a></p>
+</blockquote>
+<hr />
+<h2 id="7">7. 反向传播：高效计算梯度<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>梯度下降需要 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial \theta}\)</span>，而网络可能有几十亿个参数。对每个参数分别计算偏导数是不现实的。</p>
+<h3 id="71">7.1 核心思想<a class="headerlink" href="#71" title="Permanent link">&para;</a></h3>
+<p><strong>反向传播（Backpropagation）</strong> 利用微积分的<strong>链式法则</strong>，从输出层往回一层一层地算，只需要一次"前向"（算输出）和一次"反向"（算梯度）就能得到<strong>所有</strong>参数的梯度。</p>
+<h3 id="72">7.2 最简单的例子<a class="headerlink" href="#72" title="Permanent link">&para;</a></h3>
+<p>假设网络只有一层：</p>
+<div class="arithmatex">\[
+z = wx + b \quad \rightarrow \quad y = f(z) \quad \rightarrow \quad \mathcal{L} = (y - y_{\text{true}})^2
+\]</div>
+<p>要算 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w}\)</span>，用链式法则一步步来：</p>
+<div class="arithmatex">\[
+\frac{\partial \mathcal{L}}{\partial w} = \underbrace{\frac{\partial \mathcal{L}}{\partial y}}_{2(y - y_{\text{true}})} \cdot \underbrace{\frac{\partial y}{\partial z}}_{f'(z)} \cdot \underbrace{\frac{\partial z}{\partial w}}_{x}
+\]</div>
+<p>三项都是已知量！乘起来就得到了 <span class="arithmatex">\(w\)</span> 的梯度。</p>
+<h3 id="73">7.3 完整数值例子：两层网络的反向传播<a class="headerlink" href="#73" title="Permanent link">&para;</a></h3>
+<p>下面用一个两层网络，全部用具体数字算一遍，让你看清链式法则的每一环。</p>
+<p><strong>网络结构</strong>：1 个输入 → 1 个隐藏层（1 个神经元，ReLU 激活）→ 1 个输出（无激活）</p>
+<p><strong>参数</strong>：<span class="arithmatex">\(w_1 = 0.5\)</span>，<span class="arithmatex">\(b_1 = 0.1\)</span>，<span class="arithmatex">\(w_2 = -0.3\)</span>，<span class="arithmatex">\(b_2 = 0.2\)</span></p>
+<p><strong>输入</strong>：<span class="arithmatex">\(x = 2.0\)</span>，<strong>真实值</strong>：<span class="arithmatex">\(y_{\text{true}} = 1.0\)</span>，<strong>损失函数</strong>：MSE = <span class="arithmatex">\((y - y_{\text{true}})^2\)</span></p>
+<h4 id="_4">前向传播（从左到右算输出）<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<p>第一层：</p>
+<div class="arithmatex">\[z_1 = w_1 \cdot x + b_1 = 0.5 \times 2.0 + 0.1 = 1.1\]</div>
+<div class="arithmatex">\[h_1 = \text{ReLU}(z_1) = \text{ReLU}(1.1) = 1.1 \quad \text{（正数，原样保留）}\]</div>
+<p>第二层：</p>
+<div class="arithmatex">\[z_2 = w_2 \cdot h_1 + b_2 = -0.3 \times 1.1 + 0.2 = -0.13\]</div>
+<div class="arithmatex">\[y = z_2 = -0.13 \quad \text{（输出层无激活函数）}\]</div>
+<p>损失：</p>
+<div class="arithmatex">\[\mathcal{L} = (y - y_{\text{true}})^2 = (-0.13 - 1.0)^2 = (-1.13)^2 = 1.2769\]</div>
+<p>预测是 <span class="arithmatex">\(-0.13\)</span>，真实值是 <span class="arithmatex">\(1.0\)</span>，差得远，损失 = 1.28。</p>
+<h4 id="_5">反向传播（从右到左算梯度）<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<p>目标：算出 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_1}\)</span>、<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial b_1}\)</span>、<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_2}\)</span>、<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial b_2}\)</span>。</p>
+<p><strong>第 1 步：损失对输出</strong></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial y} = 2(y - y_{\text{true}}) = 2(-0.13 - 1.0) = -2.26\]</div>
+<p><strong>第 2 步：过第二层</strong>（<span class="arithmatex">\(y = z_2 = w_2 \cdot h_1 + b_2\)</span>）</p>
+<p>对 <span class="arithmatex">\(w_2\)</span> 求导：<span class="arithmatex">\(\frac{\partial y}{\partial w_2} = h_1 = 1.1\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial w_2} = -2.26 \times 1.1 = -2.486\]</div>
+<p>对 <span class="arithmatex">\(b_2\)</span> 求导：<span class="arithmatex">\(\frac{\partial y}{\partial b_2} = 1\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial b_2} = -2.26 \times 1 = -2.26\]</div>
+<p>往前传的信号（第一层需要）：<span class="arithmatex">\(\frac{\partial y}{\partial h_1} = w_2 = -0.3\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial h_1} = -2.26 \times (-0.3) = 0.678\]</div>
+<p><strong>第 3 步：过 ReLU</strong>（<span class="arithmatex">\(h_1 = \text{ReLU}(z_1)\)</span>）</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\partial h_1} \times \text{ReLU}'(z_1) = 0.678 \times 1 = 0.678\]</div>
+<p><span class="arithmatex">\(z_1 = 1.1 &gt; 0\)</span>，所以 ReLU 导数 = 1，梯度原样通过。<strong>如果 <span class="arithmatex">\(z_1 &lt; 0\)</span>，这里就是 0，后面所有梯度全部归零——这就是 dead neuron。</strong></p>
+<p><strong>第 4 步：过第一层</strong>（<span class="arithmatex">\(z_1 = w_1 \cdot x + b_1\)</span>）</p>
+<p>对 <span class="arithmatex">\(w_1\)</span> 求导：<span class="arithmatex">\(\frac{\partial z_1}{\partial w_1} = x = 2.0\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial w_1} = 0.678 \times 2.0 = 1.356\]</div>
+<p>对 <span class="arithmatex">\(b_1\)</span> 求导：<span class="arithmatex">\(\frac{\partial z_1}{\partial b_1} = 1\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial b_1} = 0.678 \times 1 = 0.678\]</div>
+<h4 id="_6">汇总<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>梯度</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(w_1 = 0.5\)</span></td>
+<td><span class="arithmatex">\(1.356\)</span></td>
+<td>应该减小 <span class="arithmatex">\(w_1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(b_1 = 0.1\)</span></td>
+<td><span class="arithmatex">\(0.678\)</span></td>
+<td>应该减小 <span class="arithmatex">\(b_1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(w_2 = -0.3\)</span></td>
+<td><span class="arithmatex">\(-2.486\)</span></td>
+<td>应该增大 <span class="arithmatex">\(w_2\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(b_2 = 0.2\)</span></td>
+<td><span class="arithmatex">\(-2.26\)</span></td>
+<td>应该增大 <span class="arithmatex">\(b_2\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="eta-01">更新参数（学习率 <span class="arithmatex">\(\eta = 0.1\)</span>）<a class="headerlink" href="#eta-01" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[w_1' = 0.5 - 0.1 \times 1.356 = 0.364\]</div>
+<div class="arithmatex">\[b_1' = 0.1 - 0.1 \times 0.678 = 0.032\]</div>
+<div class="arithmatex">\[w_2' = -0.3 - 0.1 \times (-2.486) = -0.051\]</div>
+<div class="arithmatex">\[b_2' = 0.2 - 0.1 \times (-2.26) = 0.426\]</div>
+<h4 id="_7">验证：新参数再前向一次<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[z_1 = 0.364 \times 2.0 + 0.032 = 0.760\]</div>
+<div class="arithmatex">\[h_1 = \text{ReLU}(0.760) = 0.760\]</div>
+<div class="arithmatex">\[y = -0.051 \times 0.760 + 0.426 = 0.387\]</div>
+<div class="arithmatex">\[\mathcal{L} = (0.387 - 1.0)^2 = 0.376\]</div>
+<p>损失从 <strong>1.28 → 0.38</strong>，一步就降了 70%。</p>
+<h4 id="_8">流程总图<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>前向（→）：
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>x=2.0 →[×w₁+b₁]→ z₁=1.1 →[ReLU]→ h₁=1.1 →[×w₂+b₂]→ y=-0.13 → L=1.28
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>反向（←）：
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>∂L/∂y = -2.26
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>   │×h₁          │×1           │×w₂
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>   ▼              ▼              ▼
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>∂L/∂w₂=-2.486  ∂L/∂b₂=-2.26  ∂L/∂h₁=0.678
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>                                │×ReLU&#39;(z₁)=1
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                                ▼
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                              ∂L/∂z₁=0.678
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                              │×x           │×1
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                              ▼              ▼
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                          ∂L/∂w₁=1.356  ∂L/∂b₁=0.678
+</code></pre></div>
+<p>每一步就是链式法则的<strong>一环乘一环</strong>，没有别的东西。</p>
+<h3 id="74">7.4 一般性理论推导<a class="headerlink" href="#74" title="Permanent link">&para;</a></h3>
+<p>下面推导 <span class="arithmatex">\(L\)</span> 层 MLP 的反向传播公式。你会看到 7.3 的数值例子只是这些公式的特殊情况。</p>
+<h4 id="_9">符号约定<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>考虑一个 <span class="arithmatex">\(L\)</span> 层网络，第 <span class="arithmatex">\(\ell\)</span> 层（<span class="arithmatex">\(\ell = 1, 2, \ldots, L\)</span>）的前向传播是：</p>
+<div class="arithmatex">\[\mathbf{z}^{(\ell)} = W^{(\ell)} \mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\]</div>
+<div class="arithmatex">\[\mathbf{h}^{(\ell)} = f^{(\ell)}(\mathbf{z}^{(\ell)})\]</div>
+<p>其中：
+- <span class="arithmatex">\(\mathbf{h}^{(0)} = \mathbf{x}\)</span>（输入数据）
+- <span class="arithmatex">\(\mathbf{z}^{(\ell)}\)</span> 是第 <span class="arithmatex">\(\ell\)</span> 层的<strong>预激活值</strong>（线性变换的结果）
+- <span class="arithmatex">\(\mathbf{h}^{(\ell)}\)</span> 是第 <span class="arithmatex">\(\ell\)</span> 层的<strong>输出</strong>（激活后的结果）
+- <span class="arithmatex">\(f^{(\ell)}\)</span> 是第 <span class="arithmatex">\(\ell\)</span> 层的激活函数（逐元素作用）
+- <span class="arithmatex">\(W^{(\ell)}\)</span> 维度为 <span class="arithmatex">\(d_\ell \times d_{\ell-1}\)</span>，<span class="arithmatex">\(\mathbf{b}^{(\ell)}\)</span> 维度为 <span class="arithmatex">\(d_\ell \times 1\)</span></p>
+<p>最终损失为 <span class="arithmatex">\(\mathcal{L}(\mathbf{h}^{(L)}, \mathbf{y})\)</span>，其中 <span class="arithmatex">\(\mathbf{y}\)</span> 是真实标签。</p>
+<h4 id="boldsymboldeltaell">核心量：误差信号 <span class="arithmatex">\(\boldsymbol{\delta}^{(\ell)}\)</span><a class="headerlink" href="#boldsymboldeltaell" title="Permanent link">&para;</a></h4>
+<p>定义第 <span class="arithmatex">\(\ell\)</span> 层的<strong>误差信号</strong>为损失对预激活值的梯度：</p>
+<div class="arithmatex">\[\boldsymbol{\delta}^{(\ell)} \equiv \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell)}}\]</div>
+<p>这是反向传播的核心量——一旦知道了每层的 <span class="arithmatex">\(\boldsymbol{\delta}^{(\ell)}\)</span>，就能直接算出参数梯度。</p>
+<h4 id="1_1">第 1 步：输出层的误差信号<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h4>
+<p>最后一层 <span class="arithmatex">\(\ell = L\)</span> 的误差信号：</p>
+<div class="arithmatex">\[\boldsymbol{\delta}^{(L)} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}^{(L)}} \odot f'^{(L)}(\mathbf{z}^{(L)})\]</div>
+<p>其中 <span class="arithmatex">\(\odot\)</span> 是逐元素乘法，<span class="arithmatex">\(f'^{(L)}\)</span> 是激活函数的逐元素导数。</p>
+<p><strong>MSE + 无激活输出层的例子</strong>：<span class="arithmatex">\(\mathcal{L} = \|\mathbf{h}^{(L)} - \mathbf{y}\|^2\)</span>，输出层无激活（<span class="arithmatex">\(f^{(L)}\)</span> 是恒等函数，<span class="arithmatex">\(f' = 1\)</span>），则：</p>
+<div class="arithmatex">\[\boldsymbol{\delta}^{(L)} = 2(\mathbf{h}^{(L)} - \mathbf{y})\]</div>
+<p>在 7.3 的例子中：<span class="arithmatex">\(\delta^{(2)} = 2(-0.13 - 1.0) = -2.26\)</span>，和前面算的一致。</p>
+<h4 id="2_1">第 2 步：误差信号的逐层回传（核心递推公式）<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
+<p>知道了第 <span class="arithmatex">\(\ell + 1\)</span> 层的 <span class="arithmatex">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>，怎么算第 <span class="arithmatex">\(\ell\)</span> 层的 <span class="arithmatex">\(\boldsymbol{\delta}^{(\ell)}\)</span>？</p>
+<div class="arithmatex">\[\boxed{\boldsymbol{\delta}^{(\ell)} = \left( W^{(\ell+1)\top} \boldsymbol{\delta}^{(\ell+1)} \right) \odot f'^{(\ell)}(\mathbf{z}^{(\ell)})}\]</div>
+<p>推导过程（链式法则）：</p>
+<div class="arithmatex">\[\boldsymbol{\delta}^{(\ell)} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell)}} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell+1)}} \cdot \frac{\partial \mathbf{z}^{(\ell+1)}}{\partial \mathbf{h}^{(\ell)}} \cdot \frac{\partial \mathbf{h}^{(\ell)}}{\partial \mathbf{z}^{(\ell)}}\]</div>
+<p>三项分别是：
+- <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell+1)}} = \boldsymbol{\delta}^{(\ell+1)}\)</span>（上一步已知）
+- <span class="arithmatex">\(\frac{\partial \mathbf{z}^{(\ell+1)}}{\partial \mathbf{h}^{(\ell)}} = W^{(\ell+1)}\)</span>（因为 <span class="arithmatex">\(\mathbf{z}^{(\ell+1)} = W^{(\ell+1)} \mathbf{h}^{(\ell)} + \mathbf{b}^{(\ell+1)}\)</span>）
+- <span class="arithmatex">\(\frac{\partial \mathbf{h}^{(\ell)}}{\partial \mathbf{z}^{(\ell)}} = \text{diag}(f'^{(\ell)}(\mathbf{z}^{(\ell)}))\)</span>（激活函数逐元素求导）</p>
+<p>乘起来就得到了上面的递推公式。</p>
+<p><strong>直觉</strong>：<span class="arithmatex">\(W^{(\ell+1)\top}\)</span> 把下一层的误差信号"投影回"当前层的维度，<span class="arithmatex">\(f'\)</span> 决定这层的每个神经元让多少信号通过。</p>
+<p><strong>梯度消失/爆炸的来源</strong>就在这里：从第 <span class="arithmatex">\(L\)</span> 层回传到第 <span class="arithmatex">\(1\)</span> 层，<span class="arithmatex">\(\boldsymbol{\delta}\)</span> 被反复乘以 <span class="arithmatex">\(W^\top\)</span> 和 <span class="arithmatex">\(f'\)</span>。如果这些因子的模一直 &lt; 1，<span class="arithmatex">\(\boldsymbol{\delta}\)</span> 指数衰减（消失）；一直 &gt; 1，<span class="arithmatex">\(\boldsymbol{\delta}\)</span> 指数增长（爆炸）。</p>
+<h4 id="3_1">第 3 步：从误差信号算参数梯度<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h4>
+<p>有了 <span class="arithmatex">\(\boldsymbol{\delta}^{(\ell)}\)</span>，参数梯度就是一步之遥：</p>
+<div class="arithmatex">\[\boxed{\frac{\partial \mathcal{L}}{\partial W^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} \cdot \mathbf{h}^{(\ell-1)\top}}\]</div>
+<div class="arithmatex">\[\boxed{\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)}}\]</div>
+<p>推导：因为 <span class="arithmatex">\(\mathbf{z}^{(\ell)} = W^{(\ell)} \mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\)</span>，所以 <span class="arithmatex">\(\frac{\partial \mathbf{z}^{(\ell)}}{\partial W^{(\ell)}} = \mathbf{h}^{(\ell-1)\top}\)</span>，<span class="arithmatex">\(\frac{\partial \mathbf{z}^{(\ell)}}{\partial \mathbf{b}^{(\ell)}} = \mathbf{I}\)</span>。</p>
+<p>注意：<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial W^{(\ell)}}\)</span> 的计算需要 <span class="arithmatex">\(\mathbf{h}^{(\ell-1)}\)</span>——这是前向传播时保存的中间结果。<strong>这就是为什么训练比推理更吃内存：前向传播时每层的输出都要存着，等反向传播时用。</strong></p>
+<h4 id="_10">算法总结<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>输入：数据 x, 真实标签 y, 学习率 η
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>前向传播（保存中间结果）：
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  h⁽⁰⁾ = x
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  for ℓ = 1 to L:
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>      z⁽ℓ⁾ = W⁽ℓ⁾ h⁽ℓ⁻¹⁾ + b⁽ℓ⁾     ← 保存 z⁽ℓ⁾
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>      h⁽ℓ⁾ = f⁽ℓ⁾(z⁽ℓ⁾)              ← 保存 h⁽ℓ⁾
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  L = Loss(h⁽ᴸ⁾, y)
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>反向传播（逐层回传误差信号）：
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  δ⁽ᴸ⁾ = ∂L/∂h⁽ᴸ⁾ ⊙ f&#39;⁽ᴸ⁾(z⁽ᴸ⁾)     ← 输出层
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  for ℓ = L-1 down to 1:
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>      δ⁽ℓ⁾ = (W⁽ℓ⁺¹⁾ᵀ δ⁽ℓ⁺¹⁾) ⊙ f&#39;⁽ℓ⁾(z⁽ℓ⁾)   ← 核心递推
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>参数更新：
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  for ℓ = 1 to L:
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>      W⁽ℓ⁾ ← W⁽ℓ⁾ - η · δ⁽ℓ⁾ · h⁽ℓ⁻¹⁾ᵀ
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>      b⁽ℓ⁾ ← b⁽ℓ⁾ - η · δ⁽ℓ⁾
+</code></pre></div>
+<p>整个算法就三个公式：输出层误差信号、误差信号递推、参数梯度。其余都是符号展开。</p>
+<h4 id="_11">标量版本：两层网络的完整推导<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p>上面的公式有矩阵和求和符号，不太直觉。下面把网络固定为<strong>两层、每层一个神经元、所有量都是标量</strong>，把每一步的链式法则写到底，不跳步。</p>
+<h5 id="_12">网络定义<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>输入 x → 第一层 → 第二层 → 输出 y → 损失 L
+</code></pre></div>
+<p>写成公式，一共 5 个等式，从左到右：</p>
+<div class="arithmatex">\[z_1 = w_1 x + b_1 \quad \text{（第一层线性变换）}\]</div>
+<div class="arithmatex">\[h_1 = f(z_1) \quad \text{（第一层激活函数）}\]</div>
+<div class="arithmatex">\[z_2 = w_2 h_1 + b_2 \quad \text{（第二层线性变换）}\]</div>
+<div class="arithmatex">\[y = z_2 \quad \text{（输出层无激活——回归任务的标准做法）}\]</div>
+<div class="arithmatex">\[\mathcal{L} = (y - y_{\text{true}})^2 \quad \text{（MSE 损失）}\]</div>
+<blockquote>
+<p><strong>为什么输出层不加激活函数？</strong> 回归任务要预测任意实数，加了 Sigmoid 会压到 (0,1)，加了 ReLU 不能输出负数。分类任务则不同：二分类用 Sigmoid，多分类用 Softmax。如果输出层也有激活 <span class="arithmatex">\(g\)</span>，推导唯一的区别是上面的 <span class="arithmatex">\(\frac{\partial y}{\partial z_2} = 1\)</span> 变成 <span class="arithmatex">\(g'(z_2)\)</span>，其余完全一样。</p>
+</blockquote>
+<p>要求的东西：<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_1}\)</span>，<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial b_1}\)</span>，<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_2}\)</span>，<span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial b_2}\)</span>。</p>
+<h5 id="_13">画出依赖关系<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h5>
+<p>从 <span class="arithmatex">\(\mathcal{L}\)</span> 出发，往回看每个量依赖谁：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>L 依赖 y
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>y 依赖 z₂
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>z₂ 依赖 w₂, h₁, b₂
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>h₁ 依赖 z₁
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>z₁ 依赖 w₁, x, b₁
+</code></pre></div>
+<p>链式法则就是沿着这条链，<strong>从右往左逐段求导，然后乘起来</strong>。</p>
+<h5 id="fracpartial-mathcallpartial-w_2">求 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_2}\)</span>（第二层权重）<a class="headerlink" href="#fracpartial-mathcallpartial-w_2" title="Permanent link">&para;</a></h5>
+<p><span class="arithmatex">\(w_2\)</span> 离 <span class="arithmatex">\(\mathcal{L}\)</span> 近，链比较短：<span class="arithmatex">\(\mathcal{L} \leftarrow y \leftarrow z_2 \leftarrow w_2\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial w_2} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial z_2} \cdot \frac{\partial z_2}{\partial w_2}\]</div>
+<p>逐项算：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>怎么算</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial y}\)</span></td>
+<td><span class="arithmatex">\(\mathcal{L} = (y - y_{\text{true}})^2\)</span>，对 <span class="arithmatex">\(y\)</span> 求导</td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}})\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial y}{\partial z_2}\)</span></td>
+<td><span class="arithmatex">\(y = z_2\)</span>，对 <span class="arithmatex">\(z_2\)</span> 求导</td>
+<td><span class="arithmatex">\(1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial z_2}{\partial w_2}\)</span></td>
+<td><span class="arithmatex">\(z_2 = w_2 h_1 + b_2\)</span>，对 <span class="arithmatex">\(w_2\)</span> 求导</td>
+<td><span class="arithmatex">\(h_1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>乘起来：</p>
+<div class="arithmatex">\[\boxed{\frac{\partial \mathcal{L}}{\partial w_2} = 2(y - y_{\text{true}}) \cdot 1 \cdot h_1}\]</div>
+<h5 id="fracpartial-mathcallpartial-b_2">求 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial b_2}\)</span>（第二层偏置）<a class="headerlink" href="#fracpartial-mathcallpartial-b_2" title="Permanent link">&para;</a></h5>
+<p>和上面一样，只是最后一项变了：<span class="arithmatex">\(z_2 = w_2 h_1 + b_2\)</span>，对 <span class="arithmatex">\(b_2\)</span> 求导 = 1</p>
+<div class="arithmatex">\[\boxed{\frac{\partial \mathcal{L}}{\partial b_2} = 2(y - y_{\text{true}}) \cdot 1 \cdot 1 = 2(y - y_{\text{true}})}\]</div>
+<h5 id="fracpartial-mathcallpartial-w_1">求 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_1}\)</span>（第一层权重）<a class="headerlink" href="#fracpartial-mathcallpartial-w_1" title="Permanent link">&para;</a></h5>
+<p><span class="arithmatex">\(w_1\)</span> 离 <span class="arithmatex">\(\mathcal{L}\)</span> 远，链更长：<span class="arithmatex">\(\mathcal{L} \leftarrow y \leftarrow z_2 \leftarrow h_1 \leftarrow z_1 \leftarrow w_1\)</span></p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial w_1} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial z_2} \cdot \frac{\partial z_2}{\partial h_1} \cdot \frac{\partial h_1}{\partial z_1} \cdot \frac{\partial z_1}{\partial w_1}\]</div>
+<p>逐项算：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>怎么算</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial y}\)</span></td>
+<td>同上</td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}})\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial y}{\partial z_2}\)</span></td>
+<td>同上</td>
+<td><span class="arithmatex">\(1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial z_2}{\partial h_1}\)</span></td>
+<td><span class="arithmatex">\(z_2 = w_2 h_1 + b_2\)</span>，对 <span class="arithmatex">\(h_1\)</span> 求导</td>
+<td><span class="arithmatex">\(w_2\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial h_1}{\partial z_1}\)</span></td>
+<td><span class="arithmatex">\(h_1 = f(z_1)\)</span>，对 <span class="arithmatex">\(z_1\)</span> 求导</td>
+<td><span class="arithmatex">\(f'(z_1)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial z_1}{\partial w_1}\)</span></td>
+<td><span class="arithmatex">\(z_1 = w_1 x + b_1\)</span>，对 <span class="arithmatex">\(w_1\)</span> 求导</td>
+<td><span class="arithmatex">\(x\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>乘起来：</p>
+<div class="arithmatex">\[\boxed{\frac{\partial \mathcal{L}}{\partial w_1} = 2(y - y_{\text{true}}) \cdot 1 \cdot w_2 \cdot f'(z_1) \cdot x}\]</div>
+<p>注意中间多出来的 <span class="arithmatex">\(w_2 \cdot f'(z_1)\)</span>——这就是梯度<strong>穿过第二层和激活函数</strong>时被乘上的因子。层数越多，这样的因子越多，连乘后就可能爆炸或消失。</p>
+<h5 id="fracpartial-mathcallpartial-b_1">求 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial b_1}\)</span>（第一层偏置）<a class="headerlink" href="#fracpartial-mathcallpartial-b_1" title="Permanent link">&para;</a></h5>
+<p>和 <span class="arithmatex">\(w_1\)</span> 一样，只是最后一项变了：<span class="arithmatex">\(\frac{\partial z_1}{\partial b_1} = 1\)</span></p>
+<div class="arithmatex">\[\boxed{\frac{\partial \mathcal{L}}{\partial b_1} = 2(y - y_{\text{true}}) \cdot 1 \cdot w_2 \cdot f'(z_1) \cdot 1}\]</div>
+<h5 id="_14">四个梯度放在一起看<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>梯度公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(w_2\)</span></td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}}) \cdot h_1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(b_2\)</span></td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}})\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(w_1\)</span></td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}}) \cdot w_2 \cdot f'(z_1) \cdot x\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(b_1\)</span></td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}}) \cdot w_2 \cdot f'(z_1)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>观察</strong>：
+- <span class="arithmatex">\(w_2\)</span> 和 <span class="arithmatex">\(b_2\)</span> 的梯度只乘了 <span class="arithmatex">\(2(y - y_{\text{true}})\)</span> 和 <span class="arithmatex">\(h_1\)</span>，很"直接"
+- <span class="arithmatex">\(w_1\)</span> 和 <span class="arithmatex">\(b_1\)</span> 的梯度<strong>多乘了 <span class="arithmatex">\(w_2 \cdot f'(z_1)\)</span></strong>——这就是梯度从第二层传到第一层时被"缩放"的因子
+- 如果 <span class="arithmatex">\(f\)</span> 是 Sigmoid，<span class="arithmatex">\(f'(z_1) \leq 0.25\)</span>，第一层的梯度比第二层小至少 4 倍
+- 如果 <span class="arithmatex">\(f\)</span> 是 ReLU 且 <span class="arithmatex">\(z_1 &gt; 0\)</span>，<span class="arithmatex">\(f'(z_1) = 1\)</span>，缩放因子只有 <span class="arithmatex">\(w_2\)</span></p>
+<h5 id="73_1">代入 7.3 的数字验证<a class="headerlink" href="#73_1" title="Permanent link">&para;</a></h5>
+<p><span class="arithmatex">\(w_1=0.5, b_1=0.1, w_2=-0.3, b_2=0.2, x=2.0, y_{\text{true}}=1.0\)</span></p>
+<p>前向：<span class="arithmatex">\(z_1=1.1, h_1=1.1, z_2=-0.13, y=-0.13\)</span></p>
+<p>代入公式：</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial w_2} = 2(-0.13 - 1.0) \times 1.1 = -2.26 \times 1.1 = -2.486 \quad \checkmark\]</div>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial w_1} = 2(-0.13 - 1.0) \times (-0.3) \times 1 \times 2.0 = -2.26 \times (-0.3) \times 1 \times 2.0 = 1.356 \quad \checkmark\]</div>
+<p>和 7.3 数值例子完全一致。公式就是把数字例子里的具体数换成了字母。</p>
+<h3 id="75">7.5 和梯度消失/爆炸的联系<a class="headerlink" href="#75" title="Permanent link">&para;</a></h3>
+<p>从上面两层的推导可以精确看出来源。回顾四个梯度：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>梯度公式</th>
+<th>离输出层</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(w_2\)</span></td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}}) \cdot h_1\)</span></td>
+<td>近（第二层）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(w_1\)</span></td>
+<td><span class="arithmatex">\(2(y - y_{\text{true}}) \cdot \boldsymbol{w_2 \cdot f'(z_1)} \cdot x\)</span></td>
+<td>远（第一层）</td>
+</tr>
+</tbody>
+</table>
+<p>第一层比第二层<strong>多乘了一个 <span class="arithmatex">\(w_2 \cdot f'(z_1)\)</span></strong>。这个乘积就是梯度"穿过一层"时的缩放因子。</p>
+<p>两层只多乘一次，影响不大。但如果有 <span class="arithmatex">\(N\)</span> 层，第一层的梯度要连乘 <span class="arithmatex">\(N-1\)</span> 个这样的因子：</p>
+<div class="arithmatex">\[\underbrace{w_N \cdot f'(z_{N-1})}_{穿过第 N 层} \cdot \underbrace{w_{N-1} \cdot f'(z_{N-2})}_{穿过第 N-1 层} \cdots \underbrace{w_2 \cdot f'(z_1)}_{穿过第 2 层}\]</div>
+<ul>
+<li><strong>每个因子 &lt; 1</strong>（例如 Sigmoid 的 <span class="arithmatex">\(f' \leq 0.25\)</span>，乘上 <span class="arithmatex">\(w\)</span> 后仍然 &lt; 1）→ 连乘 <span class="arithmatex">\(N-1\)</span> 次后趋近于 0 → <strong>梯度消失</strong></li>
+<li><strong>每个因子 &gt; 1</strong>（例如 <span class="arithmatex">\(w\)</span> 初始化过大）→ 连乘 <span class="arithmatex">\(N-1\)</span> 次后趋近于 <span class="arithmatex">\(\infty\)</span> → <strong>梯度爆炸</strong></li>
+</ul>
+<p>所以<strong>解决思路都是让每个因子尽量接近 1</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>怎么让因子 ≈ 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ReLU</strong></td>
+<td>正区间 <span class="arithmatex">\(f'=1\)</span>，去掉了 <span class="arithmatex">\(f'\)</span> 这半边的衰减</td>
+</tr>
+<tr>
+<td><strong>合理初始化</strong>（He/Xavier）</td>
+<td>控制 <span class="arithmatex">\(w\)</span> 的大小，让 <span class="arithmatex">\(w \cdot f'\)</span> 的期望 ≈ 1</td>
+</tr>
+<tr>
+<td><strong>残差连接</strong></td>
+<td>给梯度开一条不经过 <span class="arithmatex">\(w \cdot f'\)</span> 连乘的直通路</td>
+</tr>
+<tr>
+<td><strong>梯度裁剪</strong></td>
+<td>暴力截断，防止爆炸（不治本但管用）</td>
+</tr>
+<tr>
+<td><strong>Batch Normalization</strong></td>
+<td>不是专门为此设计，但间接有帮助（见下文）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hexavier">He/Xavier 初始化：为什么能防梯度爆炸？<a class="headerlink" href="#hexavier" title="Permanent link">&para;</a></h4>
+<p>核心想法非常简单：<strong>让每一层输出的方差等于输入的方差</strong>。</p>
+<p>一层网络：<span class="arithmatex">\(z_j = \sum_{i=1}^{n} W_{ji} \, h_i\)</span>（<span class="arithmatex">\(n\)</span> 个输入）。假设 <span class="arithmatex">\(W_{ji}\)</span> 和 <span class="arithmatex">\(h_i\)</span> 独立、均值为 0：</p>
+<div class="arithmatex">\[\text{Var}(z_j) = n \cdot \text{Var}(W_{ji}) \cdot \text{Var}(h_i)\]</div>
+<p>要让 <span class="arithmatex">\(\text{Var}(z_j) = \text{Var}(h_i)\)</span>（输出方差 = 输入方差）：</p>
+<div class="arithmatex">\[n \cdot \text{Var}(W_{ji}) = 1 \quad \Rightarrow \quad \boxed{\text{Var}(W_{ji}) = \frac{1}{n}}\]</div>
+<p>这就是 <strong>Xavier 初始化</strong>。He 初始化考虑了 ReLU 砍掉负半轴（一半神经元输出为 0），所以方差 ×2：<span class="arithmatex">\(\text{Var}(W_{ji}) = \frac{2}{n}\)</span>。</p>
+<p><strong>为什么这能防梯度爆炸？</strong> 方差 <span class="arithmatex">\(= 1/n\)</span> 意味着 <span class="arithmatex">\(W \mathbf{h}\)</span> 的"放大倍数"期望为 1 倍。反向传播中 <span class="arithmatex">\(W^\top \boldsymbol{\delta}\)</span> 也是类似的。每穿过一层，信号既不放大也不缩小，连乘多少层都不会爆炸或消失。</p>
+<blockquote>
+<p><strong>跟特征值的关系</strong>：随机矩阵理论（Marchenko-Pastur 定律）告诉我们，<span class="arithmatex">\(n \times n\)</span> 随机矩阵每个元素方差为 <span class="arithmatex">\(1/n\)</span> 时，奇异值会集中在 1 附近。这跟上面的方差分析一致——奇异值 ≈ 1 意味着 <span class="arithmatex">\(W\)</span> 不放大也不缩小信号。但初始化的设计者（Glorot、He）并没有从特征值出发，他们就是做了上面这个简单的方差计算。</p>
+</blockquote>
+<h4 id="batch-normalization">Batch Normalization：不是为了防梯度爆炸<a class="headerlink" href="#batch-normalization" title="Permanent link">&para;</a></h4>
+<p>BN 经常和梯度爆炸一起被提到，但它的<strong>设计初衷并不是解决梯度问题</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>说法</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BN 减少了 Internal Covariate Shift（每层输入分布漂移）</td>
+<td>原始论文的动机（Ioffe &amp; Szegedy, 2015），但后来发现不是主要原因</td>
+</tr>
+<tr>
+<td>BN 平滑了损失地形，让优化更容易</td>
+<td><strong>真正起作用的原因</strong>（Santurkar et al., NeurIPS 2018）</td>
+</tr>
+<tr>
+<td>BN 允许更大的学习率</td>
+<td>正确，是平滑地形的直接后果</td>
+</tr>
+<tr>
+<td>BN 缓解梯度消失/爆炸</td>
+<td>正确，但是<strong>副作用</strong>，不是设计初衷</td>
+</tr>
+</tbody>
+</table>
+<p>BN 的做法是在激活函数之前把 <span class="arithmatex">\(z\)</span> 归一化到均值 0、方差 1：</p>
+<div class="arithmatex">\[\hat{z} = \frac{z - \mu_{\text{batch}}}{\sqrt{\sigma^2_{\text{batch}} + \epsilon}}\]</div>
+<p>然后用可学习参数 <span class="arithmatex">\(\gamma, \beta\)</span> 恢复表达能力：<span class="arithmatex">\(\tilde{z} = \gamma \hat{z} + \beta\)</span>。</p>
+<p>它间接帮助梯度的方式是：把 <span class="arithmatex">\(z\)</span> 拉回 0 附近，<span class="arithmatex">\(f'(z)\)</span> 不容易跑到极端值（比如 Sigmoid 的饱和区），缩放因子 <span class="arithmatex">\(w \cdot f'(z)\)</span> 因此更稳定。</p>
+<blockquote>
+<p>类比：ReLU / 残差连接 = <strong>专门修路防塌方</strong>；BN = <strong>把整个地形推平了</strong>，路自然也不容易塌。</p>
+<p><strong>可靠程度</strong>：Level 1（Xavier/He 初始化）· Level 2（BN 的机制解释，学界仍有讨论）</p>
+<p><strong>参考</strong>：<a href="http://proceedings.mlr.press/v9/glorot10a.html">Glorot &amp; Bengio 2010</a> · <a href="https://arxiv.org/abs/1502.01852">He et al. 2015</a> · <a href="https://arxiv.org/abs/1502.03167">Ioffe &amp; Szegedy 2015</a> · <a href="https://arxiv.org/abs/1805.11604">Santurkar et al. 2018</a></p>
+</blockquote>
+<h4 id="_15">残差连接：给梯度开一条直通路<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h4>
+<p>前面说的所有方法（ReLU、初始化、BN）都是在想办法让缩放因子 <span class="arithmatex">\(w \cdot f'(z) \approx 1\)</span>。残差连接的思路完全不同——<strong>我不管你乘什么，我给梯度多开一条不需要连乘的高速路</strong>。</p>
+<h5 id="_16">没有残差连接（普通网络）<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h5>
+<p>继续用两层标量网络。每层的计算是：</p>
+<div class="arithmatex">\[h_1 = f(w_1 x + b_1), \quad y = w_2 h_1 + b_2\]</div>
+<p>梯度穿过第一层的缩放因子是 <span class="arithmatex">\(w_2 \cdot f'(z_1)\)</span>，这个我们已经推过了。</p>
+<h5 id="_17">加上残差连接<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h5>
+<p>残差连接的做法是：<strong>把输入直接加到输出上</strong>。每层变成：</p>
+<div class="arithmatex">\[h_1 = f(w_1 x + b_1) + x\]</div>
+<p>注意最后多了一个 <span class="arithmatex">\(+ \, x\)</span>。输出 = 原来的变换 + 输入本身。</p>
+<p>现在对 <span class="arithmatex">\(x\)</span> 求导看看梯度长什么样：</p>
+<div class="arithmatex">\[\frac{\partial h_1}{\partial x} = \frac{\partial}{\partial x}\big[f(w_1 x + b_1)\big] + \frac{\partial x}{\partial x} = w_1 \cdot f'(z_1) + 1\]</div>
+<p><strong>多出来的那个 <span class="arithmatex">\(+1\)</span> 就是关键！</strong></p>
+<h5 id="_18">对比<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>梯度穿过一层的因子</th>
+<th>100 层连乘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>普通网络</strong></td>
+<td><span class="arithmatex">\(w \cdot f'(z)\)</span></td>
+<td><span class="arithmatex">\((w \cdot f')^{99}\)</span> → 可能爆炸或消失</td>
+</tr>
+<tr>
+<td><strong>残差网络</strong></td>
+<td><span class="arithmatex">\(w \cdot f'(z) + 1\)</span></td>
+<td><span class="arithmatex">\((w \cdot f' + 1)^{99}\)</span> → 永远 ≥ 1，不会消失</td>
+</tr>
+</tbody>
+</table>
+<p>即使 <span class="arithmatex">\(w \cdot f'(z) = 0\)</span>（比如 ReLU 的负区间，或者 Sigmoid 饱和），乘上的因子还是 <span class="arithmatex">\(0 + 1 = 1\)</span>，梯度原封不动地通过。</p>
+<h5 id="_19">多层的情况<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h5>
+<p>对于 <span class="arithmatex">\(N\)</span> 层残差网络，第 1 层的梯度不再是简单的连乘，而是：</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial z_1} = \frac{\partial \mathcal{L}}{\partial h_N} \cdot \Big(\underbrace{1}_{\text{直通路}} + \underbrace{\text{各种包含 } w \cdot f' \text{ 的项}}_{\text{弯路}}\Big)\]</div>
+<p>关键在那个 <strong><span class="arithmatex">\(1\)</span></strong>：不管中间层的 <span class="arithmatex">\(w\)</span> 和 <span class="arithmatex">\(f'\)</span> 多小，梯度都有一条不经过任何乘法的直通路径，从最后一层直接传到第一层。</p>
+<p>这就是 ResNet（He et al., 2015）能训练 152 层甚至 1000+ 层网络的原因——在它之前，超过 20 层的网络几乎都训不动。</p>
+<h5 id="1-03-13">那不会 <span class="arithmatex">\(1 + 0.3 = 1.3\)</span> 连乘导致爆炸吗？<a class="headerlink" href="#1-03-13" title="Permanent link">&para;</a></h5>
+<p>会！残差连接<strong>主要解决消失，不解决爆炸</strong>。实际中靠几个东西配合防爆炸：</p>
+<ul>
+<li><strong>He 初始化</strong>让 <span class="arithmatex">\(w \cdot f'\)</span> 的期望很小，因子 ≈ <span class="arithmatex">\(1 + \epsilon\)</span></li>
+<li><strong>BN</strong> 稳定每层的尺度</li>
+<li><strong>网络自己学到让残差分支输出接近 0</strong>：如果恒等映射已经够好，<span class="arithmatex">\(f(Wx+b) \approx 0\)</span>，因子 ≈ <span class="arithmatex">\(1\)</span></li>
+</ul>
+<h5 id="_20">为什么学残差这么厉害？<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h5>
+<p>不只是"梯度能传过去"，残差连接从根本上改变了网络要学的东西。</p>
+<p><strong>一个反直觉的现象</strong>：2015 年之前，人们发现 56 层网络的<strong>训练误差</strong>竟然比 20 层的还高。这不是过拟合——理论上 56 层至少可以让多出来的 36 层"什么都不做"（恒等映射），应该和 20 层一样好才对。</p>
+<p>问题在于：<strong>让非线性层学会"什么都不做"其实很难</strong>。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>要学"什么都不做"（输出 = 输入）</th>
+<th>怎么学</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>普通网络</strong> <span class="arithmatex">\(h = f(Wx+b)\)</span></td>
+<td>需要 <span class="arithmatex">\(f(Wx+b) = x\)</span></td>
+<td><span class="arithmatex">\(W\)</span> 必须精确等于某个特定值，很难优化到</td>
+</tr>
+<tr>
+<td><strong>残差网络</strong> <span class="arithmatex">\(h = f(Wx+b) + x\)</span></td>
+<td>需要 <span class="arithmatex">\(f(Wx+b) = 0\)</span></td>
+<td><span class="arithmatex">\(W \approx 0\)</span> 就行——初始化时本来就接近 0！</td>
+</tr>
+</tbody>
+</table>
+<p>所以残差连接的本质是：<strong>把默认行为从"随机变换"改成了"什么都不做"</strong>。</p>
+<ul>
+<li>多出来的层如果没用，自动退化为恒等映射，不会帮倒忙</li>
+<li>网络只需要学"在现有基础上改一点点"，而不是"从头算出完整答案"</li>
+<li>初始化时整个网络 ≈ 恒等映射，这是一个很好的优化起点</li>
+</ul>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://arxiv.org/abs/1512.03385">He et al. 2015 - Deep Residual Learning</a> · <a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">3Blue1Brown - Backpropagation</a> · <a href="https://en.wikipedia.org/wiki/Backpropagation">Wikipedia - Backpropagation</a> · <a href="http://neuralnetworksanddeeplearning.com/chap2.html">Michael Nielsen - Ch.2</a></p>
+</blockquote>
+<p>这就是 <a href="../02-deep-mlp/">02-deep-mlp.md</a> 第 1 节详细讨论的问题。</p>
+<hr />
+<h2 id="8">8. 过拟合：学"太好"反而不好<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<p>你可能遇到过这个情况：一个 10 次多项式可以完美通过 5 个数据点，但在数据点之间疯狂振荡，预测新数据时一塌糊涂。</p>
+<p>这叫<strong>过拟合（Overfitting）</strong>：模型把训练数据的噪声也"记住"了，而不是学到了真正的规律。</p>
+<h3 id="81-vs">8.1 训练误差 vs 测试误差<a class="headerlink" href="#81-vs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>含义</th>
+<th>过拟合时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>训练误差</td>
+<td>模型在训练数据上的损失</td>
+<td>很低（几乎记住了所有数据）</td>
+</tr>
+<tr>
+<td>测试误差</td>
+<td>模型在<strong>从没见过</strong>的数据上的损失</td>
+<td>很高（在新数据上表现差）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>我们真正关心的是测试误差</strong>——模型能不能泛化到新数据上。</p>
+<h3 id="82">8.2 对策<a class="headerlink" href="#82" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>做法</th>
+<th>直觉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>正则化</strong></td>
+<td>在损失中加惩罚项 <span class="arithmatex">\(\lambda \|\theta\|^2\)</span></td>
+<td>阻止权重变得太大，偏好"简单"的模型</td>
+</tr>
+<tr>
+<td><strong>Dropout</strong></td>
+<td>训练时随机关掉一部分神经元</td>
+<td>迫使网络不依赖任何单个节点</td>
+</tr>
+<tr>
+<td><strong>Early Stopping</strong></td>
+<td>监控测试误差，开始变差就停止</td>
+<td>在"刚好学够"的时候停下</td>
+</tr>
+<tr>
+<td><strong>数据增强</strong></td>
+<td>对训练数据做随机变换（翻转、裁剪等）</td>
+<td>让模型见到更多"变体"，不容易死记</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+<p><strong>参考</strong>：<a href="https://en.wikipedia.org/wiki/Overfitting">Wikipedia - Overfitting</a> · <a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">Wikipedia - Regularization</a></p>
+</blockquote>
+<hr />
+<h2 id="9">9. 完整训练流程<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<p>把上面串起来：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>1. 定义网络结构（几层、每层多少神经元、什么激活函数）
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>     ↓
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>2. 随机初始化所有权重
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>     ↓
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>┌──────────────────────────────────────────────┐
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│  3. 前向传播：输入一批数据，逐层计算，得到预测输出  │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│       ↓                                        │
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│  4. 计算损失：用损失函数衡量预测和真实值的差距      │
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>│       ↓                                        │
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>│  5. 反向传播：从后往前算出所有参数的梯度            │
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>│       ↓                                        │
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>│  6. 更新参数：沿梯度反方向走一小步                 │
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>│       ↓                                        │
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>│  用下一批数据重复（一个 epoch = 遍历一次全部数据）   │
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>└──────────────────────────────────────────────┘
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>     ↓
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>7. 训练结束（达到设定的轮数，或测试误差不再下降）
+</code></pre></div>
+<p><strong>术语</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Epoch</strong></td>
+<td>用全部训练数据训练一轮</td>
+</tr>
+<tr>
+<td><strong>Batch</strong></td>
+<td>一小批数据（如 64 个样本）</td>
+</tr>
+<tr>
+<td><strong>Iteration</strong></td>
+<td>用一个 batch 做一次参数更新</td>
+</tr>
+</tbody>
+</table>
+<p>如果有 10000 个样本，batch size = 100，那么一个 epoch = 100 个 iteration。</p>
+<hr />
+<h2 id="10-mlp">10. MLP 的优缺点<a class="headerlink" href="#10-mlp" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结构简单，容易理解和实现</td>
+<td>参数量随输入维度线性增长（对图像等高维数据不友好）</td>
+</tr>
+<tr>
+<td>万能近似——理论上能拟合任何函数</td>
+<td>不利用输入的空间/时间/图结构</td>
+</tr>
+<tr>
+<td>是所有深度网络的基础构件</td>
+<td>深层 MLP 有梯度消失/爆炸问题（见 <a href="../02-deep-mlp/">02-deep-mlp.md</a>）</td>
+</tr>
+</tbody>
+</table>
+<p>后续的每种架构（CNN、RNN、Transformer、GNN）都可以看作是在 MLP 基础上<strong>针对特定数据结构做的改进</strong>：</p>
+<ul>
+<li><strong>CNN</strong>：利用图像的空间局部性，用小卷积核代替全连接 → 参数量大幅减少</li>
+<li><strong>RNN</strong>：利用序列的时间顺序，用循环结构处理变长输入</li>
+<li><strong>Transformer</strong>：让任意两个位置直接交互（Attention），不需要逐步传递</li>
+<li><strong>GNN</strong>：在图结构上做消息传递，适应非规则数据</li>
+</ul>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识）</p>
+</blockquote>
+<hr />
+<h3 id="_21">公式速查卡<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>公式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\mathbf{z} = W\mathbf{x} + \mathbf{b}\)</span></td>
+<td>线性变换</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h} = f(\mathbf{z})\)</span></td>
+<td>激活函数</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W\)</span> 的形状：<span class="arithmatex">\(d_{\text{out}} \times d_{\text{in}}\)</span></td>
+<td>参数量 = <span class="arithmatex">\(d_{\text{out}} \times d_{\text{in}}\)</span>（不算偏置）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathcal{L}_{\text{MSE}} = \frac{1}{n}\sum(y_i - \hat{y}_i)^2\)</span></td>
+<td>回归损失</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathcal{L}_{\text{CE}} = -\log p_{\text{correct}}\)</span></td>
+<td>分类交叉熵损失</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}\)</span></td>
+<td>把输出变成概率（和为 1）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}\)</span></td>
+<td>梯度下降更新</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial w_\ell} = \delta_\ell \cdot h_{\ell-1}\)</span></td>
+<td>反向传播参数梯度</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\delta_\ell = \delta_{\ell+1} \cdot w_{\ell+1} \cdot f'(z_\ell)\)</span></td>
+<td>误差信号递推</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_22">理解检测<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
+<p><strong>Q1</strong>：用你自己的话解释：为什么没有激活函数的多层网络和单层线性网络没有区别？</p>
+<p>你的回答：</p>
+<p><strong>Q2</strong>：一张 <span class="arithmatex">\(256 \times 256\)</span> 的 RGB 图像展平后有多少维？如果第一个隐藏层有 1000 个神经元，权重矩阵 <span class="arithmatex">\(W^{(1)}\)</span> 有多少个参数？（不算偏置）</p>
+<blockquote>
+<p>提示：RGB 有几个通道？参数量 = <span class="arithmatex">\(d_{\text{out}} \times d_{\text{in}}\)</span></p>
+</blockquote>
+<p>你的回答：</p>
+<p><strong>Q3</strong>：梯度下降的"学习率"如果设得太大会怎样？太小会怎样？</p>
+<p>你的回答：</p>
+<p><strong>Q4</strong>：假设你在训练一个分类网络，正确答案是第 3 类。模型给第 3 类的概率从 0.01 提升到 0.99，交叉熵损失从多少变到多少？</p>
+<blockquote>
+<p>提示：交叉熵 = <span class="arithmatex">\(-\log p_{\text{correct}}\)</span>，分别代入 <span class="arithmatex">\(p = 0.01\)</span> 和 <span class="arithmatex">\(p = 0.99\)</span></p>
+</blockquote>
+<p>你的回答：</p>
+<p><strong>Q5</strong>：训练误差很低但测试误差很高，这说明什么？你应该怎么办？</p>
+<p>你的回答：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
