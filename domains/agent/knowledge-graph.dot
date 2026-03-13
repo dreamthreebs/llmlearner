@@ -1,0 +1,91 @@
+digraph AgentKnowledgeGraph {
+    // 全局设置
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled", fontsize=11];
+    edge [fontname="Helvetica", fontsize=9];
+    label="AI Agent 知识图\n\n箭头读法：A → B [标签] 读作 \"A 标签 B\"\n实线=依赖/用于 | 粗实线=属于/推广了 | 虚线=对比";
+    labelloc=t;
+    fontsize=13;
+
+    // ===== D1 核心组件 =====
+    subgraph cluster_D1 {
+        label="D1 核心组件";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=11;
+
+        LLM [label="LLM\n(架构)", fillcolor="#BBDEFB"];
+        CoT [label="Chain-of-Thought\n(方法)", fillcolor="#BBDEFB"];
+        ToolUse [label="工具调用\n(方法)", fillcolor="#BBDEFB"];
+        Memory [label="记忆系统\n(概念)", fillcolor="#BBDEFB"];
+        RAG [label="RAG\n(方法)", fillcolor="#BBDEFB"];
+        Planning [label="规划\n(概念)", fillcolor="#BBDEFB"];
+        FunctionCalling [label="Function Calling\n(方法)", fillcolor="#BBDEFB"];
+    }
+
+    // ===== D2 架构模式 =====
+    subgraph cluster_D2 {
+        label="D2 架构模式";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=11;
+
+        Agent [label="Agent\n(架构)", fillcolor="#C8E6C9"];
+        ReAct [label="ReAct\n(方法)", fillcolor="#C8E6C9"];
+        PlanExec [label="Plan-and-Execute\n(方法)", fillcolor="#C8E6C9"];
+        Reflexion [label="Reflexion\n(方法)", fillcolor="#C8E6C9"];
+        MultiAgent [label="Multi-Agent\n(架构)", fillcolor="#C8E6C9"];
+    }
+
+    // ===== D3 工程实现 =====
+    subgraph cluster_D3 {
+        label="D3 工程实现";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=11;
+
+        LangChain [label="LangChain\n(实验)", fillcolor="#FFE0B2"];
+        LangGraph [label="LangGraph\n(实验)", fillcolor="#FFE0B2"];
+    }
+
+    // ===== D4 应用与前沿 =====
+    subgraph cluster_D4 {
+        label="D4 应用与前沿";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=11;
+
+        CodeAgent [label="代码 Agent\n(任务)", fillcolor="#F8BBD0"];
+        AgentSafety [label="Agent 安全\n(概念)", fillcolor="#F8BBD0"];
+    }
+
+    // ===== 关系 =====
+
+    // 依赖（实线，后学 → 先学）
+    Agent -> LLM [label="依赖"];
+    CoT -> LLM [label="依赖"];
+    ReAct -> CoT [label="依赖"];
+    ReAct -> ToolUse [label="依赖"];
+    RAG -> Memory [label="依赖", constraint=false];
+    PlanExec -> Planning [label="依赖"];
+
+    // 属于（粗实线，组件 → 系统）
+    ToolUse -> Agent [label="属于", penwidth=2];
+    Memory -> Agent [label="属于", penwidth=2];
+    Planning -> Agent [label="属于", penwidth=2];
+
+    // 是一种（子类 → 父类）
+    FunctionCalling -> ToolUse [label="是一种"];
+    ReAct -> Agent [label="是一种", constraint=false];
+    PlanExec -> Agent [label="是一种", constraint=false];
+    MultiAgent -> Agent [label="推广了", penwidth=2];
+
+    // 用于（方法 → 任务，实线）
+    LangGraph -> Agent [label="用于"];
+    Agent -> CodeAgent [label="用于"];
+
+    // 推广了（粗实线）
+    Reflexion -> ReAct [label="推广了", penwidth=2];
+    LangGraph -> LangChain [label="推广了", penwidth=2, constraint=false];
+}

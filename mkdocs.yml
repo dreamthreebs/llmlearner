@@ -109,6 +109,19 @@ nav:
     - 领域概览: domains/point-set-topology/README.md
     - 笔记:
       - 全景概览: domains/point-set-topology/notes/01-overview.md
+  - AI Agent:
+    - 领域概览: domains/agent/README.md
+    - 术语表: domains/agent/glossary.md
+    - 笔记:
+      - 全景概览: domains/agent/notes/01-overview.md
+      - 提示与推理: domains/agent/notes/02-prompting-reasoning.md
+      - 工具调用: domains/agent/notes/03-tool-use.md
+      - 记忆系统: domains/agent/notes/04-memory.md
+      - 规划: domains/agent/notes/05-planning.md
+      - 架构模式: domains/agent/notes/06-architectures.md
+      - 工程实现: domains/agent/notes/07-engineering.md
+      - 评估与调试: domains/agent/notes/08-evaluation.md
+      - 应用与前沿: domains/agent/notes/09-applications-frontiers.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
     - 笔记:
