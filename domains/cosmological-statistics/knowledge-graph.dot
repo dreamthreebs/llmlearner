@@ -1,0 +1,89 @@
+digraph CosmologicalStatistics {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled", fontsize=11];
+    edge [fontname="Helvetica", fontsize=9];
+    label="宇宙学统计方法 知识图\n\n箭头读法：A → B [标签] 读作 \"A 标签 B\"\n实线=依赖/用于 | 粗实线=属于/推广了 | 虚线=对比";
+    labelloc=t;
+    fontsize=13;
+
+    // ===== D1 概率论基础 =====
+    subgraph cluster_D1 {
+        label="D1 概率论基础";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=11;
+
+        ProbDist [label="概率分布\n(概念)", fillcolor="#BBDEFB"];
+        BayesThm [label="贝叶斯定理\n(理论)", fillcolor="#BBDEFB"];
+        Likelihood [label="似然函数\n(概念)", fillcolor="#BBDEFB"];
+        CondProb [label="条件概率\n(概念)", fillcolor="#BBDEFB"];
+    }
+
+    // ===== D2 参数估计 =====
+    subgraph cluster_D2 {
+        label="D2 参数估计";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=11;
+
+        MLE [label="最大似然估计\n(方法)", fillcolor="#C8E6C9"];
+        BayesInf [label="贝叶斯推断\n(理论)", fillcolor="#C8E6C9"];
+        MCMC [label="MCMC\n(方法)", fillcolor="#C8E6C9"];
+        Fisher [label="Fisher 矩阵\n(方法)", fillcolor="#C8E6C9"];
+        ParamEst [label="参数估计\n(任务)", fillcolor="#C8E6C9"];
+    }
+
+    // ===== D3 模型选择 =====
+    subgraph cluster_D3 {
+        label="D3 模型选择与检验";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=11;
+
+        ChiSq [label="χ² 检验\n(方法)", fillcolor="#FFE0B2"];
+        BayesEvidence [label="贝叶斯证据\n(概念)", fillcolor="#FFE0B2"];
+        InfoCriteria [label="AIC / BIC\n(方法)", fillcolor="#FFE0B2"];
+        ModelSel [label="模型选择\n(任务)", fillcolor="#FFE0B2"];
+    }
+
+    // ===== D4 宇宙学应用 =====
+    subgraph cluster_D4 {
+        label="D4 宇宙学应用";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=11;
+
+        PowerSpecLik [label="功率谱似然\n(方法)", fillcolor="#F8BBD0"];
+        CovMatrix [label="协方差矩阵\n(概念)", fillcolor="#F8BBD0"];
+        ResultInterp [label="结果解读\n(任务)", fillcolor="#F8BBD0"];
+    }
+
+    // ===== 关系 =====
+
+    // 依赖（实线）
+    BayesThm -> CondProb [label="依赖"];
+    Likelihood -> ProbDist [label="依赖"];
+    BayesInf -> BayesThm [label="依赖"];
+    BayesInf -> Likelihood [label="依赖"];
+    MLE -> Likelihood [label="依赖"];
+    MCMC -> BayesInf [label="依赖"];
+    Fisher -> Likelihood [label="依赖"];
+    BayesEvidence -> BayesInf [label="依赖"];
+    PowerSpecLik -> Likelihood [label="依赖"];
+    PowerSpecLik -> CovMatrix [label="依赖"];
+
+    // 用于（实线）
+    MCMC -> ParamEst [label="用于"];
+    Fisher -> ParamEst [label="用于"];
+    BayesEvidence -> ModelSel [label="用于"];
+    InfoCriteria -> ModelSel [label="用于"];
+    ChiSq -> ModelSel [label="用于"];
+
+    // 对比（虚线）
+    MCMC -> Fisher [label="对比", style=dashed, constraint=false];
+    BayesEvidence -> InfoCriteria [label="对比", style=dashed, constraint=false];
+
+    // 属于（粗实线）
+    PowerSpecLik -> ResultInterp [label="属于", penwidth=2, constraint=false];
+}

@@ -122,6 +122,19 @@ nav:
       - 工程实现: domains/agent/notes/07-engineering.md
       - 评估与调试: domains/agent/notes/08-evaluation.md
       - 应用与前沿: domains/agent/notes/09-applications-frontiers.md
+  - 宇宙学统计:
+    - 领域概览: domains/cosmological-statistics/README.md
+    - 术语表: domains/cosmological-statistics/glossary.md
+    - 笔记:
+      - 全景概览: domains/cosmological-statistics/notes/01-overview.md
+      - 概率论复习: domains/cosmological-statistics/notes/02-probability-review.md
+      - 似然与 MLE: domains/cosmological-statistics/notes/03-likelihood-mle.md
+      - 贝叶斯推断: domains/cosmological-statistics/notes/04-bayesian-inference.md
+      - MCMC: domains/cosmological-statistics/notes/05-mcmc.md
+      - Fisher 矩阵: domains/cosmological-statistics/notes/06-fisher-matrix.md
+      - 模型选择: domains/cosmological-statistics/notes/07-model-selection.md
+      - 宇宙学似然: domains/cosmological-statistics/notes/08-cosmological-likelihood.md
+      - 结果解读: domains/cosmological-statistics/notes/09-results-interpretation.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
     - 笔记:
