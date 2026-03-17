@@ -135,6 +135,19 @@ nav:
       - 模型选择: domains/cosmological-statistics/notes/07-model-selection.md
       - 宇宙学似然: domains/cosmological-statistics/notes/08-cosmological-likelihood.md
       - 结果解读: domains/cosmological-statistics/notes/09-results-interpretation.md
+  - 佛教:
+    - 领域概览: domains/buddhism/README.md
+    - 术语表: domains/buddhism/glossary.md
+    - 笔记:
+      - 全景概览: domains/buddhism/notes/01-overview.md
+      - 佛陀与古印度: domains/buddhism/notes/02-buddha-and-india.md
+      - 核心教义（上）: domains/buddhism/notes/03-core-doctrines-1.md
+      - 核心教义（下）: domains/buddhism/notes/04-core-doctrines-2.md
+      - 部派与大乘: domains/buddhism/notes/05-schools-and-mahayana.md
+      - 中观与唯识: domains/buddhism/notes/06-madhyamaka-yogacara.md
+      - 经典文献: domains/buddhism/notes/07-key-texts.md
+      - 中国佛教: domains/buddhism/notes/08-chinese-buddhism.md
+      - 现代意义: domains/buddhism/notes/09-modern-significance.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
     - 笔记:

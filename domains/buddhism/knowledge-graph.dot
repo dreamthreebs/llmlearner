@@ -1,0 +1,122 @@
+digraph BuddhismKnowledgeGraph {
+    // 全局设置
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // 图例
+    subgraph cluster_legend {
+        label="关系图例";
+        style=dashed;
+        color=gray70;
+        fontsize=12;
+
+        leg_dep1 [label="A", style=invis, width=0.3];
+        leg_dep2 [label="B", style=invis, width=0.3];
+        leg_dep1 -> leg_dep2 [label="依赖\n(A 依赖 B)", fontsize=8];
+
+        leg_isa1 [label="A", style=invis, width=0.3];
+        leg_isa2 [label="B", style=invis, width=0.3];
+        leg_isa1 -> leg_isa2 [label="是一种\n(A 是一种 B)", fontsize=8, penwidth=2.0];
+
+        leg_gen1 [label="A", style=invis, width=0.3];
+        leg_gen2 [label="B", style=invis, width=0.3];
+        leg_gen1 -> leg_gen2 [label="推广了\n(A 推广了 B)", fontsize=8, penwidth=2.0];
+
+        leg_use1 [label="A", style=invis, width=0.3];
+        leg_use2 [label="B", style=invis, width=0.3];
+        leg_use1 -> leg_use2 [label="属于\n(A 属于 B)", fontsize=8, penwidth=2.0];
+
+        leg_comp1 [label="A", style=invis, width=0.3];
+        leg_comp2 [label="B", style=invis, width=0.3];
+        leg_comp1 -> leg_comp2 [label="对比\n(A 对比 B)", fontsize=8, style=dashed, dir=both];
+    }
+
+    // D1 历史脉络
+    subgraph cluster_D1 {
+        label="D1 历史脉络";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=14;
+
+        buddha [label="佛陀\n(概念)", fillcolor="#A5D6A7"];
+        ancient_india [label="古印度思想\n(概念)", fillcolor="#A5D6A7"];
+        ashoka [label="阿育王护法\n(概念)", fillcolor="#A5D6A7"];
+        silk_road [label="丝绸之路传播\n(概念)", fillcolor="#A5D6A7"];
+    }
+
+    // D2 核心教义
+    subgraph cluster_D2 {
+        label="D2 核心教义";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=14;
+
+        four_truths [label="四谛\n(理论)", fillcolor="#90CAF9"];
+        dependent_orig [label="缘起\n(理论)", fillcolor="#90CAF9"];
+        anatman [label="无我\n(概念)", fillcolor="#90CAF9"];
+        nirvana [label="涅槃\n(概念)", fillcolor="#90CAF9"];
+        five_skandhas [label="五蕴\n(概念)", fillcolor="#90CAF9"];
+    }
+
+    // D3 哲学流派
+    subgraph cluster_D3 {
+        label="D3 哲学流派";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=14;
+
+        abhidharma [label="阿毗达磨\n(理论)", fillcolor="#FFCC80"];
+        madhyamaka [label="中观\n(理论)", fillcolor="#FFCC80"];
+        yogacara [label="唯识\n(理论)", fillcolor="#FFCC80"];
+        tathagatagarbha [label="如来藏\n(理论)", fillcolor="#FFCC80"];
+        chan [label="禅宗\n(理论)", fillcolor="#FFCC80"];
+    }
+
+    // D4 经典文献
+    subgraph cluster_D4 {
+        label="D4 经典文献";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=14;
+
+        pali_canon [label="巴利三藏\n(实验)", fillcolor="#F48FB1"];
+        prajna_sutras [label="般若经\n(实验)", fillcolor="#F48FB1"];
+        vajra_sutra [label="金刚经\n(实验)", fillcolor="#F48FB1"];
+        lotus_sutra [label="法华经\n(实验)", fillcolor="#F48FB1"];
+    }
+
+    // 关系
+
+    // 依赖关系（实线）
+    buddha -> ancient_india [label="依赖"];
+    four_truths -> buddha [label="依赖"];
+    dependent_orig -> four_truths [label="依赖"];
+    anatman -> dependent_orig [label="依赖"];
+
+    // 属于关系（粗实线）
+    five_skandhas -> anatman [label="属于", penwidth=2.0];
+    nirvana -> four_truths [label="属于", penwidth=2.0];
+
+    // 是一种关系（粗实线）
+    abhidharma -> dependent_orig [label="是一种\n诠释", penwidth=2.0];
+
+    // 推广了关系（粗实线）
+    madhyamaka -> abhidharma [label="推广了", penwidth=2.0];
+    yogacara -> madhyamaka [label="推广了", penwidth=2.0, constraint=false];
+
+    // 对比关系（虚线）
+    madhyamaka -> yogacara [label="对比", style=dashed, dir=both];
+
+    // 用于关系
+    prajna_sutras -> madhyamaka [label="用于", constraint=false];
+
+    // 属于关系
+    vajra_sutra -> prajna_sutras [label="属于", penwidth=2.0];
+
+    // 依赖
+    chan -> madhyamaka [label="依赖"];
+    tathagatagarbha -> yogacara [label="依赖"];
+    pali_canon -> four_truths [label="用于"];
+}
