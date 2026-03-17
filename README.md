@@ -20,6 +20,15 @@
 
 **如果你 fork 了本项目**：请删除或替换所有 `[个人]` 标注的内容，换成你自己的学习特点。Agent 会在学习过程中逐步帮你积累新的个人档案。
 
-## 环境配置
+## 本地阅读
 
-详见 [README](https://github.com/dreamthreebs/llmlearner#环境配置)。
+```bash
+# 安装依赖（首次）
+pip install -r requirements.txt
+
+# 启动 MkDocs 开发服务器
+./serve.sh
+
+# 浏览器打开
+open http://127.0.0.1:8800
+```
