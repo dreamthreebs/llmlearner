@@ -21,7 +21,7 @@
 | Nuisance parameter | Nuisance parameter / 干扰参数 | 模型中需要但不感兴趣的参数（如校准常数） |
 | Posterior | Posterior / 后验分布 | $P(\boldsymbol{\theta} \| \mathbf{d})$，看到数据后参数的概率分布 |
 | Prior | Prior / 先验分布 | $\pi(\boldsymbol{\theta})$，观测前对参数的信念 |
-| PTE | Parameter Estimation | 参数估计/提取 |
+| PTE | Probability To Exceed | 拟合优度指标：模型正确时得到更差拟合的概率，即 $\chi^2$ 分布的上尾概率 |
 | BAO | Baryon Acoustic Oscillations | 重子声学振荡，标准尺方法测量宇宙距离-红移关系 |
 | Boltzmann solver | Boltzmann solver / 玻尔兹曼求解器 | 数值求解线性微扰方程，输入宇宙学参数输出理论功率谱（如 CAMB/CLASS） |
 | CAMB | Code for Anisotropies in the Microwave Background | Fortran 编写的 Boltzmann 求解器，CosmoMC 默认使用 |

@@ -88,7 +88,34 @@ $$\chi^2_\text{red} = \frac{\chi^2_\text{min}}{\nu}$$
 
 $\chi^2_\text{red}$ 的期望值是 1，标准差约为 $\sqrt{2/\nu}$。当 $\nu = 2494$ 时，$\sqrt{2/2494} \approx 0.028$。所以 $\chi^2_\text{red} = 1.014$ 距期望值不到 1 个标准差，完全正常。
 
-### 2.4 $\chi^2$ 检验的局限
+### 2.4 PTE：Probability To Exceed
+
+比 $\chi^2_\text{red}$ 更精确的拟合优度指标是 **PTE**（Probability To Exceed）：
+
+$$\text{PTE} = P(\chi^2 > \chi^2_\text{min} \mid \nu) = \int_{\chi^2_\text{min}}^{\infty} f_{\chi^2}(x; \nu) \, dx$$
+
+其中 $f_{\chi^2}(x; \nu)$ 是自由度为 $\nu$ 的 $\chi^2$ 分布的概率密度函数。
+
+**直觉**：如果模型是正确的，你重复实验很多次，PTE 就是"得到比这次更差的拟合的概率"。
+
+| PTE 值 | 含义 |
+|--------|------|
+| $\sim 0.5$ | 拟合正常——数据和模型偏差在典型范围内 |
+| $< 0.05$ | 拟合差——数据与模型有显著不一致（相当于 $> 2\sigma$） |
+| $< 0.01$ | 拟合很差——模型可能错误，或误差被低估 |
+| $> 0.95$ | 过度拟合——$\chi^2$ 太小，可能误差被高估 |
+
+**具体例子**：用上面 Planck 的数据，$\chi^2_\text{min} = 2530$, $\nu = 2494$。
+
+$$\text{PTE} = P(\chi^2 > 2530 \mid 2494) \approx 0.27$$
+
+PTE = 0.27，意味着"如果 ΛCDM 是对的，有 27% 的概率得到这么大或更大的 $\chi^2$"——完全正常，没有理由拒绝模型。
+
+PTE 是 CMB 论文（如 Planck 系列论文）中报告拟合优度的标准方式。在 Planck 的似然论文中，你会看到类似"PTE = 0.15 for the TT spectrum"这样的表述。
+
+> 参考：[Verde et al., 2003 - Goodness-of-fit statistics and CMB data sets](https://www.aanda.org/articles/aa/abs/2003/40/aa1934/aa1934.html)
+
+### 2.5 $\chi^2$ 检验的局限
 
 $\chi^2$ 检验只能告诉你"**这个模型拟合好不好**"，不能直接告诉你"**哪个模型更好**"。如果 wCDM 的 $\chi^2$ 比 ΛCDM 小了 3，这算显著改进吗？$\chi^2$ 本身没有考虑 wCDM 多了一个参数。需要更系统的方法。
 
@@ -327,6 +354,7 @@ $$\text{张力} = \frac{\Delta H_0}{\sigma_\text{comb}} = \frac{5.6}{1.12} \appr
 | 公式 | 含义 |
 |------|------|
 | $\chi^2_\text{red} = \chi^2_\text{min} / \nu$ | 约化卡方：$\nu = N_\text{data} - k$（自由度），$\approx 1$ 表示好的拟合 |
+| $\text{PTE} = P(\chi^2 > \chi^2_\text{min} \mid \nu)$ | Probability To Exceed：模型正确时得到更差拟合的概率，$\sim 0.5$ 正常，$< 0.05$ 拟合差 |
 | $\mathcal{Z} = \int \mathcal{L}(\boldsymbol{\theta}) \pi(\boldsymbol{\theta}) d\boldsymbol{\theta}$ | 贝叶斯证据：似然在先验上的平均值 |
 | $B_{12} = \mathcal{Z}_1 / \mathcal{Z}_2$ | 贝叶斯因子：两个模型证据的比值 |
 | $\text{AIC} = \chi^2_\text{min} + 2k$ | 赤池信息准则：$k$ = 参数数 |
