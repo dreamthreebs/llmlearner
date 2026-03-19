@@ -148,6 +148,32 @@ nav:
       - 经典文献: domains/buddhism/notes/07-key-texts.md
       - 中国佛教: domains/buddhism/notes/08-chinese-buddhism.md
       - 现代意义: domains/buddhism/notes/09-modern-significance.md
+  - 道家道教:
+    - 领域概览: domains/daoism/README.md
+    - 术语表: domains/daoism/glossary.md
+    - 笔记:
+      - 全景概览: domains/daoism/notes/01-overview.md
+      - 老子与道德经: domains/daoism/notes/02-laozi.md
+      - 庄子: domains/daoism/notes/03-zhuangzi.md
+      - 先秦至汉代: domains/daoism/notes/04-pre-qin-to-han.md
+      - 道教的创立: domains/daoism/notes/05-founding.md
+      - 玄学与上清灵宝: domains/daoism/notes/06-xuanxue-shangqing.md
+      - 内丹与修炼: domains/daoism/notes/07-alchemy.md
+      - 唐宋至明清: domains/daoism/notes/08-tang-to-qing.md
+      - 现代意义: domains/daoism/notes/09-modern-significance.md
+  - 分析哲学:
+    - 领域概览: domains/analytic-philosophy/README.md
+    - 术语表: domains/analytic-philosophy/glossary.md
+    - 笔记:
+      - 全景概览: domains/analytic-philosophy/notes/01-overview.md
+      - 逻辑基础: domains/analytic-philosophy/notes/02-logic.md
+      - 弗雷格与罗素: domains/analytic-philosophy/notes/03-frege-russell.md
+      - 维特根斯坦: domains/analytic-philosophy/notes/04-wittgenstein.md
+      - 语言哲学: domains/analytic-philosophy/notes/05-philosophy-of-language.md
+      - 认识论: domains/analytic-philosophy/notes/06-epistemology.md
+      - 心灵哲学: domains/analytic-philosophy/notes/07-philosophy-of-mind.md
+      - 形而上学: domains/analytic-philosophy/notes/08-metaphysics.md
+      - 伦理学与当代: domains/analytic-philosophy/notes/09-ethics-and-contemporary.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
     - 笔记:

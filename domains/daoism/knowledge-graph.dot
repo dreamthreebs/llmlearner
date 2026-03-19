@@ -1,0 +1,120 @@
+digraph DaoismKnowledgeGraph {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // 图例
+    subgraph cluster_legend {
+        label="关系图例";
+        style=dashed;
+        color=gray70;
+        fontsize=12;
+
+        leg_dep1 [label="A", style=invis, width=0.3];
+        leg_dep2 [label="B", style=invis, width=0.3];
+        leg_dep1 -> leg_dep2 [label="依赖\n(A 依赖 B)", fontsize=8];
+
+        leg_isa1 [label="A", style=invis, width=0.3];
+        leg_isa2 [label="B", style=invis, width=0.3];
+        leg_isa1 -> leg_isa2 [label="是一种\n(A 是一种 B)", fontsize=8, penwidth=2.0];
+
+        leg_gen1 [label="A", style=invis, width=0.3];
+        leg_gen2 [label="B", style=invis, width=0.3];
+        leg_gen1 -> leg_gen2 [label="推广了\n(A 推广了 B)", fontsize=8, penwidth=2.0];
+
+        leg_comp1 [label="A", style=invis, width=0.3];
+        leg_comp2 [label="B", style=invis, width=0.3];
+        leg_comp1 -> leg_comp2 [label="对比\n(A 对比 B)", fontsize=8, style=dashed, dir=both];
+    }
+
+    // D1 历史脉络
+    subgraph cluster_D1 {
+        label="D1 历史脉络";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=14;
+
+        laozi [label="老子\n(概念)", fillcolor="#A5D6A7"];
+        zhuangzi [label="庄子\n(概念)", fillcolor="#A5D6A7"];
+        huanglao [label="黄老之学\n(理论)", fillcolor="#A5D6A7"];
+        fangshi [label="方术传统\n(概念)", fillcolor="#A5D6A7"];
+        tianshidao [label="天师道\n(概念)", fillcolor="#A5D6A7"];
+    }
+
+    // D2 哲学思想
+    subgraph cluster_D2 {
+        label="D2 哲学思想";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=14;
+
+        dao [label="道\n(概念)", fillcolor="#90CAF9"];
+        wuwei [label="无为\n(概念)", fillcolor="#90CAF9"];
+        ziran [label="自然\n(概念)", fillcolor="#90CAF9"];
+        qiwu [label="齐物\n(概念)", fillcolor="#90CAF9"];
+        xuanxue [label="玄学\n(理论)", fillcolor="#90CAF9"];
+    }
+
+    // D3 宗教体系
+    subgraph cluster_D3 {
+        label="D3 宗教体系";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=14;
+
+        shenxian [label="神仙信仰\n(概念)", fillcolor="#FFCC80"];
+        waidan [label="外丹\n(方法)", fillcolor="#FFCC80"];
+        neidan [label="内丹\n(方法)", fillcolor="#FFCC80"];
+        keyi [label="科仪\n(方法)", fillcolor="#FFCC80"];
+        quanzhen [label="全真派\n(概念)", fillcolor="#FFCC80"];
+        zhengyi [label="正一派\n(概念)", fillcolor="#FFCC80"];
+    }
+
+    // D4 经典文献
+    subgraph cluster_D4 {
+        label="D4 经典文献";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=14;
+
+        daodejing [label="道德经\n(实验)", fillcolor="#F48FB1"];
+        zhuangzi_text [label="庄子（文本）\n(实验)", fillcolor="#F48FB1"];
+        taipingjing [label="太平经\n(实验)", fillcolor="#F48FB1"];
+        cantongqi [label="周易参同契\n(实验)", fillcolor="#F48FB1"];
+    }
+
+    // 依赖关系
+    dao -> laozi [label="依赖"];
+    wuwei -> dao [label="依赖"];
+    ziran -> dao [label="依赖"];
+    qiwu -> zhuangzi [label="依赖"];
+    huanglao -> dao [label="依赖"];
+
+    // 属于关系
+    wuwei -> dao [label="属于", penwidth=2.0];
+    ziran -> dao [label="属于", penwidth=2.0];
+
+    // 推广了
+    xuanxue -> dao [label="推广了", penwidth=2.0];
+    neidan -> waidan [label="推广了", penwidth=2.0];
+
+    // 是一种
+    quanzhen -> tianshidao [label="是一种\n道教派系", penwidth=2.0, constraint=false];
+    zhengyi -> tianshidao [label="是一种\n道教派系", penwidth=2.0, constraint=false];
+
+    // 对比
+    quanzhen -> zhengyi [label="对比", style=dashed, dir=both];
+    waidan -> neidan [label="对比", style=dashed, dir=both];
+
+    // 用于
+    daodejing -> dao [label="用于"];
+    zhuangzi_text -> qiwu [label="用于"];
+    taipingjing -> tianshidao [label="用于"];
+    cantongqi -> waidan [label="用于"];
+
+    // 跨维度依赖
+    tianshidao -> fangshi [label="依赖"];
+    tianshidao -> huanglao [label="依赖"];
+    shenxian -> fangshi [label="依赖"];
+}
