@@ -174,6 +174,19 @@ nav:
       - 心灵哲学: domains/analytic-philosophy/notes/07-philosophy-of-mind.md
       - 形而上学: domains/analytic-philosophy/notes/08-metaphysics.md
       - 伦理学与当代: domains/analytic-philosophy/notes/09-ethics-and-contemporary.md
+  - 多因子模型:
+    - 领域概览: domains/factor-models/README.md
+    - 术语表: domains/factor-models/glossary.md
+    - 笔记:
+      - 全景概览: domains/factor-models/notes/01-overview.md
+      - 金融基础: domains/factor-models/notes/02-finance-basics.md
+      - CAPM: domains/factor-models/notes/03-capm.md
+      - 多因子理论: domains/factor-models/notes/04-multi-factor-theory.md
+      - 经典因子（上）: domains/factor-models/notes/05-classic-factors-1.md
+      - 经典因子（下）: domains/factor-models/notes/06-classic-factors-2.md
+      - 因子检验: domains/factor-models/notes/07-factor-testing.md
+      - 因子投资实操: domains/factor-models/notes/08-implementation.md
+      - 前沿与应用: domains/factor-models/notes/09-frontiers.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
     - 笔记:

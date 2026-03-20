@@ -1,0 +1,102 @@
+digraph FactorModelsKnowledgeGraph {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    subgraph cluster_legend {
+        label="关系图例";
+        style=dashed;
+        color=gray70;
+        fontsize=12;
+
+        leg_dep1 [label="A", style=invis, width=0.3];
+        leg_dep2 [label="B", style=invis, width=0.3];
+        leg_dep1 -> leg_dep2 [label="依赖\n(A 依赖 B)", fontsize=8];
+
+        leg_gen1 [label="A", style=invis, width=0.3];
+        leg_gen2 [label="B", style=invis, width=0.3];
+        leg_gen1 -> leg_gen2 [label="推广了\n(A 推广了 B)", fontsize=8, penwidth=2.0];
+
+        leg_comp1 [label="A", style=invis, width=0.3];
+        leg_comp2 [label="B", style=invis, width=0.3];
+        leg_comp1 -> leg_comp2 [label="对比\n(A 对比 B)", fontsize=8, style=dashed, dir=both];
+    }
+
+    // D1 金融基础
+    subgraph cluster_D1 {
+        label="D1 金融基础";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=14;
+
+        return [label="收益率\n(概念)", fillcolor="#A5D6A7"];
+        risk [label="风险\n(概念)", fillcolor="#A5D6A7"];
+        portfolio [label="投资组合理论\n(理论)", fillcolor="#A5D6A7"];
+        sharpe [label="夏普比率\n(方法)", fillcolor="#A5D6A7"];
+    }
+
+    // D2 因子定价理论
+    subgraph cluster_D2 {
+        label="D2 因子定价理论";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=14;
+
+        capm [label="CAPM\n(理论)", fillcolor="#90CAF9"];
+        apt [label="APT\n(理论)", fillcolor="#90CAF9"];
+        ff3 [label="Fama-French\n三因子\n(理论)", fillcolor="#90CAF9"];
+        ff5 [label="Fama-French\n五因子\n(理论)", fillcolor="#90CAF9"];
+    }
+
+    // D3 因子实证
+    subgraph cluster_D3 {
+        label="D3 因子实证";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=14;
+
+        value [label="价值因子\n(概念)", fillcolor="#FFCC80"];
+        momentum [label="动量因子\n(概念)", fillcolor="#FFCC80"];
+        size [label="规模因子\n(概念)", fillcolor="#FFCC80"];
+        quality [label="质量因子\n(概念)", fillcolor="#FFCC80"];
+        factor_zoo [label="因子动物园\n(概念)", fillcolor="#FFCC80"];
+    }
+
+    // D4 实操
+    subgraph cluster_D4 {
+        label="D4 实操与应用";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=14;
+
+        backtest [label="回测\n(方法)", fillcolor="#F48FB1"];
+        portfolio_opt [label="组合优化\n(方法)", fillcolor="#F48FB1"];
+    }
+
+    // 依赖
+    capm -> portfolio [label="依赖"];
+    capm -> risk [label="依赖"];
+    portfolio -> return [label="依赖"];
+    portfolio -> risk [label="依赖"];
+    sharpe -> return [label="依赖"];
+    sharpe -> risk [label="依赖"];
+
+    // 推广了
+    apt -> capm [label="推广了", penwidth=2.0];
+    ff3 -> capm [label="推广了", penwidth=2.0];
+    ff5 -> ff3 [label="推广了", penwidth=2.0];
+
+    // 属于
+    value -> ff3 [label="属于", penwidth=2.0];
+    size -> ff3 [label="属于", penwidth=2.0];
+    momentum -> ff3 [label="用于", constraint=false];
+
+    // 对比
+    value -> momentum [label="对比", style=dashed, dir=both];
+    apt -> ff3 [label="对比", style=dashed, dir=both, constraint=false];
+
+    // 用于
+    backtest -> ff3 [label="用于"];
+    portfolio_opt -> sharpe [label="用于"];
+}
