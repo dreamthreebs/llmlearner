@@ -187,6 +187,19 @@ nav:
       - 因子检验: domains/factor-models/notes/07-factor-testing.md
       - 因子投资实操: domains/factor-models/notes/08-implementation.md
       - 前沿与应用: domains/factor-models/notes/09-frontiers.md
+  - 量化投资:
+    - 领域概览: domains/quant-investing/README.md
+    - 术语表: domains/quant-investing/glossary.md
+    - 笔记:
+      - 全景概览: domains/quant-investing/notes/01-overview.md
+      - 市场与数据: domains/quant-investing/notes/02-markets-and-data.md
+      - 数学工具（上）: domains/quant-investing/notes/03-math-tools-1.md
+      - 数学工具（下）: domains/quant-investing/notes/04-math-tools-2.md
+      - 策略理论（上）: domains/quant-investing/notes/05-strategy-theory-1.md
+      - 策略理论（下）: domains/quant-investing/notes/06-strategy-theory-2.md
+      - 风险管理与评估: domains/quant-investing/notes/07-risk-and-evaluation.md
+      - 回测方法论: domains/quant-investing/notes/08-backtesting.md
+      - 实盘与前沿: domains/quant-investing/notes/09-execution-and-frontiers.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
     - 笔记:
