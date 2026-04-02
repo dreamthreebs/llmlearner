@@ -202,5 +202,25 @@ nav:
       - 实盘与前沿: domains/quant-investing/notes/09-execution-and-frontiers.md
   - 语言学:
     - 领域概览: domains/linguistics/README.md
+    - 术语表: domains/linguistics/glossary.md
     - 笔记:
       - 概览: domains/linguistics/notes/01-overview.md
+      - 语音学与音系学: domains/linguistics/notes/02-phonetics-phonology.md
+      - 形态学: domains/linguistics/notes/03-morphology.md
+      - 句法学: domains/linguistics/notes/04-syntax.md
+      - 语义学与语用学: domains/linguistics/notes/05-semantics-pragmatics.md
+      - 语言类型学与共性: domains/linguistics/notes/06-typology.md
+      - 方法与量化: domains/linguistics/notes/07-methods.md
+  - 基督教:
+    - 领域概览: domains/christianity/README.md
+    - 术语表: domains/christianity/glossary.md
+    - 笔记:
+      - 全景概览: domains/christianity/notes/01-overview.md
+      - 古以色列与犹太教: domains/christianity/notes/02-ancient-israel.md
+      - 耶稣与福音书: domains/christianity/notes/03-jesus-and-gospels.md
+      - 核心教义（上）: domains/christianity/notes/04-core-doctrines-1.md
+      - 核心教义（下）: domains/christianity/notes/05-core-doctrines-2.md
+      - 早期教会与信经: domains/christianity/notes/06-early-church.md
+      - 中世纪与东方基督教: domains/christianity/notes/07-medieval-and-eastern.md
+      - 宗教改革与教派分化: domains/christianity/notes/08-reformation.md
+      - 现代基督教: domains/christianity/notes/09-modern-christianity.md

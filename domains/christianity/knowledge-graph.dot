@@ -1,0 +1,87 @@
+digraph christianity {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Helvetica"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // D1 历史脉络
+    subgraph cluster_d1 {
+        label="D1 历史脉络";
+        style=filled; fillcolor="#e8f4f8";
+
+        Judaism [label="犹太教\nJudaism\n(概念)", fillcolor="#b3d9ff"];
+        Jesus [label="耶稣\nJesus\n(概念)", fillcolor="#b3d9ff"];
+        EarlyChurch [label="早期教会\nEarly Church\n(概念)", fillcolor="#b3d9ff"];
+        Reformation [label="宗教改革\nReformation\n(概念)", fillcolor="#b3d9ff"];
+    }
+
+    // D2 核心教义
+    subgraph cluster_d2 {
+        label="D2 核心教义";
+        style=filled; fillcolor="#f8f0e8";
+
+        Theology [label="上帝论\nTheology Proper\n(理论)", fillcolor="#ffd9b3"];
+        Trinity [label="三位一体\nTrinity\n(理论)", fillcolor="#ffd9b3"];
+        Christology [label="基督论\nChristology\n(理论)", fillcolor="#ffd9b3"];
+        Soteriology [label="救赎论\nSoteriology\n(理论)", fillcolor="#ffd9b3"];
+        Eschatology [label="末世论\nEschatology\n(概念)", fillcolor="#ffd9b3"];
+    }
+
+    // D3 经典文献
+    subgraph cluster_d3 {
+        label="D3 经典文献";
+        style=filled; fillcolor="#e8f8e8";
+
+        OT [label="旧约\nOld Testament\n(概念)", fillcolor="#b3ffb3"];
+        NT [label="新约\nNew Testament\n(概念)", fillcolor="#b3ffb3"];
+    }
+
+    // D4 教派与传统
+    subgraph cluster_d4 {
+        label="D4 教派与传统";
+        style=filled; fillcolor="#f8e8f8";
+
+        Catholic [label="天主教\nCatholicism\n(概念)", fillcolor="#ffb3ff"];
+        Orthodox [label="东正教\nOrthodoxy\n(概念)", fillcolor="#ffb3ff"];
+        Protestant [label="新教\nProtestantism\n(概念)", fillcolor="#ffb3ff"];
+    }
+
+    // D5 礼仪与实践
+    subgraph cluster_d5 {
+        label="D5 礼仪与实践";
+        style=filled; fillcolor="#f8f8e0";
+
+        Sacraments [label="圣礼\nSacraments\n(实验)", fillcolor="#ffffb3"];
+        Worship [label="崇拜\nWorship\n(实验)", fillcolor="#ffffb3"];
+    }
+
+    // 关系：A → B 读作 "A [标签] B"
+
+    // 依赖（后学 → 先学）
+    Jesus -> Judaism [label="依赖"];
+    EarlyChurch -> Jesus [label="依赖"];
+    Christology -> Jesus [label="依赖"];
+    Trinity -> Theology [label="依赖"];
+    Trinity -> Christology [label="依赖"];
+    Soteriology -> Christology [label="依赖"];
+    NT -> OT [label="依赖"];
+    Theology -> OT [label="依赖"];
+    Reformation -> Catholic [label="依赖"];
+
+    // 属于
+    Sacraments -> Worship [label="属于"];
+
+    // 对比
+    Orthodox -> Catholic [label="对比", dir=both];
+    Protestant -> Catholic [label="对比", dir=both];
+
+    // 图例
+    subgraph cluster_legend {
+        label="关系图例";
+        style=filled; fillcolor="#f5f5f5";
+        node [shape=plaintext, fillcolor="#f5f5f5"];
+
+        L1 [label="A → B [依赖]\n读作：A 依赖 B"];
+        L2 [label="A → B [属于]\n读作：A 属于 B"];
+        L3 [label="A ↔ B [对比]\n读作：A 与 B 对比"];
+    }
+}
