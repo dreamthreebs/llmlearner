@@ -1,0 +1,116 @@
+digraph AnalyticPhilosophyKnowledgeGraph {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    subgraph cluster_legend {
+        label="关系图例";
+        style=dashed;
+        color=gray70;
+        fontsize=12;
+
+        leg_dep1 [label="A", style=invis, width=0.3];
+        leg_dep2 [label="B", style=invis, width=0.3];
+        leg_dep1 -> leg_dep2 [label="依赖\n(A 依赖 B)", fontsize=8];
+
+        leg_gen1 [label="A", style=invis, width=0.3];
+        leg_gen2 [label="B", style=invis, width=0.3];
+        leg_gen1 -> leg_gen2 [label="推广了\n(A 推广了 B)", fontsize=8, penwidth=2.0];
+
+        leg_comp1 [label="A", style=invis, width=0.3];
+        leg_comp2 [label="B", style=invis, width=0.3];
+        leg_comp1 -> leg_comp2 [label="对比\n(A 对比 B)", fontsize=8, style=dashed, dir=both];
+    }
+
+    // D1 历史与方法
+    subgraph cluster_D1 {
+        label="D1 历史与方法";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=14;
+
+        frege [label="弗雷格\n(概念)", fillcolor="#A5D6A7"];
+        russell [label="罗素\n(概念)", fillcolor="#A5D6A7"];
+        wittgenstein [label="维特根斯坦\n(概念)", fillcolor="#A5D6A7"];
+        vienna [label="逻辑实证主义\n(理论)", fillcolor="#A5D6A7"];
+        quine [label="奎因\n(概念)", fillcolor="#A5D6A7"];
+    }
+
+    // D2 逻辑与语言
+    subgraph cluster_D2 {
+        label="D2 逻辑与语言";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=14;
+
+        formal_logic [label="形式逻辑\n(方法)", fillcolor="#90CAF9"];
+        sense_ref [label="涵义与指称\n(理论)", fillcolor="#90CAF9"];
+        descriptions [label="确定描述理论\n(理论)", fillcolor="#90CAF9"];
+        lang_game [label="语言游戏\n(概念)", fillcolor="#90CAF9"];
+        speech_acts [label="言语行为\n(理论)", fillcolor="#90CAF9"];
+        implicature [label="会话含义\n(理论)", fillcolor="#90CAF9"];
+        kripke [label="固定指示词\n(理论)", fillcolor="#90CAF9"];
+    }
+
+    // D3 知识与真理
+    subgraph cluster_D3 {
+        label="D3 知识与真理";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=14;
+
+        jtb [label="JTB 知识定义\n(理论)", fillcolor="#FFCC80"];
+        gettier [label="盖梯尔问题\n(概念)", fillcolor="#FFCC80"];
+        truth [label="真理理论\n(理论)", fillcolor="#FFCC80"];
+    }
+
+    // D4 心灵哲学
+    subgraph cluster_D4 {
+        label="D4 心灵哲学";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=14;
+
+        dualism [label="二元论\n(理论)", fillcolor="#F48FB1"];
+        functionalism [label="功能主义\n(理论)", fillcolor="#F48FB1"];
+        consciousness [label="意识难题\n(概念)", fillcolor="#F48FB1"];
+    }
+
+    // D5 形而上学与伦理
+    subgraph cluster_D5 {
+        label="D5 形而上学与伦理";
+        style=filled;
+        color="#F3E5F5";
+        fontsize=14;
+
+        possible_worlds [label="可能世界\n(理论)", fillcolor="#CE93D8"];
+        metaethics [label="元伦理学\n(理论)", fillcolor="#CE93D8"];
+    }
+
+    // 依赖关系
+    formal_logic -> frege [label="依赖"];
+    sense_ref -> frege [label="依赖"];
+    descriptions -> russell [label="依赖"];
+    lang_game -> wittgenstein [label="依赖"];
+    vienna -> frege [label="依赖"];
+    quine -> vienna [label="依赖"];
+
+    // 推广了
+    lang_game -> sense_ref [label="推广了", penwidth=2.0];
+    kripke -> descriptions [label="推广了", penwidth=2.0];
+    gettier -> jtb [label="推广了", penwidth=2.0];
+    functionalism -> dualism [label="推广了", penwidth=2.0];
+
+    // 对比
+    sense_ref -> descriptions [label="对比", style=dashed, dir=both, constraint=false];
+    vienna -> lang_game [label="对比", style=dashed, dir=both];
+
+    // 用于
+    formal_logic -> descriptions [label="用于"];
+    possible_worlds -> kripke [label="用于", constraint=false];
+
+    // 属于
+    speech_acts -> lang_game [label="属于", penwidth=2.0];
+    implicature -> speech_acts [label="属于", penwidth=2.0];
+}

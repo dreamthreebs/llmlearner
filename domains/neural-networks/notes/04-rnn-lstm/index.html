@@ -1,0 +1,6498 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="帮你快速建立新领域的可靠知识结构">
+      
+      
+      
+      
+        <link rel="prev" href="../03-cnn/">
+      
+      
+        <link rel="next" href="../05-training-math/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RNN 与 LSTM - LLM Learner — 研究者知识库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#04-rnn-lstm" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-header__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM Learner — 研究者知识库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RNN 与 LSTM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-nav__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM Learner — 研究者知识库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    神经网络
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01a-mlp-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLP 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01b-activation-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    激活函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-deep-mlp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    深入 MLP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN 与 LSTM
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN 与 LSTM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 核心问题：变长输入怎么办？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. RNN 的基本结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. RNN 的基本结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 核心思想：隐状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 直觉类比：滚动的笔记本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-unrolled-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 展开图（Unrolled Diagram）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-rnn-bpttback-propagation-through-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. RNN 的训练：BPTT（Back-Propagation Through Time）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. RNN 的训练：BPTT（Back-Propagation Through Time）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 基本思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 梯度消失与爆炸：老问题的新面孔
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lstmlong-short-term-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. LSTM（Long Short-Term Memory）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. LSTM（Long Short-Term Memory）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 核心思想：引入传送带
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 三个门的数学
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 三个门的数学">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#forget-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        遗忘门（Forget Gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        输入门（Input Gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        细胞状态更新
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        输出门（Output Gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-lstm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 LSTM 完整公式汇总
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-lstm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 为什么 LSTM 能缓解梯度消失？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-grugated-recurrent-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GRU（Gated Recurrent Unit）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-rnn-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. RNN 的局限与 Transformer 的取代
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RNN 的局限与 Transformer 的取代">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 无法并行计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 长距离依赖仍然困难
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Transformer 的解决方案
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-training-math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    训练的数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-generalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    正则化与泛化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-pytorch-practice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch 实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-autoencoder-vae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AutoEncoder 与 VAE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-gan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-gnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LLM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/02-neural-network-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/03-word-embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    词嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/04-attention-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    注意力机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/05-transformer-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/06-pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    预训练
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/07-finetuning-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微调与对齐
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMB
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CMB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/02-expanding-universe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    膨胀宇宙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/03-thermal-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    热历史
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    点集拓扑
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    点集拓扑
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Agent
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Agent
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/02-prompting-reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示与推理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/03-tool-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/05-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    规划
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/06-architectures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/07-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/08-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    评估与调试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/09-applications-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    应用与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    宇宙学统计
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    宇宙学统计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/02-probability-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概率论复习
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/03-likelihood-mle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    似然与 MLE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/04-bayesian-inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    贝叶斯推断
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/05-mcmc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCMC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/06-fisher-matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fisher 矩阵
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/07-model-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    模型选择
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/08-cosmological-likelihood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    宇宙学似然
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/09-results-interpretation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    结果解读
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    佛教
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    佛教
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/02-buddha-and-india/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    佛陀与古印度
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/03-core-doctrines-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/04-core-doctrines-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/05-schools-and-mahayana/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部派与大乘
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/06-madhyamaka-yogacara/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中观与唯识
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/07-key-texts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    经典文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/08-chinese-buddhism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中国佛教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/09-modern-significance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    现代意义
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    道家道教
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    道家道教
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/02-laozi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    老子与道德经
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/03-zhuangzi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    庄子
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/04-pre-qin-to-han/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    先秦至汉代
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/05-founding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    道教的创立
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/06-xuanxue-shangqing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    玄学与上清灵宝
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/07-alchemy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内丹与修炼
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/08-tang-to-qing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    唐宋至明清
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/09-modern-significance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    现代意义
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分析哲学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    分析哲学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/02-logic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    逻辑基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/03-frege-russell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    弗雷格与罗素
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/04-wittgenstein/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    维特根斯坦
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/05-philosophy-of-language/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言哲学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/06-epistemology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    认识论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/07-philosophy-of-mind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    心灵哲学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/08-metaphysics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    形而上学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/09-ethics-and-contemporary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    伦理学与当代
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多因子模型
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    多因子模型
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/02-finance-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    金融基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/03-capm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAPM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/04-multi-factor-theory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多因子理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/05-classic-factors-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    经典因子（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/06-classic-factors-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    经典因子（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/07-factor-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    因子检验
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/08-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    因子投资实操
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/09-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿与应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    量化投资
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    量化投资
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_3" id="__nav_12_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/02-markets-and-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    市场与数据
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/03-math-tools-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数学工具（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/04-math-tools-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数学工具（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/05-strategy-theory-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    策略理论（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/06-strategy-theory-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    策略理论（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/07-risk-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    风险管理与评估
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/08-backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    回测方法论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/09-execution-and-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    实盘与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    语言学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_3" id="__nav_13_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/02-phonetics-phonology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语音学与音系学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/03-morphology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    形态学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/04-syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    句法学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/05-semantics-pragmatics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语义学与语用学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/06-typology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言类型学与共性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linguistics/notes/07-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    方法与量化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基督教
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    基督教
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_14_3" id="__nav_14_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/02-ancient-israel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    古以色列与犹太教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/03-jesus-and-gospels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    耶稣与福音书
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/04-core-doctrines-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/05-core-doctrines-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/06-early-church/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    早期教会与信经
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/07-medieval-and-eastern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中世纪与东方基督教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/08-reformation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    宗教改革与教派分化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/09-modern-christianity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    现代基督教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 核心问题：变长输入怎么办？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. RNN 的基本结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. RNN 的基本结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 核心思想：隐状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 直觉类比：滚动的笔记本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-unrolled-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 展开图（Unrolled Diagram）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-rnn-bpttback-propagation-through-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. RNN 的训练：BPTT（Back-Propagation Through Time）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. RNN 的训练：BPTT（Back-Propagation Through Time）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 基本思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 梯度消失与爆炸：老问题的新面孔
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lstmlong-short-term-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. LSTM（Long Short-Term Memory）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. LSTM（Long Short-Term Memory）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 核心思想：引入传送带
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 三个门的数学
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 三个门的数学">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#forget-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        遗忘门（Forget Gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        输入门（Input Gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        细胞状态更新
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        输出门（Output Gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-lstm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 LSTM 完整公式汇总
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-lstm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 为什么 LSTM 能缓解梯度消失？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-grugated-recurrent-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GRU（Gated Recurrent Unit）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-rnn-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. RNN 的局限与 Transformer 的取代
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RNN 的局限与 Transformer 的取代">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 无法并行计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 长距离依赖仍然困难
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Transformer 的解决方案
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="04-rnn-lstm">04 - RNN 与 LSTM：处理序列数据<a class="headerlink" href="#04-rnn-lstm" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>主维度</strong>：D1 基础架构
+<strong>关键关系</strong>：
+- RNN (架构) --依赖--&gt; MLP (架构)：RNN 依赖 MLP 作为学习基础
+- LSTM (架构) --推广了--&gt; RNN (架构)：LSTM 推广了 RNN，通过门控机制
+- Transformer (架构) --对比--&gt; RNN (架构)：Transformer 用并行注意力替代 RNN 的循环处理</p>
+<p><strong>学习路径</strong>：MLP 基础 → CNN 基础 → <strong>本章（RNN / LSTM）</strong> → Transformer → 训练的数学</p>
+<p><strong>前置知识</strong>：反向传播（链式法则）、梯度消失问题的直觉（02 中讲过深层 MLP 的情况）、矩阵乘法与特征值</p>
+<p><strong>参考</strong>：
+- <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Colah's blog - Understanding LSTM Networks</a>（最好的 LSTM 直觉讲解）
+- <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Wikipedia - Recurrent neural network</a>
+- <a href="https://en.wikipedia.org/wiki/Long_short-term_memory">Wikipedia - Long short-term memory</a>
+- <a href="https://d2l.ai/chapter_recurrent-neural-networks/index.html">d2l.ai Ch.9 - Recurrent Neural Networks</a>
+- <a href="https://d2l.ai/chapter_recurrent-modern/index.html">d2l.ai Ch.10 - Modern Recurrent Neural Networks</a>
+- <a href="https://www.bioinf.jku.at/publications/older/2604.pdf">Hochreiter &amp; Schmidhuber, 1997 - 原始 LSTM 论文</a></p>
+</blockquote>
+<hr />
+<h2 id="1">1. 核心问题：变长输入怎么办？<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p><strong>可靠程度：Level 1（教科书共识）</strong></p>
+<p>到目前为止你学过的网络——MLP 和 CNN——都有一个共同点：<strong>输入大小是固定的</strong>。MLP 接受一个固定维度的向量，CNN 接受一个固定尺寸的图像（比如 <span class="arithmatex">\(224 \times 224 \times 3\)</span>）。</p>
+<p>但现实中有大量数据是<strong>序列（sequence）</strong>：</p>
+<ul>
+<li><strong>文本</strong>："今天天气不错"是 6 个字，"我昨天去了一趟超市买了很多东西"是 14 个字</li>
+<li><strong>语音</strong>：一段话可能是 2 秒，也可能是 20 秒</li>
+<li><strong>时间序列</strong>：股票价格可能看过去 10 天，也可能看过去 100 天</li>
+</ul>
+<p>序列数据的两个关键特点：</p>
+<ol>
+<li><strong>长度不固定</strong>——不同样本的输入长度不同</li>
+<li><strong>顺序重要</strong>——"猫吃鱼"和"鱼吃猫"意思完全不同</li>
+</ol>
+<p>你不能简单地把序列截断或补齐到固定长度再喂给 MLP（信息丢失或浪费），也不能忽略元素之间的顺序关系。我们需要一种能"逐步读取"序列、同时"记住"之前读过什么的网络结构。</p>
+<p>这就是<strong>循环神经网络（Recurrent Neural Network, RNN）</strong>的设计动机。</p>
+<hr />
+<h2 id="2-rnn">2. RNN 的基本结构<a class="headerlink" href="#2-rnn" title="Permanent link">&para;</a></h2>
+<p><strong>可靠程度：Level 1（教科书共识）</strong></p>
+<h3 id="21">2.1 核心思想：隐状态<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>RNN 的核心思想非常简单：网络维护一个<strong>隐状态（hidden state）</strong> <span class="arithmatex">\(\mathbf{h}_t\)</span>，这是一个向量，可以理解为网络到目前为止对序列的"记忆"或"摘要"。</p>
+<p>在每个时间步 <span class="arithmatex">\(t\)</span>，网络做两件事：</p>
+<ol>
+<li>读入当前的输入 <span class="arithmatex">\(\mathbf{x}_t\)</span>（比如序列中的第 <span class="arithmatex">\(t\)</span> 个词的向量表示）</li>
+<li>结合上一步的隐状态 <span class="arithmatex">\(\mathbf{h}_{t-1}\)</span>，计算新的隐状态 <span class="arithmatex">\(\mathbf{h}_t\)</span></li>
+</ol>
+<p>数学上，最简单的 RNN 的更新公式是：</p>
+<div class="arithmatex">\[\mathbf{h}_t = \tanh(W_h \mathbf{h}_{t-1} + W_x \mathbf{x}_t + \mathbf{b})\]</div>
+<p>其中每个符号的含义：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+<th>维度（假设隐状态维度 <span class="arithmatex">\(d_h\)</span>，输入维度 <span class="arithmatex">\(d_x\)</span>）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\mathbf{x}_t\)</span></td>
+<td>时间步 <span class="arithmatex">\(t\)</span> 的输入向量</td>
+<td><span class="arithmatex">\(d_x \times 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h}_t\)</span></td>
+<td>时间步 <span class="arithmatex">\(t\)</span> 的隐状态</td>
+<td><span class="arithmatex">\(d_h \times 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h}_{t-1}\)</span></td>
+<td>上一个时间步的隐状态</td>
+<td><span class="arithmatex">\(d_h \times 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_h\)</span></td>
+<td>隐状态到隐状态的权重矩阵（<strong>每一步共享</strong>）</td>
+<td><span class="arithmatex">\(d_h \times d_h\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_x\)</span></td>
+<td>输入到隐状态的权重矩阵（<strong>每一步共享</strong>）</td>
+<td><span class="arithmatex">\(d_h \times d_x\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{b}\)</span></td>
+<td>偏置向量</td>
+<td><span class="arithmatex">\(d_h \times 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\tanh\)</span></td>
+<td>激活函数，把输出压到 <span class="arithmatex">\((-1, 1)\)</span> 之间</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>关键点：<strong><span class="arithmatex">\(W_h\)</span>、<span class="arithmatex">\(W_x\)</span>、<span class="arithmatex">\(\mathbf{b}\)</span> 在所有时间步都是同一组参数</strong>——这就是"循环"（recurrent）的含义。网络在每一步用相同的规则处理输入，只是隐状态 <span class="arithmatex">\(\mathbf{h}_t\)</span> 在不断变化。</p>
+<blockquote>
+<p><strong>"共享"不等于"不更新"</strong></p>
+<p>参数共享的意思是：<strong>在一次前向传播中</strong>，处理 <span class="arithmatex">\(x_1, x_2, \ldots, x_T\)</span> 时用的是同一个 <span class="arithmatex">\(W_h\)</span>。但训练时 <span class="arithmatex">\(W_h\)</span> 照样被梯度更新——每个时间步都贡献一份梯度，反向传播时把所有时间步的梯度<strong>累加</strong>起来：</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial W_h} = \sum_{t=1}^{T} \frac{\partial \mathcal{L}}{\partial h_t} \cdot \frac{\partial h_t}{\partial W_h}\]</div>
+<p>然后执行 <span class="arithmatex">\(W_h \leftarrow W_h - \eta \cdot \frac{\partial \mathcal{L}}{\partial W_h}\)</span>，下一个 batch 就用更新后的 <span class="arithmatex">\(W_h\)</span>。这和 CNN 的卷积核完全一样：卷积核在图上滑动 100 个位置时用同一个核，但每个 batch 后照样根据梯度更新。</p>
+<p><strong>与 MLP 的对比</strong>：MLP 每层有不同的 <span class="arithmatex">\(W_1, W_2, \ldots\)</span>，各自独立更新。RNN 只有一个 <span class="arithmatex">\(W_h\)</span>，被所有时间步共用、被所有时间步的梯度共同更新。这也是为什么 RNN 能处理变长序列——参数量不随序列长度变化。</p>
+</blockquote>
+<h3 id="22">2.2 直觉类比：滚动的笔记本<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<p>想象你在读一本小说。你手边有一个<strong>小笔记本</strong>（隐状态 <span class="arithmatex">\(\mathbf{h}_t\)</span>），空间有限。每读完一页（输入 <span class="arithmatex">\(\mathbf{x}_t\)</span>）：</p>
+<ol>
+<li>你看一眼笔记本上之前的笔记（<span class="arithmatex">\(\mathbf{h}_{t-1}\)</span>）</li>
+<li>结合这一页的新内容（<span class="arithmatex">\(\mathbf{x}_t\)</span>），在笔记本上更新你的笔记（得到 <span class="arithmatex">\(\mathbf{h}_t\)</span>）</li>
+</ol>
+<p>因为笔记本空间有限，你不能把每一页都抄下来——你必须提炼、压缩、保留最重要的信息。这就是为什么隐状态是一个固定维度的向量：它是对"到目前为止整个序列"的压缩摘要。</p>
+<p>读完整本书后，最终的隐状态 <span class="arithmatex">\(\mathbf{h}_T\)</span>（<span class="arithmatex">\(T\)</span> 是序列长度）就是你对整本书的理解。你可以用这个最终的隐状态来做分类（比如判断情感）、生成下一个词，等等。</p>
+<h3 id="23-unrolled-diagram">2.3 展开图（Unrolled Diagram）<a class="headerlink" href="#23-unrolled-diagram" title="Permanent link">&para;</a></h3>
+<p>RNN 可以用两种方式画：<strong>折叠</strong>和<strong>展开</strong>。</p>
+<p><strong>折叠视图</strong>——强调参数共享：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>        ┌──────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        │              │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        │   ┌──────┐   │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  x_t ──┤──►│ RNN  │───┤──► y_t
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        │   │ Cell │   │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        │   └──────┘   │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        │       ▲      │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        │       │      │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        └───h_{t-1}────┘
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>              h_t
+</code></pre></div>
+<p><strong>展开视图</strong>——把序列的每个时间步画出来（每一步用<strong>相同</strong>的 <span class="arithmatex">\(W_h, W_x, \mathbf{b}\)</span>）：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>  x_1         x_2         x_3         x_4
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>   │           │           │           │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>   ▼           ▼           ▼           ▼
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│ RNN  │──►│ RNN  │──►│ RNN  │──►│ RNN  │
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│ Cell │   │ Cell │   │ Cell │   │ Cell │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>└──────┘   └──────┘   └──────┘   └──────┘
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>   │           │           │           │
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>   ▼           ▼           ▼           ▼
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  y_1         y_2         y_3         y_4
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>h_0 ──► h_1 ──► h_2 ──► h_3 ──► h_4
+</code></pre></div>
+<p>展开视图揭示了一个重要事实：<strong>展开后的 RNN 看起来就像一个很深的前馈网络</strong>，只是每一层用的是同一组权重。这个观察对理解训练非常关键。</p>
+<hr />
+<h2 id="3-rnn-bpttback-propagation-through-time">3. RNN 的训练：BPTT（Back-Propagation Through Time）<a class="headerlink" href="#3-rnn-bpttback-propagation-through-time" title="Permanent link">&para;</a></h2>
+<p><strong>可靠程度：Level 1（教科书共识）</strong></p>
+<h3 id="31">3.1 基本思路<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>RNN 的训练叫做 <strong>BPTT（Back-Propagation Through Time, 通过时间的反向传播）</strong>。思路其实很直接：</p>
+<ol>
+<li>把 RNN 按时间步<strong>展开</strong>成一个深层网络（如上面的展开图）</li>
+<li>对这个展开后的网络做标准的反向传播</li>
+<li>因为每一步用的是同一组 <span class="arithmatex">\(W_h, W_x, \mathbf{b}\)</span>，所以把所有时间步贡献的梯度<strong>加起来</strong>作为这些参数的总梯度</li>
+</ol>
+<p>假设序列长度为 <span class="arithmatex">\(T\)</span>，损失函数是每一步损失的总和 <span class="arithmatex">\(\mathcal{L} = \sum_{t=1}^{T} \mathcal{L}_t\)</span>，那么我们需要计算 <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial W_h}\)</span>。</p>
+<h3 id="32">3.2 梯度消失与爆炸：老问题的新面孔<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>这里出现了一个你在学深层 MLP 时已经见过的问题。考虑损失 <span class="arithmatex">\(\mathcal{L}_T\)</span>（最后一步的损失）对 <span class="arithmatex">\(\mathbf{h}_1\)</span>（第一步的隐状态）的梯度。根据链式法则：</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}_T}{\partial \mathbf{h}_1} = \frac{\partial \mathcal{L}_T}{\partial \mathbf{h}_T} \cdot \frac{\partial \mathbf{h}_T}{\partial \mathbf{h}_{T-1}} \cdot \frac{\partial \mathbf{h}_{T-1}}{\partial \mathbf{h}_{T-2}} \cdots \frac{\partial \mathbf{h}_2}{\partial \mathbf{h}_1}\]</div>
+<p>每一项 <span class="arithmatex">\(\frac{\partial \mathbf{h}_t}{\partial \mathbf{h}_{t-1}}\)</span> 涉及对 <span class="arithmatex">\(\tanh(W_h \mathbf{h}_{t-1} + \ldots)\)</span> 求导，结果大致正比于 <span class="arithmatex">\(W_h\)</span>（乘上 <span class="arithmatex">\(\tanh\)</span> 的导数，<span class="arithmatex">\(\tanh\)</span> 的导数在 <span class="arithmatex">\([0, 1]\)</span> 之间）。</p>
+<p>所以梯度中包含了 <span class="arithmatex">\(W_h\)</span> 的<strong>连乘</strong>：</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}_T}{\partial \mathbf{h}_1} \propto \prod_{t=2}^{T} \text{diag}(\tanh'(\cdot)) \cdot W_h\]</div>
+<p><strong>用特征值理解</strong>：如果 <span class="arithmatex">\(W_h\)</span> 的最大特征值（的绝对值）记为 <span class="arithmatex">\(|\lambda_{\max}|\)</span>，那么：</p>
+<ul>
+<li><span class="arithmatex">\(|\lambda_{\max}| &gt; 1\)</span>：连乘 <span class="arithmatex">\(T-1\)</span> 次 → 梯度<strong>指数爆炸</strong> → 参数更新变得巨大，训练不稳定</li>
+<li><span class="arithmatex">\(|\lambda_{\max}| &lt; 1\)</span>：连乘 <span class="arithmatex">\(T-1\)</span> 次 → 梯度<strong>指数消失</strong> → 早期时间步对损失几乎没有影响，网络"记不住"远处的信息</li>
+</ul>
+<p><strong>具体例子</strong>：假设 <span class="arithmatex">\(|\lambda_{\max}| = 0.9\)</span>，序列长度 <span class="arithmatex">\(T = 100\)</span>。那么梯度经过 99 步传播后，衰减到 <span class="arithmatex">\(0.9^{99} \approx 2.6 \times 10^{-5}\)</span>——几乎为零。网络根本无法学到第 1 个词和第 100 个词之间的依赖关系。</p>
+<p>反过来，如果 <span class="arithmatex">\(|\lambda_{\max}| = 1.1\)</span>，梯度放大到 <span class="arithmatex">\(1.1^{99} \approx 1.2 \times 10^{4}\)</span>——一万倍！参数更新会变得极不稳定。</p>
+<p>这就是为什么<strong>基础 RNN 在实践中无法处理长序列</strong>。你需要一种方法，让梯度能在长时间跨度上稳定传播。</p>
+<blockquote>
+<p>参考：<a href="https://ieeexplore.ieee.org/document/279181">Bengio et al., 1994 - Learning Long-Term Dependencies with Gradient Descent is Difficult</a> · <a href="https://d2l.ai/chapter_recurrent-neural-networks/bptt.html">d2l.ai - BPTT</a></p>
+</blockquote>
+<hr />
+<h2 id="4-lstmlong-short-term-memory">4. LSTM（Long Short-Term Memory）<a class="headerlink" href="#4-lstmlong-short-term-memory" title="Permanent link">&para;</a></h2>
+<p><strong>可靠程度：Level 1（教科书共识）</strong></p>
+<h3 id="41">4.1 核心思想：引入传送带<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>LSTM 由 Hochreiter &amp; Schmidhuber 在 1997 年提出，目的就是解决基础 RNN 的梯度消失问题。</p>
+<p>LSTM 的核心创新：在隐状态 <span class="arithmatex">\(\mathbf{h}_t\)</span> 之外，引入一个新的向量——<strong>细胞状态（cell state）</strong> <span class="arithmatex">\(\mathbf{c}_t\)</span>。</p>
+<p><strong>直觉类比</strong>：想象一条<strong>传送带</strong>穿过整个序列。传送带上的物品（<span class="arithmatex">\(\mathbf{c}_t\)</span>）可以不经任何修改地从头传到尾。在每个时间步，有三个操作员（三个"门"）控制：</p>
+<ol>
+<li><strong>是否扔掉传送带上的一些物品</strong>（遗忘门）</li>
+<li><strong>是否往传送带上放新物品</strong>（输入门）</li>
+<li><strong>从传送带上取什么物品作为这一步的输出</strong>（输出门）</li>
+</ol>
+<p>因为传送带上的物品可以不被修改地长距离传输，所以信息（和梯度）可以跨越很多时间步而不衰减。</p>
+<h3 id="42">4.2 三个门的数学<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>LSTM 中的"门"（gate）是一个向量，每个元素在 <span class="arithmatex">\([0, 1]\)</span> 之间，通过 sigmoid 函数 <span class="arithmatex">\(\sigma\)</span> 生成。门的值为 0 表示"完全阻止"，为 1 表示"完全通过"。门和某个向量做<strong>逐元素乘法</strong>（记为 <span class="arithmatex">\(\odot\)</span>），控制信息的流通。</p>
+<p>下面逐一定义三个门。为了简洁，我把 <span class="arithmatex">\([\mathbf{h}_{t-1}, \mathbf{x}_t]\)</span> 记为把上一步隐状态和当前输入<strong>拼接</strong>成一个长向量。</p>
+<h4 id="forget-gate">遗忘门（Forget Gate）<a class="headerlink" href="#forget-gate" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[\mathbf{f}_t = \sigma(W_f [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_f)\]</div>
+<ul>
+<li><span class="arithmatex">\(W_f\)</span> 是遗忘门的权重矩阵，<span class="arithmatex">\(\mathbf{b}_f\)</span> 是偏置</li>
+<li><span class="arithmatex">\(\sigma\)</span> 是 sigmoid 函数，输出在 <span class="arithmatex">\((0, 1)\)</span> 之间</li>
+<li><strong>作用</strong>：<span class="arithmatex">\(\mathbf{f}_t\)</span> 的每个元素决定细胞状态 <span class="arithmatex">\(\mathbf{c}_{t-1}\)</span> 的对应元素保留多少。<span class="arithmatex">\(f_t^{(i)} = 1\)</span> 表示完全保留，<span class="arithmatex">\(f_t^{(i)} = 0\)</span> 表示完全丢弃</li>
+</ul>
+<p><strong>例子</strong>：如果网络在做语言模型，读到了一个新的主语，遗忘门可能会"忘掉"之前的主语信息（因为语法上主语已经变了）。</p>
+<h4 id="input-gate">输入门（Input Gate）<a class="headerlink" href="#input-gate" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[\mathbf{i}_t = \sigma(W_i [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_i)\]</div>
+<div class="arithmatex">\[\tilde{\mathbf{c}}_t = \tanh(W_c [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_c)\]</div>
+<ul>
+<li><span class="arithmatex">\(\mathbf{i}_t\)</span>：输入门，决定哪些新信息要写入细胞状态</li>
+<li><span class="arithmatex">\(\tilde{\mathbf{c}}_t\)</span>：<strong>候选细胞状态</strong>，是"想要写入的新信息"，用 <span class="arithmatex">\(\tanh\)</span> 把值压到 <span class="arithmatex">\((-1, 1)\)</span></li>
+</ul>
+<p><strong>两步分工</strong>：<span class="arithmatex">\(\tilde{\mathbf{c}}_t\)</span> 决定"写什么"，<span class="arithmatex">\(\mathbf{i}_t\)</span> 决定"写多少"。</p>
+<h4 id="_1">细胞状态更新<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t\]</div>
+<p>这是 LSTM 最核心的公式。它说的是：</p>
+<ul>
+<li>先用遗忘门 <span class="arithmatex">\(\mathbf{f}_t\)</span> 决定旧细胞状态 <span class="arithmatex">\(\mathbf{c}_{t-1}\)</span> 保留多少（<span class="arithmatex">\(\mathbf{f}_t \odot \mathbf{c}_{t-1}\)</span>）</li>
+<li>再用输入门 <span class="arithmatex">\(\mathbf{i}_t\)</span> 决定写入多少新信息（<span class="arithmatex">\(\mathbf{i}_t \odot \tilde{\mathbf{c}}_t\)</span>）</li>
+<li>两者相加得到新的细胞状态 <span class="arithmatex">\(\mathbf{c}_t\)</span></li>
+</ul>
+<p>注意这里是<strong>加法</strong>操作（而不是 RNN 中的矩阵乘法），这对梯度传播至关重要（下文会解释）。</p>
+<h4 id="output-gate">输出门（Output Gate）<a class="headerlink" href="#output-gate" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[\mathbf{o}_t = \sigma(W_o [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_o)\]</div>
+<div class="arithmatex">\[\mathbf{h}_t = \mathbf{o}_t \odot \tanh(\mathbf{c}_t)\]</div>
+<ul>
+<li><span class="arithmatex">\(\mathbf{o}_t\)</span>：输出门，决定细胞状态的哪些部分作为这一步的输出</li>
+<li><span class="arithmatex">\(\mathbf{h}_t\)</span>：当前时间步的隐状态（对外可见的输出），是对细胞状态做 <span class="arithmatex">\(\tanh\)</span> 后再用输出门筛选</li>
+</ul>
+<h3 id="43-lstm">4.3 LSTM 完整公式汇总<a class="headerlink" href="#43-lstm" title="Permanent link">&para;</a></h3>
+<p>把所有公式放在一起：</p>
+<div class="arithmatex">\[\mathbf{f}_t = \sigma(W_f [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_f) \quad \text{(遗忘门：保留多少旧信息)}\]</div>
+<div class="arithmatex">\[\mathbf{i}_t = \sigma(W_i [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_i) \quad \text{(输入门：写入多少新信息)}\]</div>
+<div class="arithmatex">\[\tilde{\mathbf{c}}_t = \tanh(W_c [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_c) \quad \text{(候选新信息)}\]</div>
+<div class="arithmatex">\[\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t \quad \text{(更新细胞状态)}\]</div>
+<div class="arithmatex">\[\mathbf{o}_t = \sigma(W_o [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_o) \quad \text{(输出门：输出哪些信息)}\]</div>
+<div class="arithmatex">\[\mathbf{h}_t = \mathbf{o}_t \odot \tanh(\mathbf{c}_t) \quad \text{(隐状态 / 输出)}\]</div>
+<h3 id="44-lstm">4.4 为什么 LSTM 能缓解梯度消失？<a class="headerlink" href="#44-lstm" title="Permanent link">&para;</a></h3>
+<p>回到细胞状态的更新公式：</p>
+<div class="arithmatex">\[\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t\]</div>
+<p>考虑 <span class="arithmatex">\(\mathcal{L}\)</span> 对 <span class="arithmatex">\(\mathbf{c}_k\)</span>（某个早期时间步的细胞状态）的梯度。沿着细胞状态这条路径传播：</p>
+<div class="arithmatex">\[\frac{\partial \mathbf{c}_t}{\partial \mathbf{c}_{t-1}} = \text{diag}(\mathbf{f}_t) + \ldots\]</div>
+<p>关键观察：梯度沿细胞状态传播时，乘的是<strong>遗忘门</strong> <span class="arithmatex">\(\mathbf{f}_t\)</span> 的值（加上一些其他项），而不是 <span class="arithmatex">\(W_h\)</span>。</p>
+<p>在基础 RNN 中，梯度必须反复乘以 <span class="arithmatex">\(W_h\)</span>——一个固定的矩阵，其特征值要么 &gt; 1（爆炸）要么 &lt; 1（消失）。</p>
+<p>在 LSTM 中，梯度沿细胞状态传播时乘的是 <span class="arithmatex">\(\mathbf{f}_t\)</span>——<strong>这是一个可学习的、可以接近 1 的值</strong>。当网络判断某个信息需要长期保留时，遗忘门会输出接近 1 的值，梯度就能几乎无损地传过去。</p>
+<p>用传送带类比：基础 RNN 就像每传一站都要经过一台复印机（<span class="arithmatex">\(W_h\)</span>），复印 99 次后文字要么糊掉（消失）要么放大到看不清（爆炸）。LSTM 的细胞状态就像一条传送带，物品直接传过去，只在需要的时候才做修改。</p>
+<blockquote>
+<p>参考：<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Colah's blog - Understanding LSTM Networks</a> · <a href="https://www.bioinf.jku.at/publications/older/2604.pdf">Hochreiter &amp; Schmidhuber, 1997</a></p>
+</blockquote>
+<hr />
+<h2 id="5-grugated-recurrent-unit">5. GRU（Gated Recurrent Unit）<a class="headerlink" href="#5-grugated-recurrent-unit" title="Permanent link">&para;</a></h2>
+<p><strong>可靠程度：Level 1（教科书共识）</strong></p>
+<p>GRU（Cho et al., 2014）是 LSTM 的简化版本。它的核心思想和 LSTM 一样——用门控制信息流——但做了两个简化：</p>
+<ol>
+<li><strong>合并细胞状态和隐状态</strong>：GRU 没有单独的 <span class="arithmatex">\(\mathbf{c}_t\)</span>，只有 <span class="arithmatex">\(\mathbf{h}_t\)</span></li>
+<li><strong>合并遗忘门和输入门</strong>：用一个"更新门" <span class="arithmatex">\(\mathbf{z}_t\)</span> 同时控制"忘多少"和"记多少"</li>
+</ol>
+<p>GRU 的公式：</p>
+<div class="arithmatex">\[\mathbf{z}_t = \sigma(W_z [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_z) \quad \text{(更新门)}\]</div>
+<div class="arithmatex">\[\mathbf{r}_t = \sigma(W_r [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_r) \quad \text{(重置门)}\]</div>
+<div class="arithmatex">\[\tilde{\mathbf{h}}_t = \tanh(W_h [\mathbf{r}_t \odot \mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_h) \quad \text{(候选隐状态)}\]</div>
+<div class="arithmatex">\[\mathbf{h}_t = (1 - \mathbf{z}_t) \odot \mathbf{h}_{t-1} + \mathbf{z}_t \odot \tilde{\mathbf{h}}_t \quad \text{(更新隐状态)}\]</div>
+<p>各符号含义：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\mathbf{z}_t\)</span>（更新门）</td>
+<td>控制"旧信息保留多少 vs 新信息写入多少"。<span class="arithmatex">\(z=0\)</span> → 完全保留旧信息；<span class="arithmatex">\(z=1\)</span> → 完全用新信息替换</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{r}_t\)</span>（重置门）</td>
+<td>控制"计算候选新信息时，参考多少旧信息"。<span class="arithmatex">\(r=0\)</span> → 忽略旧信息，从头开始；<span class="arithmatex">\(r=1\)</span> → 完全参考旧信息</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\tilde{\mathbf{h}}_t\)</span></td>
+<td>候选隐状态——"如果要写入新信息，写什么"</td>
+</tr>
+</tbody>
+</table>
+<p>注意最后一行的巧妙设计：<span class="arithmatex">\((1 - \mathbf{z}_t)\)</span> 和 <span class="arithmatex">\(\mathbf{z}_t\)</span> 加起来恒等于 1，所以遗忘和输入是互补的——忘得多就记得多，忘得少就记得少。LSTM 的遗忘门和输入门是独立的，更灵活但也更贵。</p>
+<p><strong>GRU vs LSTM 的选择</strong>：在实践中性能通常相当。GRU 参数更少（3 组权重 vs LSTM 的 4 组）、计算更快，在数据量较小时可能更有优势。LSTM 更灵活，在长序列上有时更好。</p>
+<blockquote>
+<p>参考：<a href="https://arxiv.org/abs/1406.1078">Cho et al., 2014 - Learning Phrase Representations using RNN Encoder-Decoder</a> · <a href="https://en.wikipedia.org/wiki/Gated_recurrent_unit">Wikipedia - Gated recurrent unit</a></p>
+</blockquote>
+<hr />
+<h2 id="6-rnn-transformer">6. RNN 的局限与 Transformer 的取代<a class="headerlink" href="#6-rnn-transformer" title="Permanent link">&para;</a></h2>
+<p><strong>可靠程度：Level 1-2</strong></p>
+<p>尽管 LSTM/GRU 解决了梯度消失问题，RNN 架构还有一些根本性的局限：</p>
+<h3 id="61">6.1 无法并行计算<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p>RNN 的本质特征是：<span class="arithmatex">\(\mathbf{h}_t\)</span> 依赖 <span class="arithmatex">\(\mathbf{h}_{t-1}\)</span>，而 <span class="arithmatex">\(\mathbf{h}_{t-1}\)</span> 又依赖 <span class="arithmatex">\(\mathbf{h}_{t-2}\)</span>……这是一个<strong>严格串行</strong>的依赖链。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>h_1 → h_2 → h_3 → h_4 → ... → h_T
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>（必须按顺序计算，不能跳过或并行）
+</code></pre></div>
+<p>在训练时，一个长度为 <span class="arithmatex">\(T\)</span> 的序列需要 <span class="arithmatex">\(T\)</span> 步串行计算。当 <span class="arithmatex">\(T\)</span> 很大（比如几千个词）时，GPU 的并行能力完全浪费了——GPU 最擅长的是同时做大量独立的计算（矩阵乘法），而不是一步一步串行执行。</p>
+<h3 id="62">6.2 长距离依赖仍然困难<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<p>虽然 LSTM 缓解了梯度消失，但信息仍然需要<strong>逐步传递</strong>。从 <span class="arithmatex">\(\mathbf{x}_1\)</span> 到 <span class="arithmatex">\(\mathbf{h}_T\)</span>，信息要经过 <span class="arithmatex">\(T-1\)</span> 步传递——每一步都有丢失的风险。</p>
+<p>实践中，LSTM 在序列长度超过几百步后，性能就开始下降。</p>
+<h3 id="63-transformer">6.3 Transformer 的解决方案<a class="headerlink" href="#63-transformer" title="Permanent link">&para;</a></h3>
+<p>Transformer（Vaswani et al., 2017）用 <strong>Attention 机制</strong>从根本上改变了处理序列的方式：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>RNN 的方式</th>
+<th>Transformer 的方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>访问远处信息</td>
+<td>经过 <span class="arithmatex">\(T-1\)</span> 步传递</td>
+<td><strong>直接连接</strong>——任意两个位置的注意力距离为 1</td>
+</tr>
+<tr>
+<td>并行计算</td>
+<td>必须串行</td>
+<td><strong>完全并行</strong>——所有位置同时计算注意力</td>
+</tr>
+<tr>
+<td>长序列</td>
+<td>性能随长度退化</td>
+<td>更稳定（虽然注意力计算量是 <span class="arithmatex">\(O(T^2)\)</span>）</td>
+</tr>
+</tbody>
+</table>
+<p>Transformer 不再维护"隐状态"，而是让序列中的每个位置直接"看到"所有其他位置，通过学习"注意力权重"来决定关注哪里。</p>
+<p>这就是为什么 2017 年之后，RNN/LSTM 在大多数序列任务上被 Transformer 取代了。你已经在 LLM 的学习中接触了 Transformer 的细节（LLM/04-05），这里不再重复。</p>
+<blockquote>
+<p>参考：<a href="https://arxiv.org/abs/1706.03762">Vaswani et al., 2017 - Attention Is All You Need</a> · <a href="https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)">Wikipedia - Transformer</a></p>
+</blockquote>
+<hr />
+<h2 id="7">7. 总结<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>核心机制</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基础 RNN</td>
+<td>隐状态 <span class="arithmatex">\(\mathbf{h}_t = f(W_h \mathbf{h}_{t-1} + W_x \mathbf{x}_t)\)</span></td>
+<td>概念简单、可处理变长序列</td>
+<td>梯度消失/爆炸，无法学长依赖</td>
+</tr>
+<tr>
+<td>LSTM</td>
+<td>细胞状态 <span class="arithmatex">\(\mathbf{c}_t\)</span> + 三个门</td>
+<td>缓解梯度消失，能学较长的依赖</td>
+<td>参数多、计算串行</td>
+</tr>
+<tr>
+<td>GRU</td>
+<td>合并门，取消独立细胞状态</td>
+<td>比 LSTM 更轻量，性能相当</td>
+<td>灵活性略低于 LSTM</td>
+</tr>
+<tr>
+<td>Transformer</td>
+<td>Attention 直接连接所有位置</td>
+<td>可并行，长依赖处理好</td>
+<td>注意力 <span class="arithmatex">\(O(T^2)\)</span>，需要位置编码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>历史线索</strong>：基础 RNN（1980s）→ LSTM（1997）→ GRU（2014）→ Transformer（2017）。每一步的进化都是为了解决前一代的核心缺陷。</p>
+<hr />
+<h3 id="_2">公式速查卡<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>公式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h}_t = \tanh(W_h \mathbf{h}_{t-1} + W_x \mathbf{x}_t + \mathbf{b})\)</span></td>
+<td>RNN 隐状态更新</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\frac{\partial \mathcal{L}_T}{\partial \mathbf{h}_1} \propto \prod_{t=2}^{T} \text{diag}(\tanh'(\cdot)) \cdot W_h\)</span></td>
+<td>BPTT 梯度链：<span class="arithmatex">\(W_h\)</span> 连乘导致消失/爆炸</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{f}_t = \sigma(W_f [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_f)\)</span></td>
+<td>LSTM 遗忘门</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{i}_t = \sigma(W_i [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_i)\)</span></td>
+<td>LSTM 输入门</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\tilde{\mathbf{c}}_t = \tanh(W_c [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_c)\)</span></td>
+<td>LSTM 候选细胞状态</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t\)</span></td>
+<td>LSTM 细胞状态更新（加法路径）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{o}_t = \sigma(W_o [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_o)\)</span></td>
+<td>LSTM 输出门</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h}_t = \mathbf{o}_t \odot \tanh(\mathbf{c}_t)\)</span></td>
+<td>LSTM 隐状态输出</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{h}_t = (1 - \mathbf{z}_t) \odot \mathbf{h}_{t-1} + \mathbf{z}_t \odot \tilde{\mathbf{h}}_t\)</span></td>
+<td>GRU 隐状态更新（更新门 <span class="arithmatex">\(\mathbf{z}_t\)</span>）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">理解检测<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><strong>Q1</strong>：基础 RNN 中梯度消失的根本原因是什么？LSTM 是怎么解决这个问题的？请从梯度传播路径上的"乘什么"这个角度来对比两者。</p>
+<p>你的回答：</p>
+<p><strong>Q2</strong>：假设你有一个 LSTM，遗忘门在所有时间步都输出 <span class="arithmatex">\(\mathbf{f}_t = \mathbf{1}\)</span>（全 1 向量），输入门都输出 <span class="arithmatex">\(\mathbf{i}_t = \mathbf{0}\)</span>（全 0 向量）。这时候细胞状态 <span class="arithmatex">\(\mathbf{c}_t\)</span> 会怎么变化？这对应什么实际含义？</p>
+<blockquote>
+<p>提示：代入公式 <span class="arithmatex">\(c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t\)</span>，注意遗忘门的名字和它的值的含义</p>
+</blockquote>
+<p>你的回答：</p>
+<p><strong>Q3</strong>：RNN 必须串行计算是因为"<span class="arithmatex">\(\mathbf{h}_t\)</span> 依赖 <span class="arithmatex">\(\mathbf{h}_{t-1}\)</span>"。Transformer 为什么不需要串行？它用什么机制替代了"逐步传递信息"这个过程？如果 Transformer 也需要知道位置信息（第 3 个词 vs 第 100 个词），它是怎么做到的？（提示：回忆位置编码 positional encoding）</p>
+<p>你的回答：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

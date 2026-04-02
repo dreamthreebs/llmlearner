@@ -1,0 +1,107 @@
+digraph QuantInvestingKnowledgeGraph {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    subgraph cluster_legend {
+        label="关系图例";
+        style=dashed;
+        color=gray70;
+        fontsize=12;
+
+        leg_dep1 [label="A", style=invis, width=0.3];
+        leg_dep2 [label="B", style=invis, width=0.3];
+        leg_dep1 -> leg_dep2 [label="依赖\n(A 依赖 B)", fontsize=8];
+
+        leg_use1 [label="A", style=invis, width=0.3];
+        leg_use2 [label="B", style=invis, width=0.3];
+        leg_use1 -> leg_use2 [label="用于\n(A 用于 B)", fontsize=8];
+
+        leg_comp1 [label="A", style=invis, width=0.3];
+        leg_comp2 [label="B", style=invis, width=0.3];
+        leg_comp1 -> leg_comp2 [label="对比\n(A 对比 B)", fontsize=8, style=dashed, dir=both];
+    }
+
+    // D1 市场与数据
+    subgraph cluster_D1 {
+        label="D1 市场与数据";
+        style=filled;
+        color="#E8F5E9";
+        fontsize=14;
+
+        market [label="金融市场\n(概念)", fillcolor="#A5D6A7"];
+        data [label="金融数据\n(概念)", fillcolor="#A5D6A7"];
+        emh [label="有效市场假说\n(理论)", fillcolor="#A5D6A7"];
+    }
+
+    // D2 数学工具
+    subgraph cluster_D2 {
+        label="D2 数学工具";
+        style=filled;
+        color="#E3F2FD";
+        fontsize=14;
+
+        random_walk [label="随机游走\n(理论)", fillcolor="#90CAF9"];
+        time_series [label="时间序列分析\n(方法)", fillcolor="#90CAF9"];
+        garch [label="GARCH\n(方法)", fillcolor="#90CAF9"];
+        cointegration [label="协整\n(方法)", fillcolor="#90CAF9"];
+    }
+
+    // D3 策略理论
+    subgraph cluster_D3 {
+        label="D3 策略理论";
+        style=filled;
+        color="#FFF3E0";
+        fontsize=14;
+
+        momentum_strat [label="动量策略\n(方法)", fillcolor="#FFCC80"];
+        mean_revert [label="均值回复\n(方法)", fillcolor="#FFCC80"];
+        stat_arb [label="统计套利\n(方法)", fillcolor="#FFCC80"];
+        signal [label="信号构建\n(方法)", fillcolor="#FFCC80"];
+    }
+
+    // D4 风险与评估
+    subgraph cluster_D4 {
+        label="D4 风险与评估";
+        style=filled;
+        color="#F3E5F5";
+        fontsize=14;
+
+        risk_mgmt [label="风险管理\n(方法)", fillcolor="#CE93D8"];
+        overfitting [label="过拟合\n(概念)", fillcolor="#CE93D8"];
+        backtest [label="回测\n(方法)", fillcolor="#CE93D8"];
+    }
+
+    // D5 实盘工程
+    subgraph cluster_D5 {
+        label="D5 实盘工程";
+        style=filled;
+        color="#FCE4EC";
+        fontsize=14;
+
+        execution [label="执行系统\n(实验)", fillcolor="#F48FB1"];
+        cost [label="交易成本\n(概念)", fillcolor="#F48FB1"];
+    }
+
+    // 依赖关系
+    random_walk -> emh [label="依赖"];
+    time_series -> data [label="依赖"];
+    garch -> time_series [label="依赖"];
+    signal -> data [label="依赖"];
+    backtest -> data [label="依赖"];
+    stat_arb -> cointegration [label="依赖"];
+
+    // 用于
+    signal -> momentum_strat [label="用于"];
+    signal -> mean_revert [label="用于"];
+    risk_mgmt -> backtest [label="用于"];
+    backtest -> execution [label="用于"];
+
+    // 对比
+    momentum_strat -> mean_revert [label="对比", style=dashed, dir=both];
+
+    // 属于
+    overfitting -> backtest [label="属于", penwidth=2.0];
+    cost -> execution [label="属于", penwidth=2.0];
+}

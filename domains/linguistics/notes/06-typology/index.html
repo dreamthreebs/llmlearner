@@ -1,0 +1,7306 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="帮你快速建立新领域的可靠知识结构">
+      
+      
+      
+      
+        <link rel="prev" href="../05-semantics-pragmatics/">
+      
+      
+        <link rel="next" href="../07-methods/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>语言类型学与共性 - LLM Learner — 研究者知识库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#06-" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-header__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM Learner — 研究者知识库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              语言类型学与共性
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LLM Learner — 研究者知识库" class="md-nav__button md-logo" aria-label="LLM Learner — 研究者知识库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM Learner — 研究者知识库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    神经网络
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/01a-mlp-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLP 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/01b-activation-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    激活函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/02-deep-mlp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    深入 MLP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/03-cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/04-rnn-lstm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN 与 LSTM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/05-training-math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    训练的数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/06-generalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    正则化与泛化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/07-pytorch-practice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch 实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/08-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/09-autoencoder-vae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AutoEncoder 与 VAE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/10-gan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neural-networks/notes/11-gnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LLM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/02-neural-network-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/03-word-embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    词嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/04-attention-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    注意力机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/05-transformer-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/06-pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    预训练
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LLM/notes/07-finetuning-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微调与对齐
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMB
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CMB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/02-expanding-universe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    膨胀宇宙
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMB/notes/03-thermal-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    热历史
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    点集拓扑
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    点集拓扑
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../point-set-topology/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Agent
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Agent
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/02-prompting-reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示与推理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/03-tool-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/05-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    规划
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/06-architectures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/07-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/08-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    评估与调试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agent/notes/09-applications-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    应用与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    宇宙学统计
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    宇宙学统计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/02-probability-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概率论复习
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/03-likelihood-mle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    似然与 MLE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/04-bayesian-inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    贝叶斯推断
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/05-mcmc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCMC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/06-fisher-matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fisher 矩阵
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/07-model-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    模型选择
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/08-cosmological-likelihood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    宇宙学似然
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cosmological-statistics/notes/09-results-interpretation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    结果解读
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    佛教
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    佛教
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/02-buddha-and-india/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    佛陀与古印度
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/03-core-doctrines-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/04-core-doctrines-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/05-schools-and-mahayana/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部派与大乘
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/06-madhyamaka-yogacara/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中观与唯识
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/07-key-texts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    经典文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/08-chinese-buddhism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中国佛教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../buddhism/notes/09-modern-significance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    现代意义
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    道家道教
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    道家道教
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/02-laozi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    老子与道德经
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/03-zhuangzi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    庄子
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/04-pre-qin-to-han/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    先秦至汉代
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/05-founding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    道教的创立
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/06-xuanxue-shangqing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    玄学与上清灵宝
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/07-alchemy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内丹与修炼
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/08-tang-to-qing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    唐宋至明清
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../daoism/notes/09-modern-significance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    现代意义
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分析哲学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    分析哲学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/02-logic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    逻辑基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/03-frege-russell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    弗雷格与罗素
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/04-wittgenstein/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    维特根斯坦
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/05-philosophy-of-language/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言哲学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/06-epistemology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    认识论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/07-philosophy-of-mind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    心灵哲学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/08-metaphysics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    形而上学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../analytic-philosophy/notes/09-ethics-and-contemporary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    伦理学与当代
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多因子模型
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    多因子模型
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/02-finance-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    金融基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/03-capm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAPM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/04-multi-factor-theory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多因子理论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/05-classic-factors-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    经典因子（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/06-classic-factors-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    经典因子（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/07-factor-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    因子检验
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/08-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    因子投资实操
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../factor-models/notes/09-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前沿与应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    量化投资
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    量化投资
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_3" id="__nav_12_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/02-markets-and-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    市场与数据
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/03-math-tools-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数学工具（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/04-math-tools-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数学工具（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/05-strategy-theory-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    策略理论（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/06-strategy-theory-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    策略理论（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/07-risk-and-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    风险管理与评估
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/08-backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    回测方法论
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quant-investing/notes/09-execution-and-frontiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    实盘与前沿
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言学
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    语言学
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13_3" id="__nav_13_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-phonetics-phonology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语音学与音系学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-morphology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    形态学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    句法学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-semantics-pragmatics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语义学与语用学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言类型学与共性
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    语言类型学与共性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考与延伸阅读
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1：什么是语言类型学？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1：什么是语言类型学？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 核心定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 与历史语言学的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-joseph-greenberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Joseph Greenberg 与现代类型学
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2word-order-typology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2：语序类型学（Word Order Typology）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2：语序类型学（Word Order Typology）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 六种基本语序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 全球分布：基于 WALS 的数量感
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-greenberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 语序和谐与 Greenberg 共性（节选）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 为什么不是均匀分布？功能解释 vs 认知解释
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 汉语、英语、日语、土耳其语：同表对照
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3morphological-typology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3：形态类型学（Morphological Typology）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 3：形态类型学（Morphological Typology）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 经典四分法：连续谱而非四个盒子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 形态—句法：格配列（alignment）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 形态—句法：格配列（alignment）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nominativeaccusative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        主格—宾格（nominative–accusative）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ergativeabsolutive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        作格—通格（ergative–absolutive）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        量化对照：同一语义的不同编码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-synthesis-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 量化：综合度指数（synthesis index）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4phonological-typology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 4：音系类型学（Phonological Typology）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 4：音系类型学（Phonological Typology）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 辅音与元音数量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-tone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 声调（tone）与非声调
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 音节结构类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-cvcvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 音节模板：用 CV、CVC 看世界
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5language-universals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 5：语言共性（Language Universals）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 5：语言共性（Language Universals）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-absolute-universals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 绝对共性（absolute universals）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-implicational-universals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 蕴涵共性（implicational universals）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 蕴涵共性（implicational universals）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implicational-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        蕴涵层级（implicational hierarchy）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="蕴涵层级（implicational hierarchy）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        再举两例音系蕴涵（操作定义敏感）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        形态—句法蕴涵（示意）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-statistical-universals-tendencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 统计共性（statistical universals / tendencies）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 为什么存在共性？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-6wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 6：WALS — 世界语言结构地图
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 6：WALS — 世界语言结构地图">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 WALS 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 怎么使用（界面直觉）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 具体例子：看“语序”的世界分布
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 使用 WALS 时的三个常见误区
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-d4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 与语料库方法的关系（呼应 D4）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        延伸阅读（可选）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="延伸阅读（可选）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    方法与量化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基督教
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    基督教
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    领域概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_14_3" id="__nav_14_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全景概览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/02-ancient-israel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    古以色列与犹太教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/03-jesus-and-gospels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    耶稣与福音书
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/04-core-doctrines-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（上）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/05-core-doctrines-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心教义（下）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/06-early-church/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    早期教会与信经
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/07-medieval-and-eastern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中世纪与东方基督教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/08-reformation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    宗教改革与教派分化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../christianity/notes/09-modern-christianity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    现代基督教
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考与延伸阅读
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1：什么是语言类型学？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1：什么是语言类型学？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 核心定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 与历史语言学的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-joseph-greenberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Joseph Greenberg 与现代类型学
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2word-order-typology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2：语序类型学（Word Order Typology）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2：语序类型学（Word Order Typology）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 六种基本语序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 全球分布：基于 WALS 的数量感
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-greenberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 语序和谐与 Greenberg 共性（节选）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 为什么不是均匀分布？功能解释 vs 认知解释
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 汉语、英语、日语、土耳其语：同表对照
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3morphological-typology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3：形态类型学（Morphological Typology）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 3：形态类型学（Morphological Typology）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 经典四分法：连续谱而非四个盒子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 形态—句法：格配列（alignment）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 形态—句法：格配列（alignment）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nominativeaccusative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        主格—宾格（nominative–accusative）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ergativeabsolutive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        作格—通格（ergative–absolutive）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        量化对照：同一语义的不同编码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-synthesis-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 量化：综合度指数（synthesis index）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4phonological-typology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 4：音系类型学（Phonological Typology）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 4：音系类型学（Phonological Typology）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 辅音与元音数量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-tone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 声调（tone）与非声调
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 音节结构类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-cvcvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 音节模板：用 CV、CVC 看世界
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5language-universals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 5：语言共性（Language Universals）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 5：语言共性（Language Universals）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-absolute-universals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 绝对共性（absolute universals）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-implicational-universals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 蕴涵共性（implicational universals）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 蕴涵共性（implicational universals）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implicational-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        蕴涵层级（implicational hierarchy）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="蕴涵层级（implicational hierarchy）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        再举两例音系蕴涵（操作定义敏感）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        形态—句法蕴涵（示意）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-statistical-universals-tendencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 统计共性（statistical universals / tendencies）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 为什么存在共性？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-6wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 6：WALS — 世界语言结构地图
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 6：WALS — 世界语言结构地图">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 WALS 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 怎么使用（界面直觉）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 具体例子：看“语序”的世界分布
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-wals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 使用 WALS 时的三个常见误区
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-d4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 与语料库方法的关系（呼应 D4）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        延伸阅读（可选）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="延伸阅读（可选）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        公式速查卡
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        理解检测
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="06-">06 - 语言类型学与语言共性<a class="headerlink" href="#06-" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>主维度</strong>：D3 跨语言共性<br />
+<strong>次维度</strong>：D4 方法与量化<br />
+<strong>关键关系</strong>：<br />
+- 语料库方法 (方法) --用于--&gt; 语言类型学 (方法)<br />
+- 语言类型学 (方法) --用于--&gt; 语言共性 (概念)<br />
+- 历史语言学 (概念) --类比--&gt; 语言类型学 (方法)</p>
+</blockquote>
+<hr />
+<h2 id="_1">学习目标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>读完本章后，你应该能够：</p>
+<ol>
+<li>用自己的话说清<strong>语言类型学</strong>（linguistic typology）在研究什么，以及它与<strong>历史语言学</strong>（historical linguistics）的分工差异。  </li>
+<li>解释六种基本<strong>语序类型</strong>（word order types）在世界语言中的大致比例，并理解<strong>语序和谐</strong>（word order harmony）这类跨特征相关。  </li>
+<li>从跨语言角度理解<strong>形态类型</strong>（morphological typology）的连续谱，以及<strong>格配列</strong>（alignment）中主格—宾格与作格—通格的差别。  </li>
+<li>说出音系层面若干可量化的<strong>类型学参数</strong>（辅音/元音数量、声调、音节结构），并知道常见数量级。  </li>
+<li>区分<strong>绝对共性</strong>、<strong>蕴涵共性</strong>与<strong>统计共性</strong>，并能读懂 <span class="arithmatex">\(P \rightarrow Q\)</span> 式的概括。  </li>
+<li>知道 <strong>WALS</strong>（World Atlas of Language Structures）是什么、能用来做什么，并会查阅单一特征的世界地图。</li>
+</ol>
+<blockquote>
+<p><strong>前置知识</strong>：建议先读完本领域 <code>01-overview.md</code>，并具备 <code>02-phonetics-phonology.md</code>、<code>03-morphology.md</code>、<code>04-syntax.md</code>、<code>05-semantics-pragmatics.md</code> 中对<strong>词素</strong>（morpheme）、<strong>词类</strong>（parts of speech）、<strong>基本句法关系</strong>（如主语 S、宾语 O、动词 V）的入门理解。若尚未读完 02–05，可先读本章的“定义与例子”部分，遇到未覆盖的术语再回查对应章节。</p>
+</blockquote>
+<hr />
+<h2 id="_2">参考与延伸阅读<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>资源</th>
+<th>用途</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>WALS Online</strong></td>
+<td>世界语言结构特征地图与统计</td>
+<td><a href="https://wals.info/">https://wals.info/</a></td>
+</tr>
+<tr>
+<td><strong>Ethnologue</strong></td>
+<td>语言名录、使用者规模、地理分布（偏“语言有多少、在哪”）</td>
+<td><a href="https://www.ethnologue.com/">https://www.ethnologue.com/</a></td>
+</tr>
+<tr>
+<td><strong>Greenberg (1963)</strong></td>
+<td>经典蕴涵共性与现代类型学的奠基文献</td>
+<td><a href="https://www.jstor.org/stable/411199">https://www.jstor.org/stable/411199</a>（论文；若无法访问 JSTOR，可配合 Wikipedia “Greenberg’s linguistic universals” 条目阅读摘要）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Greenberg (1963) 与 WALS 的<strong>分类操作定义</strong>为 Level 1–2（学界广泛使用，但具体特征编码依赖分析决策）；全球比例类数字为 <strong>WALS 样本内的统计</strong>，随数据库版本与特征定义会略有浮动，本章标注为 Level 2。</p>
+</blockquote>
+<hr />
+<h2 id="part-1">Part 1：什么是语言类型学？<a class="headerlink" href="#part-1" title="Permanent link">&para;</a></h2>
+<h3 id="11">1.1 核心定义<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p><strong>语言类型学</strong>是通过<strong>系统比较</strong>多种语言，归纳人类语言在结构上的<strong>共同模式</strong>与<strong>变异范围</strong>的学科。它回答的问题常常是：</p>
+<ul>
+<li>哪些结构“几乎到处都有”？（<strong>共性</strong> universals）  </li>
+<li>哪些结构“很少见但存在”？（<strong>稀有类型</strong> rare types）  </li>
+<li>两种结构是否经常<strong>共现</strong>或<strong>互斥</strong>？（<strong>相关</strong> correlations / <strong>蕴涵</strong> implications）</li>
+</ul>
+<p>为做比较，类型学家需要先把现象<strong>操作化</strong>（operationalize）：例如什么叫“该语言的基本语序是 SOV”，必须在<strong>及物小句</strong>里、在<strong>名词性主语/宾语</strong>与<strong>动词</strong>的相对位置上给出判定标准。否则“统计世界语言”就不可重复。</p>
+<h3 id="12">1.2 与历史语言学的区别<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th><strong>历史语言学</strong></th>
+<th><strong>语言类型学</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主要问题</td>
+<td>语言之间的<strong>亲缘关系</strong>（谱系树）、音变规律、分化时间</td>
+<td>结构上的<strong>相似模式</strong>，通常<strong>不预设</strong>亲缘</td>
+</tr>
+<tr>
+<td>典型证据</td>
+<td>系统对应的<strong>同源词</strong>（cognates）、规则音变</td>
+<td>跨语言的<strong>结构特征</strong>共现频率、蕴涵关系</td>
+</tr>
+<tr>
+<td>类比（工程）</td>
+<td>追溯两个软件 fork 自同一仓库的提交历史</td>
+<td>比较不同仓库里“架构模式”谁更常见</td>
+</tr>
+</tbody>
+</table>
+<p>二者可以互补：谱系相近的语言可能因接触（language contact）而变得<strong>类型上相似</strong>；类型上相似也可能来自<strong>平行演化</strong>而非同源。类型学强调：<strong>相关不等于同源</strong>。</p>
+<h3 id="13-joseph-greenberg">1.3 Joseph Greenberg 与现代类型学<a class="headerlink" href="#13-joseph-greenberg" title="Permanent link">&para;</a></h3>
+<p><strong>Joseph Greenberg</strong>（约瑟夫·格林伯格）常被视为<strong>现代语言类型学</strong>的重要奠基人之一。他在 1963 年的经典论文中提出大量<strong>统计倾向</strong>与<strong>蕴涵关系</strong>（见后文 Greenberg 共性表），把“跨语言比较”从印象式列举推进到可检验的概括。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（教科书共识：Greenberg 1963 的历史地位）。</p>
+</blockquote>
+<hr />
+<h2 id="part-2word-order-typology">Part 2：语序类型学（Word Order Typology）<a class="headerlink" href="#part-2word-order-typology" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 六种基本语序<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>在<strong>及物小句</strong>里，用 <strong>S</strong> 表示主语（subject）、<strong>O</strong> 表示宾语（object）、<strong>V</strong> 表示动词（verb），理论上三者的线性顺序有 <span class="arithmatex">\(3! = 6\)</span> 种：</p>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>顺序</th>
+<th>直观读法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SVO</strong></td>
+<td>S – V – O</td>
+<td>主语–动词–宾语</td>
+</tr>
+<tr>
+<td><strong>SOV</strong></td>
+<td>S – O – V</td>
+<td>主语–宾语–动词</td>
+</tr>
+<tr>
+<td><strong>VSO</strong></td>
+<td>V – S – O</td>
+<td>动词–主语–宾语</td>
+</tr>
+<tr>
+<td><strong>VOS</strong></td>
+<td>V – O – S</td>
+<td>动词–宾语–主语</td>
+</tr>
+<tr>
+<td><strong>OVS</strong></td>
+<td>O – V – S</td>
+<td>宾语–动词–主语</td>
+</tr>
+<tr>
+<td><strong>OSV</strong></td>
+<td>O – S – V</td>
+<td>宾语–主语–动词</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>：这里的“基本语序”指<strong>占优势</strong>（dominant）或<strong>无标记</strong>（default）的语序；许多语言允许<strong>语序变体</strong>（话题化、焦点、文体），类型学统计的是<strong>主导模式</strong>。</p>
+<h3 id="22-wals">2.2 全球分布：基于 WALS 的数量感<a class="headerlink" href="#22-wals" title="Permanent link">&para;</a></h3>
+<p>下列比例为 <strong>WALS 特征 81A</strong>（Order of Subject, Object and Verb）一类汇总口径下的<strong>经验频率</strong>，用于建立直觉；不同版本、不同子样本（只计“刚性语序”语言等）会使小数点后略有变化。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>约占比例（示意）</th>
+<th>举例语言（说明用）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SOV</strong></td>
+<td>约 <strong>41%</strong></td>
+<td>日语、韩语、土耳其语、印地语（均为占优势 SOV 的典型讨论例子）</td>
+</tr>
+<tr>
+<td><strong>SVO</strong></td>
+<td>约 <strong>35%</strong></td>
+<td>汉语普通话、英语、法语、斯瓦希里语（常作 SVO 教材例）</td>
+</tr>
+<tr>
+<td><strong>VSO</strong></td>
+<td>约 <strong>7–9%</strong>（文献中常报在与此接近的区间）</td>
+<td>古典阿拉伯语常作 VSO 讨论；威尔士语、爱尔兰语等凯尔特语言亦常被引用</td>
+</tr>
+<tr>
+<td><strong>VOS + OVS + OSV</strong></td>
+<td>合计约 <strong>2–3%</strong></td>
+<td>绝对数量少，但证明“逻辑上可能的人类语言结构”确实被实例化</td>
+</tr>
+<tr>
+<td><strong>无单一主导语序</strong>（flexible / no dominant order）</td>
+<td>约 <strong>13–14%</strong></td>
+<td>依赖格标记、话题结构等，线性顺序不固定</td>
+</tr>
+</tbody>
+</table>
+<p><strong>读数练习</strong>：SOV 与 SVO 合计约 <strong>76%</strong>，说明人类语言在“把动词放在宾语前还是后”这一维度上高度集中；而 <strong>OVS/OSV</strong> 极端稀有，说明<strong>并非所有逻辑组合都等概率出现</strong>。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 2（大型数据库统计；比例随 WALS 更新与编码规则微调）。查阅入口：<a href="https://wals.info/feature/81A">WALS Feature 81A</a>。</p>
+</blockquote>
+<h3 id="23-greenberg">2.3 语序和谐与 Greenberg 共性（节选）<a class="headerlink" href="#23-greenberg" title="Permanent link">&para;</a></h3>
+<p><strong>介词</strong>（preposition，前置词）出现在名词短语<strong>之前</strong>（如英语 <em>in the house</em>）。<strong>后置词</strong>（postposition）出现在名词短语<strong>之后</strong>（如日语「家<strong>に</strong>」的 に 类功能常作后置词/格助词讨论）。</p>
+<p>Greenberg 发现：<strong>语序</strong>与<strong>介词/后置词类型</strong>之间存在强相关，常称<strong>语序和谐</strong>（harmony）——即多种“短语内部语序”彼此一致（例如动词在末尾时，名词与后置词的顺序也常与 OV 顺序一致）。</p>
+<p>下面给出 <strong>6 条</strong>常被教材引用的 <strong>Greenberg 共性</strong>（编号与核心内容对齐 Greenberg 1963；中文为教学转述）。其中除少数“近乎绝对”的概括外，多数是<strong>统计蕴涵</strong>或<strong>强倾向</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>内容（教学表述）</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>U1</strong></td>
+<td>在<strong>名词性主语与名词性宾语</strong>同现的<strong>陈述句</strong>里，<strong>占优势</strong>的语序几乎总是 <strong>S 在 O 之前</strong>（而不是 O 在 S 之前）</td>
+<td>说明“主语在前”是极强倾向；与六种语序并不矛盾（VSO 仍是 S 前于 O）</td>
+</tr>
+<tr>
+<td><strong>U2</strong></td>
+<td><strong>介词型</strong>语言里，<strong>属格</strong>（genitive，表领属等）几乎总在<strong>名词之后</strong>；<strong>后置词型</strong>语言里，属格几乎总在<strong>名词之前</strong></td>
+<td>属格与介词/后置词<strong>和谐</strong>；读作“介词 ↔ 属格在后”型相关</td>
+</tr>
+<tr>
+<td><strong>U3</strong></td>
+<td>若优势语序为 <strong>VSO</strong>，则该语言<strong>总是</strong>（Greenberg 原文明示 always）<strong>介词型</strong></td>
+<td>在经典样本中被表述为强全称；后续研究仍常作类型相关引用</td>
+</tr>
+<tr>
+<td><strong>U4</strong></td>
+<td>若优势语序为 <strong>SOV</strong>，则<strong>以远高于随机的频率</strong>为 <strong>后置词型</strong></td>
+<td>允许反例，但统计上极强</td>
+</tr>
+<tr>
+<td><strong>U25</strong></td>
+<td>若<strong>代词宾语</strong>在动词<strong>之后</strong>，则<strong>名词宾语</strong>也几乎总在动词<strong>之后</strong></td>
+<td>典型 <strong>蕴涵</strong>：代词位置“预设”名词位置的模式</td>
+</tr>
+<tr>
+<td><strong>U20</strong></td>
+<td>当某种<strong>问句</strong>形式把<strong>疑问词</strong>（interrogative）置于句首时，通常存在与之对应的<strong>陈述句</strong>语序，使得非疑问句里相关成分处于平行位置</td>
+<td>涉及 <strong>wh-前置</strong>（wh-fronting）与语序类型的互动；细节依语言而异</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>上表用于建立<strong>“类型学陈述长什么样”</strong>的直觉；引用时请以 Greenberg (1963) 原文句子为准，并注意后续文献对某些条的修正或重释（Level 2）。</p>
+</blockquote>
+<h3 id="24-vs">2.4 为什么不是均匀分布？功能解释 vs 认知解释<a class="headerlink" href="#24-vs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>视角</th>
+<th>核心直觉</th>
+<th>对“SOV/SVO 多、OVS/OSV 少”的可能说法（教学级）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>功能论</strong>（functionalism）</td>
+<td>语言在<strong>交际</strong>中要易于<strong>在线加工</strong>（实时听辨、预测、记忆）</td>
+<td>某些语序组合使<strong>依存距离</strong>（dependency distance）更长、或<strong>预测动词论元</strong>更难，因而在历史中较少稳定化为优势语序</td>
+</tr>
+<tr>
+<td><strong>认知论</strong>（cognitive）</td>
+<td>人类<strong>工作记忆</strong>、<strong>注意分配</strong>有普遍限制</td>
+<td>与处理负荷相关的结构更“自然”，出现频率更高</td>
+</tr>
+<tr>
+<td><strong>先天论</strong>（nativism / UG）</td>
+<td>人类语言机能对<strong>参数空间</strong>有先验约束</td>
+<td>可解释“可能的人类语法”远小于逻辑组合；但具体哪条约束对应哪条统计倾向，常需额外证据</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 2–4 混合（具体机制仍在争论；本章只给<strong>问题框架</strong>）。</p>
+</blockquote>
+<h3 id="25">2.5 汉语、英语、日语、土耳其语：同表对照<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
+<p>下表仅比较<strong>占优势语序</strong>与<strong>介词/后置词</strong>的<strong>类型标签</strong>；具体句子常有话题化、省略与结构变体。</p>
+<table>
+<thead>
+<tr>
+<th>语言</th>
+<th>常见优势语序（及物小句层面）</th>
+<th>介词/后置词</th>
+<th>极简例子（说明用）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>汉语普通话</strong></td>
+<td><strong>SVO</strong>（语序灵活，但无格时 SVO 最常见）</td>
+<td><strong>介词前置</strong>（在、把、从）</td>
+<td>「猫吃鱼」；「在<strong>家里</strong>」</td>
+</tr>
+<tr>
+<td><strong>英语</strong></td>
+<td><strong>SVO</strong></td>
+<td><strong>介词前置</strong></td>
+<td><em>The cat eats fish.</em>；<em>in </em><em>the house</em>**</td>
+</tr>
+<tr>
+<td><strong>日语</strong></td>
+<td><strong>SOV</strong></td>
+<td><strong>后置格助词</strong>（功能上常分析为 postposition 类）</td>
+<td>「猫が魚を食べる」；「家<strong>に</strong>」</td>
+</tr>
+<tr>
+<td><strong>土耳其语</strong></td>
+<td><strong>SOV</strong></td>
+<td><strong>后置词/格后缀</strong>（与黏着形态紧密结合）</td>
+<td><em>Kedi balığı yer.</em>（语序与格标记配合）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-3morphological-typology">Part 3：形态类型学（Morphological Typology）<a class="headerlink" href="#part-3morphological-typology" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 经典四分法：连续谱而非四个盒子<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>入门课常把语言按<strong>词的结构方式</strong>粗分为四类（你在形态学笔记中会见到）：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>中文标签</th>
+<th>特点（直觉）</th>
+<th>讨论用例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>孤立语</strong>（isolating）</td>
+<td>孤立语</td>
+<td>词素少、少屈折；语法关系常靠<strong>语序</strong>与<strong>虚词</strong></td>
+<td>汉语（相对孤立，非“零形态”）</td>
+</tr>
+<tr>
+<td><strong>黏着语</strong>（agglutinative）</td>
+<td>黏着语</td>
+<td>多个<strong>边界清晰</strong>的 affix 线性叠加</td>
+<td>土耳其语、日语动词活用链</td>
+</tr>
+<tr>
+<td><strong>屈折语</strong>（inflectional / fusional）</td>
+<td>屈折语</td>
+<td>一个词缀常<strong>同时</strong>表达多个语法范畴，词干与词缀边界可能模糊</td>
+<td>俄语、拉丁语</td>
+</tr>
+<tr>
+<td><strong>多式综合语</strong>（polysynthetic）</td>
+<td>多式综合语</td>
+<td>一个词可打包<strong>多个论元/状语</strong>信息</td>
+<td>因纽特语系等常被引用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键修正</strong>：这是<strong>程度谱</strong>（cline），不是互斥分类。真实语言常<strong>混合</strong>：英语介于孤立与屈折之间；日语动词黏着性强但名词短语又有孤立特点。</p>
+<h3 id="32-alignment">3.2 形态—句法：格配列（alignment）<a class="headerlink" href="#32-alignment" title="Permanent link">&para;</a></h3>
+<p><strong>格</strong>（case）是名词短语上的形态标记，用来标示它在小句中的<strong>语法关系</strong>（主语、宾语等）。<strong>配列</strong>（alignment）指：不及物小句的主语（S）与及物小句的主语（A）、宾语（P）在形式上如何分组。</p>
+<h4 id="nominativeaccusative">主格—宾格（nominative–accusative）<a class="headerlink" href="#nominativeaccusative" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>主格</strong>（nominative）：典型用于 <strong>S</strong> 与 <strong>A</strong>（不及物主语 + 及物施事）。  </li>
+<li><strong>宾格</strong>（accusative）：典型用于 <strong>P</strong>（受事）。</li>
+</ul>
+<p><strong>英语</strong>：<em>She</em>（主格）<em>sees him</em>（宾格）。<strong>汉语</strong>缺乏英语那种屈折格，但<strong>句法位置</strong>与<strong>介词“把”</strong>等仍体现<strong>宾格型</strong>论元配置（S 与 A 同组、P 不同组）的讨论框架。</p>
+<h4 id="ergativeabsolutive">作格—通格（ergative–absolutive）<a class="headerlink" href="#ergativeabsolutive" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>作格</strong>（ergative）：典型用于 <strong>A</strong>（及物施事）。  </li>
+<li><strong>通格</strong>（absolutive）：典型用于 <strong>S</strong> 与 <strong>P</strong>。</li>
+</ul>
+<p><strong>巴斯克语</strong>（Basque）常作例子：不及物句的主语与及物句的宾语共享一种形式，及物施事用另一种形式。<strong>藏语</strong>部分方言/变体在形态上呈现作格型或<strong>分裂作格</strong>（split ergativity）现象——即作格标记只出现在<strong>部分时体/人称</strong>配置中，其余配置仍像主格—宾格。分裂作格说明：<strong>配列</strong>不必是全语一致的单一模式，类型学上常作为“介于两类之间”的实证。</p>
+<h4 id="_3">量化对照：同一语义的不同编码<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>不及物「门开了」的主语</th>
+<th>及物「我开门」的施事</th>
+<th>及物「我开门」的受事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主格—宾格（典型）</td>
+<td>主格形式</td>
+<td>主格形式</td>
+<td>宾格形式</td>
+</tr>
+<tr>
+<td>作格—通格（典型）</td>
+<td>通格形式</td>
+<td><strong>作格</strong>形式</td>
+<td>通格形式</td>
+</tr>
+</tbody>
+</table>
+<p>英语用<strong>位置</strong>与<strong>代词格</strong>体现主格—宾格；巴斯克语常在名词上叠加<strong>作格后缀</strong>标示施事。汉语无英语式屈折格，但类型学讨论仍可问：某一语言在<strong>形态</strong>或<strong>句法</strong>上把 {S,P} 还是 {S,A} 编成一类？</p>
+<p><strong>对比表</strong>（理想化）：</p>
+<table>
+<thead>
+<tr>
+<th>小句类型</th>
+<th>主格—宾格语言</th>
+<th>作格—通格语言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不及物：S</td>
+<td>主格形式</td>
+<td>通格形式</td>
+</tr>
+<tr>
+<td>及物：A</td>
+<td>主格形式</td>
+<td><strong>作格</strong>形式</td>
+</tr>
+<tr>
+<td>及物：P</td>
+<td><strong>宾格</strong>形式</td>
+<td>通格形式</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（配列类型是标准概念）；具体语言属于哪一类需查该语言的参考语法。</p>
+</blockquote>
+<h3 id="33-synthesis-index">3.3 量化：综合度指数（synthesis index）<a class="headerlink" href="#33-synthesis-index" title="Permanent link">&para;</a></h3>
+<p><strong>综合度</strong>（synthesis）可粗测为：平均每个<strong>词</strong>里有多少个<strong>词素</strong>。</p>
+<div class="arithmatex">\[
+\text{综合度指数} = \frac{\text{词素数}}{\text{词数}}
+\]</div>
+<ul>
+<li>英语 <em>cats</em>：1 词，2 词素（<em>cat</em> + <em>-s</em>），该词局部指数为 2。  </li>
+<li>汉语「猫们」：若分析为「猫」+「们」，则 1 词 2 词素，指数为 2。</li>
+</ul>
+<p>该指数依赖<strong>词怎么切</strong>（尤其汉语分词）与<strong>词素怎么定</strong>（离合词、附着语素是否算独立词等），适合作为<strong>语料库层面的粗指标</strong>，不宜过度精确到小数点后多位当作“语言本质”。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 2（常用粗指标；操作定义影响结果）。</p>
+</blockquote>
+<hr />
+<h2 id="part-4phonological-typology">Part 4：音系类型学（Phonological Typology）<a class="headerlink" href="#part-4phonological-typology" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 辅音与元音数量<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数量级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>辅音音位</strong>（consonant phonemes）</td>
+<td>常见约十几到四十余个；极端少如 <strong>Rotokas</strong>（罗托卡斯语）常被报道为约 <strong>6</strong> 个辅音量级；极端多如部分 <strong>科伊桑</strong>（Khoisan）语言可报告 <strong>100+</strong> 辅音（含大量 click 辅音）</td>
+<td>“音位个数”依赖分析；教学上用<strong>数量级</strong>即可</td>
+</tr>
+<tr>
+<td><strong>元音音位</strong>（vowel phonemes）</td>
+<td><strong>3–5 个元音</strong>的系统在世界语言中非常常见；也有元音很多的语言（如一些德语方言、瑞典语等）</td>
+<td>与音节结构、时长、鼻化等交互</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 2–3（具体语言的音位表以参考语法为准；极端案例常被引用但可能有修订）。</p>
+</blockquote>
+<h3 id="42-tone">4.2 声调（tone）与非声调<a class="headerlink" href="#42-tone" title="Permanent link">&para;</a></h3>
+<p><strong>声调语言</strong>（tone language）用<strong>音高模式</strong>区分词义（如汉语“妈/麻/马/骂”）。世界范围内，不同统计口径下常给出<strong>约 40–50%</strong> 的语言具有<strong>词汇声调</strong>或<strong>显著音高对比</strong>（具体百分比依赖“算不算声调”的定义）。</p>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 3（定义边界影响百分比；可看 WALS 相关特征作对照）。</p>
+</blockquote>
+<h3 id="43">4.3 音节结构类型<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<p><strong>音节</strong>（syllable）常分析为<strong>节首</strong>（onset）+ <strong>韵核</strong>（nucleus，通常是元音）+ <strong>韵尾</strong>（coda）。跨语言常见观察：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>含义</th>
+<th>倾向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CV</strong> 偏好</td>
+<td>音节多为 <strong>辅音+元音</strong>，韵尾少或受限</td>
+<td>常见；被认为在习得与感知上较“省力”的类型之一</td>
+</tr>
+<tr>
+<td><strong>复杂韵尾</strong></td>
+<td>允许 <strong>CCVC、CCVCC</strong> 等</td>
+<td>英语 <em>strengths</em> 一类为极端复杂个例</td>
+</tr>
+<tr>
+<td><strong>复辅音丛</strong></td>
+<td>节首或韵尾多个辅音</td>
+<td>语言间差异极大</td>
+</tr>
+</tbody>
+</table>
+<p>音系类型学常与<strong>词法、语序</strong>分开统计，但在演化与接触中可能相关（Level 3–4 研究领域）。</p>
+<h3 id="44-cvcvc">4.4 音节模板：用 CV、CVC 看世界<a class="headerlink" href="#44-cvcvc" title="Permanent link">&para;</a></h3>
+<p>类型学家常把允许的音节<strong>最大形状</strong>写成<strong>音节模板</strong>（syllable template）。下面是<strong>示意性</strong>对比，非穷举：</p>
+<table>
+<thead>
+<tr>
+<th>模板倾向</th>
+<th>含义</th>
+<th>讨论用例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>(C)V</strong></td>
+<td>韵尾辅音缺失或极受限</td>
+<td>不少语言几乎只允许开音节</td>
+</tr>
+<tr>
+<td><strong>(C)V(C)</strong></td>
+<td>单辅音韵尾常见</td>
+<td>日语拍节结构、汉语单音节汉字音系（带韵尾限制）</td>
+</tr>
+<tr>
+<td><strong>复杂节首 CCV-</strong></td>
+<td>允许 <strong>复辅音丛</strong>（consonant clusters）</td>
+<td>英语 <em>spring</em> /spr-/</td>
+</tr>
+<tr>
+<td><strong>长辅音 / 长元音</strong></td>
+<td><strong>时长</strong>（length）与音位对立</td>
+<td>日语「ビル」vs「ビール」类对比；芬兰语长辅音</td>
+</tr>
+</tbody>
+</table>
+<p><strong>响音</strong>（sonorant，如 m、n、l、通元音）常更易充当<strong>韵核</strong>或<strong>音节化辅音</strong>；<strong>阻碍音</strong>（obstruent，如塞音、擦音）一般不能单独成音节——这与“所有语言都有元音与辅音类对立”的共性叙述相互支撑（定义需严谨）。</p>
+<hr />
+<h2 id="part-5language-universals">Part 5：语言共性（Language Universals）<a class="headerlink" href="#part-5language-universals" title="Permanent link">&para;</a></h2>
+<h3 id="51-absolute-universals">5.1 绝对共性（absolute universals）<a class="headerlink" href="#51-absolute-universals" title="Permanent link">&para;</a></h3>
+<p><strong>定义</strong>：声称对<strong>所有人类语言</strong>成立，不允许反例（一旦发现反例就必须修正）。</p>
+<p><strong>教学上常用的候选例子</strong>（注意：每一条在极端边缘情况下都可能引发术语辩论）：</p>
+<table>
+<thead>
+<tr>
+<th>陈述</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>都有<strong>辅音</strong>与<strong>元音</strong>（或至少<strong>可音节化的响音</strong>与<strong>阻碍音</strong>的对比）</td>
+<td>音系层面最“硬”的共性候选之一</td>
+</tr>
+<tr>
+<td>都能表达<strong>否定</strong>（negation）</td>
+<td>语义—句法功能</td>
+</tr>
+<tr>
+<td>都有<strong>名词</strong>与<strong>动词</strong>的区分（或至少<strong>指称</strong>与<strong>述谓</strong>的功能对立）</td>
+<td>词类问题在少数语言上讨论复杂，但“无动词语言”若存在也极罕见且争议大</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1–2（多数入门教材采用；边缘案例读 specialist literature）。</p>
+</blockquote>
+<h3 id="52-implicational-universals">5.2 蕴涵共性（implicational universals）<a class="headerlink" href="#52-implicational-universals" title="Permanent link">&para;</a></h3>
+<p><strong>形式</strong>：若性质 <strong>P</strong> 成立，则性质 <strong>Q</strong> 必然成立：<span class="arithmatex">\(P \rightarrow Q\)</span>。</p>
+<p><strong>逻辑提醒</strong>：<span class="arithmatex">\(P \rightarrow Q\)</span> <strong>不等价于</strong> <span class="arithmatex">\(Q \rightarrow P\)</span>。逆命题可为假。</p>
+<table>
+<thead>
+<tr>
+<th>例子</th>
+<th>读法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>若语言有<strong>鼻化元音</strong>（nasal vowels），则一定有<strong>口腔元音</strong>（oral vowels）</td>
+<td>鼻化以口腔为基础</td>
+</tr>
+<tr>
+<td>若语言有<strong>擦音</strong>（fricatives），则通常有<strong>塞音</strong>（stops）</td>
+<td>常见音系蕴涵；具体表述依特征定义</td>
+</tr>
+</tbody>
+</table>
+<h4 id="implicational-hierarchy">蕴涵层级（implicational hierarchy）<a class="headerlink" href="#implicational-hierarchy" title="Permanent link">&para;</a></h4>
+<p>把特征排成链：<strong>若存在较“强/稀有”的项，则左侧较“弱/普遍”的项应先存在</strong>。示意（概念性，非唯一标准链）：</p>
+<table>
+<thead>
+<tr>
+<th>层级（示意，左更“基础”）</th>
+<th>直觉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>塞音 → 擦音 → 塞擦音 …</td>
+<td>擦音的出现常“预设”塞音类对比的存在（具体依分析）</td>
+</tr>
+</tbody>
+</table>
+<p>教学上把层级画成表或链，有助于记忆：<strong>蕴涵共性是“非对称依赖”</strong>。</p>
+<h5 id="_4">再举两例音系蕴涵（操作定义敏感）<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>若 P（较窄）</th>
+<th>则 Q（较宽）</th>
+<th>类型学直觉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>语言有 <strong>清浊对立</strong>的塞音</td>
+<td>通常先有可区分的<strong>塞音部位</strong>系统</td>
+<td>“对立维度”的叠加常非任意</td>
+</tr>
+<tr>
+<td>语言有 <strong>边音</strong> <em>l</em> 与 <strong>颤音</strong> <em>r</em> 的<strong>多类变体</strong></td>
+<td>往往在更大辅音系统中出现</td>
+<td>稀有特征聚簇于大库存语言（统计倾向，Level 3）</td>
+</tr>
+</tbody>
+</table>
+<h5 id="_5">形态—句法蕴涵（示意）<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>若 P</th>
+<th>则倾向 Q</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>有<strong>复杂的一致关系</strong>（agreement，如动词随主语/宾语变）</td>
+<td>常有较明确的<strong>词类形态</strong></td>
+<td>非绝对；用于理解“形态复杂度”共现</td>
+</tr>
+<tr>
+<td><strong>宾语</strong>常<strong>前置</strong>到动词前（OV）</td>
+<td>名词与功能词顺序常与 <strong>O、V 相对位置和谐</strong></td>
+<td>回到 Part 2 的和谐主题</td>
+</tr>
+</tbody>
+</table>
+<p>以上第二表是<strong>功能—类型</strong>传统中的概括，具体编号与统计需查专门章节（Level 2–3）。</p>
+<h3 id="53-statistical-universals-tendencies">5.3 统计共性（statistical universals / tendencies）<a class="headerlink" href="#53-statistical-universals-tendencies" title="Permanent link">&para;</a></h3>
+<p><strong>定义</strong>：在样本中<strong>显著高于随机期望</strong>，但允许反例。</p>
+<p>世界语序比例、Greenberg 多条“高频而非绝对”的概括，多属此类。</p>
+<h3 id="54">5.4 为什么存在共性？<a class="headerlink" href="#54" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>立场</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>先天论</strong>（Universal Grammar, UG）</td>
+<td>大脑提供<strong>有限参数空间</strong>或<strong>约束</strong>，使“可能的语法”远小于逻辑上所有组合</td>
+</tr>
+<tr>
+<td><strong>功能论</strong></td>
+<td><strong>交际效率</strong>、学习难度、处理限制对语言演化产生<strong>偏向</strong>（bias）</td>
+</tr>
+<tr>
+<td><strong>折中</strong></td>
+<td>先天约束划定边界，功能压力在边界内塑造<strong>统计分布</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 2–4（哲学与经验并重；尚无单一模型被全体接受）。</p>
+</blockquote>
+<hr />
+<h2 id="part-6wals">Part 6：WALS — 世界语言结构地图<a class="headerlink" href="#part-6wals" title="Permanent link">&para;</a></h2>
+<h3 id="61-wals">6.1 WALS 是什么？<a class="headerlink" href="#61-wals" title="Permanent link">&para;</a></h3>
+<p><strong>WALS</strong>（World Atlas of Language Structures）是面向公众的<strong>跨语言结构数据库</strong>与地图集。你可在网站上选择<strong>特征</strong>（feature），查看每种语言的<strong>取值</strong>在世界地图上的分布，并阅读<strong>章节说明</strong>（定义、例子、讨论）。</p>
+<p>常见规模（以公开介绍为参考，版本更新会微调）：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>数量级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>所涉语言条目</td>
+<td>约 <strong>2600+</strong> 种；不少介绍材料会给出如 <strong>2662</strong> 条语言样本等具体数字（以网站当前说明为准）</td>
+</tr>
+<tr>
+<td>特征条目</td>
+<td>约 <strong>140–200+</strong> 个特征家族；教材与简介中亦常见 <strong>192</strong> 个结构特征一类说法（以网站为准）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>可靠程度</strong>：Level 1（工具本身）；具体地图为 Level 2（依赖编码与样本）。</p>
+</blockquote>
+<h3 id="62">6.2 怎么使用（界面直觉）<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<ol>
+<li>打开 <a href="https://wals.info/">https://wals.info/</a>。  </li>
+<li>在 <strong>Features</strong> 中按主题浏览（语序、音系、词法等）。  </li>
+<li>点进某个特征（如 <strong>81A</strong>），阅读章节文字中的<strong>定义</strong>（什么算 SOV、如何处理灵活语序）。  </li>
+<li>查看 <strong>Map</strong>（地图）与 <strong>Values</strong>（语言—取值表）。  </li>
+<li>需要引用时，记录<strong>特征编号</strong>、<strong>章节作者</strong>与<strong>访问日期</strong>。</li>
+</ol>
+<h3 id="63">6.3 具体例子：看“语序”的世界分布<a class="headerlink" href="#63" title="Permanent link">&para;</a></h3>
+<ol>
+<li>进入特征 <strong><a href="https://wals.info/feature/81A">81A: Order of Subject, Object and Verb</a></strong>。  </li>
+<li>对照图例看各语序类型的地理聚集（例如 SOV 在某些区域的密度）。  </li>
+<li>点击单个语言点，进入<strong>语料说明</strong>与参考文献线索。  </li>
+</ol>
+<p>把 WALS 与 <strong>Ethnologue</strong> 对照时：Ethnologue 更偏<strong>语言识别与人口</strong>，WALS 更偏<strong>结构特征</strong>；二者结合适合写“某特征在多少种语言里出现”这类句子，但要避免把“语言种数”与“结构数据点数”混为一谈。</p>
+<h3 id="64-wals">6.4 使用 WALS 时的三个常见误区<a class="headerlink" href="#64-wals" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>误区</th>
+<th>为什么有问题</th>
+<th>建议做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>把地图上的点当成“人口权重”</td>
+<td>WALS <strong>不按使用者人数加权</strong>；大语种与小语种<strong>一票一等</strong></td>
+<td>若关心“全球说话人暴露度”，需另接语料或人口数据</td>
+</tr>
+<tr>
+<td>忽略特征的<strong>操作定义</strong></td>
+<td>同一语言可能被不同分析判成不同取值</td>
+<td>先读章节说明，再引用数值</td>
+</tr>
+<tr>
+<td>把<strong>类型相关</strong>当成<strong>历史亲缘</strong></td>
+<td>相邻语言相似可能来自<strong>区域扩散</strong>（areal diffusion）</td>
+<td>结合历史语言学、接触语言学文献</td>
+</tr>
+</tbody>
+</table>
+<h3 id="65-d4">6.5 与语料库方法的关系（呼应 D4）<a class="headerlink" href="#65-d4" title="Permanent link">&para;</a></h3>
+<p><strong>语料库</strong>（corpus）提供<strong>自然使用中的频率</strong>，WALS 提供<strong>参考语法式的结构化标注</strong>。二者结合的路径包括：用语料统计某语言内部词序变异，再用 WALS 看该语言在类型上的<strong>标注取值</strong>是否覆盖“口语与书面语差异”。这类对接属于<strong>计算语言类型学</strong>的前沿应用之一（Level 3–4）。</p>
+<hr />
+<h2 id="_6">延伸阅读（可选）<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>为何值得读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dryer &amp; Haspelmath (eds.)</strong> <em>WALS</em> 各章</td>
+<td>每个特征背后的类型学争论与地图判读</td>
+</tr>
+<tr>
+<td><strong>Comrie (1989)</strong> <em>Language Universals and Linguistic Typology</em></td>
+<td>教科书式系统入门（若图书馆有）</td>
+</tr>
+<tr>
+<td><strong>区域类型学</strong>（linguistic areas）</td>
+<td>解释“地图上成片相似”不全是巧合</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>以上书目为领域内常见引用；具体版次与章节以你手头的参考书为准（Level 2）。</p>
+</blockquote>
+<hr />
+<h3 id="_7">公式速查卡<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>符号/表述</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(P \rightarrow Q\)</span></td>
+<td><strong>蕴涵共性</strong>：若 P 成立，则 Q 成立（逆不一定成立）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\text{综合度指数} = \dfrac{\text{词素数}}{\text{词数}}\)</span></td>
+<td>单位词内词素越多，综合度越高（操作定义敏感）</td>
+</tr>
+<tr>
+<td><strong>S, V, O</strong></td>
+<td>主语、动词、宾语在及物小句线性序中的位置类型</td>
+</tr>
+<tr>
+<td><strong>介词 / 后置词</strong></td>
+<td>功能词相对名词短语核心的前置 vs 后置；常与语序和谐相关</td>
+</tr>
+<tr>
+<td><strong>主格—宾格 / 作格—通格</strong></td>
+<td>格配列：S 与 A 同组 vs S 与 P 同组</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Greenberg 语序相关（速查，与 Part 2 呼应）</strong></p>
+<table>
+<thead>
+<tr>
+<th>概括（教学简写）</th>
+<th>形式化速写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VSO 与介词共现强</td>
+<td>VSO → 介词型（U3，强）</td>
+</tr>
+<tr>
+<td>SOV 与后置词共现强</td>
+<td>SOV ⇒ 后置词型（U4，统计）</td>
+</tr>
+<tr>
+<td>六种语序非均匀</td>
+<td><span class="arithmatex">\(P(\text{SOV})+P(\text{SVO}) \gg P(\text{OVS})+P(\text{OSV})\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_8">理解检测<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p><strong>Q1</strong>：为什么 SOV 和 SVO 合计占了世界语言的约 76%，而 OVS 和 OSV 加起来不到 2%？这说明什么共性？</p>
+<p>你的回答：</p>
+<p><strong>Q2</strong>：Greenberg Universal 4 说“SOV 语言倾向于用后置词”。日语是 SOV 语言，它用的是介词还是后置词？给出一个例子。</p>
+<p>你的回答：</p>
+<p><strong>Q3</strong>：如果一种语言有鼻化元音（如法语），你可以确定它一定也有什么？这属于哪种共性类型？</p>
+<p>你的回答：</p>
+<p><strong>Q4（计算）</strong>：如果一个英语句子 <em>The dogs are running quickly</em> 有 5 个词、8 个词素，它的综合度指数是多少？中文对应的句子「那些狗正在快速地跑」：请自行切分<strong>词</strong>与<strong>词素</strong>（可与教材或分词规范一致），计算其综合度指数。</p>
+<blockquote>
+<p>提示：用 <strong>综合度指数 = 词素数 / 词数</strong>。</p>
+</blockquote>
+<p>你的回答：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
